@@ -1,0 +1,12 @@
+# Create the mysql container
+docker container run --name classroommanagement-mysql-server \
+    -v /Users/mac/Documents/WORK/classroommanagement/database:/docker-entrypoint-initdb.d \
+    -e MYSQL_ROOT_PASSWORD=TXE9iXyw6aulVbgK \
+    -e MYSQL_DATABASE=classmanagementDb \
+    -e MYSQL_USER=olive \
+    -e MYSQL_PASSWORD=yx7oZA9QpomHBWnh \
+    -p 3306:3306 -d mysql:latest
+
+docker exec -it classroommanagement-mysql-server bash
+
+mysql -u olive -p
