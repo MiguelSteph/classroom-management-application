@@ -1,30 +1,30 @@
 use classmanagementDb;
 
-CREATE TABLE Role (
+CREATE TABLE role (
     id int not null AUTO_INCREMENT,
     name varchar(20) not null,
     PRIMARY KEY (id)
 );
-ALTER TABLE Role ADD CONSTRAINT UC_Role_Name UNIQUE (name);
+ALTER TABLE role ADD CONSTRAINT UC_role_Name UNIQUE (name);
 
-CREATE TABLE User (
+CREATE TABLE user (
     id bigint not null AUTO_INCREMENT,
-    firstName varchar(100),
-    lastName varchar(100),
+    first_name varchar(100),
+    last_name varchar(100),
     email varchar(100),
     password varchar(100),
-    isDefaultPwd boolean default false,
-    isEnabled boolean,
-    isEmailVerified boolean,
-    createdBy bigint,
-    roleId int not null,
+    is_default_pwd boolean default false,
+    is_enabled boolean,
+    is_email_verified boolean,
+    created_by_id bigint,
+    role_id int not null,
     PRIMARY KEY (id)
 );
-ALTER TABLE User ADD CONSTRAINT UC_User_Email UNIQUE (email);
-ALTER TABLE User ADD CONSTRAINT FK_User_CreatedBY FOREIGN KEY (createdBy) REFERENCES User(id);
-ALTER TABLE User ADD CONSTRAINT FK_User_roleId FOREIGN KEY (roleId) REFERENCES Role(id);
+ALTER TABLE user ADD CONSTRAINT UC_user_Email UNIQUE (email);
+ALTER TABLE user ADD CONSTRAINT FK_user_CreatedBY FOREIGN KEY (created_by_id) REFERENCES user(id);
+ALTER TABLE user ADD CONSTRAINT FK_user_role_id FOREIGN KEY (role_id) REFERENCES role(id);
 
-CREATE TABLE Site (
+CREATE TABLE site (
     id int not null AUTO_INCREMENT,
     code varchar(20),
     name varchar(100),
@@ -32,76 +32,76 @@ CREATE TABLE Site (
     UNIQUE (code)
 );
 
-CREATE TABLE Building (
+CREATE TABLE building (
     id int not null AUTO_INCREMENT,
     code varchar(20),
     name varchar(100),
-    sideId int not null,
+    side_id int not null,
     PRIMARY KEY (id),
-    UNIQUE (sideId, code)
+    UNIQUE (side_id, code)
 );
-ALTER TABLE Building ADD CONSTRAINT FK_Building_siteId FOREIGN KEY (sideId) REFERENCES Site(id);
+ALTER TABLE building ADD CONSTRAINT FK_building_site_id FOREIGN KEY (side_id) REFERENCES site(id);
 
-CREATE TABLE Classroom (
+CREATE TABLE classroom (
     id int not null AUTO_INCREMENT,
     code varchar(20),
     name varchar(100),
-    buildingId int not null,
-    availabilityId int,
+    building_id int not null,
+    availability_id int,
     PRIMARY KEY (id),
-    UNIQUE (buildingId, code)
+    UNIQUE (building_id, code)
 );
-ALTER TABLE Classroom ADD CONSTRAINT FK_Classroom_siteId FOREIGN KEY (buildingId) REFERENCES Building(id);
+ALTER TABLE classroom ADD CONSTRAINT FK_classroom_site_id FOREIGN KEY (building_id) REFERENCES building(id);
 
-CREATE TABLE Availability (
+CREATE TABLE availability (
     id int not null AUTO_INCREMENT,
-    supervisorId bigint not null,
+    supervisor_id bigint not null,
     PRIMARY KEY (id)
 );
-ALTER TABLE Availability ADD CONSTRAINT FK_Availability_supervisorId FOREIGN KEY (supervisorId) REFERENCES User(id);
-ALTER TABLE Classroom ADD CONSTRAINT FK_Building_availabilityId FOREIGN KEY (availabilityId) REFERENCES Availability(id);
+ALTER TABLE availability ADD CONSTRAINT FK_availability_supervisor_id FOREIGN KEY (supervisor_id) REFERENCES user(id);
+ALTER TABLE classroom ADD CONSTRAINT FK_building_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id);
 
-CREATE TABLE TimeInterval (
+CREATE TABLE time_interval (
     id bigint not null AUTO_INCREMENT,
-    fromDate date,
-    toDate date,
-    weekDay varchar(10),
-    fromTime time,
-    toTime time,
-    availabilityId int,
+    from_date date,
+    to_date date,
+    week_day varchar(10),
+    from_time time,
+    to_time time,
+    availability_id int,
     PRIMARY KEY (id)
 );
-ALTER TABLE TimeInterval ADD CONSTRAINT FK_Interval_availabilityId FOREIGN KEY (availabilityId) REFERENCES Availability(id);
+ALTER TABLE time_interval ADD CONSTRAINT FK_Interval_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id);
 
-CREATE TABLE BookingRequest (
+CREATE TABLE booking_request (
     id bigint not null AUTO_INCREMENT,
     status varchar(20),
-    createdDate date,
-    lastUpdatedDate date,
-    rejectionReason varchar(255),
-    bookingDate date,
-    fromTime time,
-    toTime time,
-    classroomId int not null,
-    assignedTo bigint not null,
-    createdBy bigint not null,
+    created_date date,
+    last_updated_date date,
+    rejection_reason varchar(255),
+    booking_date date,
+    from_time time,
+    to_time time,
+    classroom_id int not null,
+    assigned_to_id bigint not null,
+    created_by_id bigint not null,
     PRIMARY KEY (id)
 );
-ALTER TABLE BookingRequest ADD CONSTRAINT FK_BookingRequest_classroomId FOREIGN KEY (classroomId) REFERENCES Classroom(id);
-ALTER TABLE BookingRequest ADD CONSTRAINT FK_BookingRequest_assignedTo FOREIGN KEY (assignedTo) REFERENCES User(id);
-ALTER TABLE BookingRequest ADD CONSTRAINT FK_BookingRequest_createdBy FOREIGN KEY (createdBy) REFERENCES User(id);
+ALTER TABLE booking_request ADD CONSTRAINT FK_booking_request_classroom_id FOREIGN KEY (classroom_id) REFERENCES classroom(id);
+ALTER TABLE booking_request ADD CONSTRAINT FK_booking_request_assigned_to_id FOREIGN KEY (assigned_to_id) REFERENCES user(id);
+ALTER TABLE booking_request ADD CONSTRAINT FK_booking_request_created_by_id FOREIGN KEY (created_by_id) REFERENCES user(id);
 
-CREATE TABLE ClassroomSupervisor (
+CREATE TABLE classroom_supervisor (
     id int not null AUTO_INCREMENT,
-    supervisorId bigint not null,
-    classroomId int not null,
-    assignedDate date,
-    isValid boolean,
-    whoAssigned bigint,
-    whoRevoke bigint,
+    supervisor_id bigint not null,
+    classroom_id int not null,
+    assigned_date date,
+    is_valid boolean,
+    who_assigned_id bigint,
+    who_revoke_id bigint,
     PRIMARY KEY (id)
 );
-ALTER TABLE ClassroomSupervisor ADD CONSTRAINT FK_ClassroomSupervisor_supervisorId FOREIGN KEY (supervisorId) REFERENCES User(id);
-ALTER TABLE ClassroomSupervisor ADD CONSTRAINT FK_ClassroomSupervisor_classroomId FOREIGN KEY (classroomId) REFERENCES Classroom(id);
-ALTER TABLE ClassroomSupervisor ADD CONSTRAINT FK_ClassroomSupervisor_whoAssigned FOREIGN KEY (whoAssigned) REFERENCES User(id);
-ALTER TABLE ClassroomSupervisor ADD CONSTRAINT FK_ClassroomSupervisor_whoRevoke FOREIGN KEY (whoRevoke) REFERENCES User(id);
+ALTER TABLE classroom_supervisor ADD CONSTRAINT FK_classroom_supervisor_supervisor_id FOREIGN KEY (supervisor_id) REFERENCES user(id);
+ALTER TABLE classroom_supervisor ADD CONSTRAINT FK_classroom_supervisor_classroom_id FOREIGN KEY (classroom_id) REFERENCES classroom(id);
+ALTER TABLE classroom_supervisor ADD CONSTRAINT FK_classroom_supervisor_who_assigned_id FOREIGN KEY (who_assigned_id) REFERENCES user(id);
+ALTER TABLE classroom_supervisor ADD CONSTRAINT FK_classroom_supervisor_who_revoke_id FOREIGN KEY (who_revoke_id) REFERENCES user(id);

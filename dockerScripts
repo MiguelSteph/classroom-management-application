@@ -1,6 +1,6 @@
 # Create the mysql container
-docker container run --name classroommanagement-mysql-server \
-    -v /Users/mac/Documents/WORK/classroommanagement/database:/docker-entrypoint-initdb.d \
+docker container run --name mysql-server \
+    -v /Users/mac/Documents/WORK/classmanagement/database:/docker-entrypoint-initdb.d \
     -e MYSQL_ROOT_PASSWORD=TXE9iXyw6aulVbgK \
     -e MYSQL_DATABASE=classmanagementDb \
     -e MYSQL_USER=olive \
@@ -10,3 +10,62 @@ docker container run --name classroommanagement-mysql-server \
 docker exec -it classroommanagement-mysql-server bash
 
 mysql -u olive -p
+
+# Keypair generation command
+keytool -genkeypair -alias classmanagement -keyalg RSA -keypass smtrCdSjNV84RGNa -keystore classmanagementKey.jks -storepass smtrCdSjNV84RGNa
+
+
+# Create the vault server
+docker container run --name vault-server \
+    --cap-add=IPC_LOCK \
+    -v /Users/mac/Documents/WORK/classmanagement/vault/logs:/vault/logs \
+    -v /Users/mac/Documents/WORK/classmanagement/vault/file:/vault/file \
+    -v /Users/mac/Documents/WORK/classmanagement/vault/config:/vault/config \
+    -p 8200:8200 -d vault:latest server
+
+# Vault configuration
+export VAULT_ADDR=http://localhost:8200
+vault operator init
+
+/* Vault unseal keys are listed bellow: 
+
+Unseal Key 1: LwjVqjO1O5LuEFZ80qMwzOJY+CmYXpZCbZtUHFFtvtLv
+Unseal Key 2: g6FRb8svf4FORN94MQ5iHonPe59w7LfVSWkc0qughM5z
+Unseal Key 3: r1qvW+VUoa1erzLv76o2G1IsHxe7sbXMci4tckMgLvWK
+Unseal Key 4: gJBdHm8l1UJDQuOFFtoXIFbFhrMiVP3BTNIhWvy85Gru
+Unseal Key 5: pMJTKtafL1MXYGlFmhmmU8JZPKnESYHTdWtwdSVi1B0v
+
+Initial Root Token: s.CuOxBdcR9SmlgxmXAqWYOOWF
+
+*/
+
+vault operator unseal LwjVqjO1O5LuEFZ80qMwzOJY+CmYXpZCbZtUHFFtvtLv
+vault operator unseal g6FRb8svf4FORN94MQ5iHonPe59w7LfVSWkc0qughM5z
+vault operator unseal r1qvW+VUoa1erzLv76o2G1IsHxe7sbXMci4tckMgLvWK
+
+export VAULT_TOKEN=s.CuOxBdcR9SmlgxmXAqWYOOWF
+vault login s.CuOxBdcR9SmlgxmXAqWYOOWF
+
+vault secrets enable -path=secret/ kv
+vault write secret/classmanagement @vault/data.json
+
+vault kv put secret/classmanagement2 secret_mysql_server_pwd=yx7oZA9QpomHBWnh
+
+
+# Create a policy for our application
+vault policy write policy-classmanagement-app vault/policy-file.hcl
+
+# Generate a token with that policy
+vault token create -policy=policy-classmanagement-app
+
+/*
+
+token                s.9NLrZob9U5KAWHfp9PFr5N5k
+token_accessor       e0b7y5DihN6Bnweidpts3tGi
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "policy-classmanagement-app"]
+identity_policies    []
+policies             ["default" "policy-classmanagement-app"]
+
+*/

@@ -1,0 +1,26 @@
+key_file: classmanagementKey.jks
+key_file_password: smtrCdSjNV84RGNa
+#key_file_password: ${secret_key_file_password}
+alias: classmanagement
+
+client_id: classmanagementapplication
+client_pwd: h22ouDKWuNZlhpQ2
+#client_pwd: ${secret_client_pwd}
+resource_id: classmanagementservice
+
+server:
+  port: 9092
+spring:
+  datasource:
+    username: olive
+    url: jdbc:mysql://localhost:3306/classmanagementDb
+    password: yx7oZA9QpomHBWnh
+#    password: ${secret_mysql_server_pwd}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+#logging:
+#  level:
+#    org:
+#      springframework: debug

@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: classmanagement
+  cloud:
+    vault:
+      host: localhost
+      port: 8200
+      scheme: http
+      authentication: TOKEN
+      token: s.CuOxBdcR9SmlgxmXAqWYOOWF
+#      kv:
+#        backend: secret/data
+#        enabled: true
+#        application-name: classmanagement
+#        profile-separator: /
+logging:
+  level:
+    org:
+      springframework: debug
