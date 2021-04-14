@@ -79,6 +79,7 @@ CREATE TABLE booking_request (
     created_date date,
     last_updated_date date,
     rejection_reason varchar(255),
+    purpose varchar(255),
     booking_date date,
     from_time time,
     to_time time,

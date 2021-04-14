@@ -25,6 +25,8 @@ public class BookingRequest {
 
     private LocalDate lastUpdatedDate;
 
+    private String purpose;
+
     private String rejectionReason;
 
     private LocalDate bookingDate;
