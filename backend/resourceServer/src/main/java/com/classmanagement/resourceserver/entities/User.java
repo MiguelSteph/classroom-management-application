@@ -35,10 +35,8 @@ public class User {
     private boolean isEmailVerified;
 
     @ManyToOne
-    @Column(name = "createdBy")
     private User createdBy;
 
-    @Column(name = "roleId")
     @ManyToOne
     private Role role;
 

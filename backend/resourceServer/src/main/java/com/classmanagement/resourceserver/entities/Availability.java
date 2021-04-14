@@ -18,13 +18,11 @@ public class Availability {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne(mappedBy = "availability")
-    @Column(name = "classroomId")
-    private Classroom classroom;
-
     @ManyToOne
-    @Column(name = "supervisorId")
     private User supervisor;
+
+    @OneToOne(mappedBy = "availability")
+    private Classroom classroom;
 
     @OneToMany(mappedBy = "availability")
     private List<TimeInterval> intervals = new ArrayList<>();

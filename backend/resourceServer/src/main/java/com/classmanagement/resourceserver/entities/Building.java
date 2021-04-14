@@ -22,11 +22,10 @@ public class Building {
 
     private String name;
 
-    @Column(name = "siteId")
     @ManyToOne
     private Site site;
 
-    @OneToMany(mappedBy = "building")
+    @OneToMany(mappedBy = "building", fetch = FetchType.EAGER)
     private List<Classroom> classrooms = new ArrayList<>();
 }
 

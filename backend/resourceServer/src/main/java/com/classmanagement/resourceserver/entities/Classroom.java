@@ -23,11 +23,9 @@ public class Classroom {
     private String name;
 
     @OneToOne
-    @Column(name = "availabilityId")
     private Availability availability;
 
     @ManyToOne
-    @Column(name = "buildingId")
     private Building building;
 
     @OneToMany(mappedBy = "classroom", fetch = FetchType.LAZY)

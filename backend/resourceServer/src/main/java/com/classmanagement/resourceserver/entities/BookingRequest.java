@@ -16,7 +16,7 @@ public class BookingRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -36,15 +36,12 @@ public class BookingRequest {
     private LocalTime toTime;
 
     @ManyToOne
-    @Column(name = "classroomId")
     private Classroom classroom;
 
     @ManyToOne
-    @Column(name = "assignedTo")
     private User assignedTo;
 
     @ManyToOne
-    @Column(name = "createdBy")
     private User createdBy;
 }
 

@@ -27,7 +27,7 @@ public class Site {
 
     private String name;
 
-    @OneToMany(mappedBy = "site", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "site", fetch = FetchType.EAGER)
     private List<Building> buildings = new ArrayList<>();
 }
 

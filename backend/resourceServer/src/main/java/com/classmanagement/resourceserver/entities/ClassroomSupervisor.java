@@ -18,11 +18,9 @@ public class ClassroomSupervisor {
     private Integer id;
 
     @ManyToOne
-    @Column(name = "supervisorId")
     private User supervisor;
 
     @ManyToOne
-    @Column(name = "classroomId")
     private Classroom classroom;
 
     private LocalDate assignedDate;
@@ -30,11 +28,9 @@ public class ClassroomSupervisor {
     private boolean isValid;
 
     @ManyToOne
-    @Column(name = "whoAssigned")
     private User whoAssigned;
 
     @ManyToOne
-    @Column(name = "whoRevoke")
     private User whoRevoke;
 }
 

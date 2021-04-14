@@ -17,7 +17,7 @@ public class TimeInterval {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     private LocalDate fromDate;
 
@@ -31,6 +31,5 @@ public class TimeInterval {
     private LocalTime toTime;
 
     @ManyToOne
-    @Column(name = "availabilityId")
     private Availability availability;
 }
