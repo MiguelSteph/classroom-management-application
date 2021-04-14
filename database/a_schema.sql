@@ -36,11 +36,11 @@ CREATE TABLE building (
     id int not null AUTO_INCREMENT,
     code varchar(20),
     name varchar(100),
-    side_id int not null,
+    site_id int not null,
     PRIMARY KEY (id),
-    UNIQUE (side_id, code)
+    UNIQUE (site_id, code)
 );
-ALTER TABLE building ADD CONSTRAINT FK_building_site_id FOREIGN KEY (side_id) REFERENCES site(id);
+ALTER TABLE building ADD CONSTRAINT FK_building_site_id FOREIGN KEY (site_id) REFERENCES site(id);
 
 CREATE TABLE classroom (
     id int not null AUTO_INCREMENT,

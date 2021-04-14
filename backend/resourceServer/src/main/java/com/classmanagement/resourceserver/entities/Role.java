@@ -14,6 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 public class Role {
 
+    public static String ADMIN_ROLE = "ADMIN";
+    public static String SUPERVISOR_ROLE = "SUPERVISOR";
+    public static String GROUP_LEADER_ROLE = "GROUPLEADER";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

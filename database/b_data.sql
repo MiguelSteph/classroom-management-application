@@ -7,9 +7,9 @@
 -- groupleader2  $2a$10$aJRwhRFndDyW4Ek0XC1V.OD015eeLe8TnMhnXwXNwqwf4o1g5BPPq
 -- groupleader3  $2a$10$ElIz9NWgto/VgfdCHnvFwu.GZFWbreFtu1qnl6UL1I5j2.f6ZN1Xu
 
-INSERT INTO role (name) VALUES ('Administrator');
-INSERT INTO role (name) VALUES ('Supervisor');
-INSERT INTO role (name) VALUES ('GroupLeader');
+INSERT INTO role (name) VALUES ('ROLE_ADMIN');
+INSERT INTO role (name) VALUES ('ROLE_SUPERVISOR');
+INSERT INTO role (name) VALUES ('ROLE_GROUPLEADER');
 
 
 
@@ -47,21 +47,21 @@ INSERT INTO user (first_name, last_name, email, password, is_default_pwd, is_ena
 VALUES ('Miguel', 'Stephane', 'Skakanakou+oliveProjectGroupLeader1@gmail.com',
        '$2a$10$fifhquQDWOHEDyCed3ex7estscwVdqaSlThFKStCApYzupllnqUa6',
        false, true, true, 1,
-       (SELECT id FROM role WHERE name='GroupLeader')
+       (SELECT id FROM role WHERE name='ROLE_GROUPLEADER')
        );
 
 INSERT INTO user (first_name, last_name, email, password, is_default_pwd, is_enabled, is_email_verified, created_by_id, role_id)
 VALUES ('Miguel', 'Stephane', 'Skakanakou+oliveProjectGroupLeader2@gmail.com',
        '$2a$10$aJRwhRFndDyW4Ek0XC1V.OD015eeLe8TnMhnXwXNwqwf4o1g5BPPq6',
        false, true, true, 1,
-       (SELECT id FROM role WHERE name='GroupLeader')
+       (SELECT id FROM role WHERE name='ROLE_GROUPLEADER')
        );
 
 INSERT INTO user (first_name, last_name, email, password, is_default_pwd, is_enabled, is_email_verified, created_by_id, role_id)
 VALUES ('Miguel', 'Stephane', 'Skakanakou+oliveProjectGroupLeader3@gmail.com',
         '$2a$10$ElIz9NWgto/VgfdCHnvFwu.GZFWbreFtu1qnl6UL1I5j2.f6ZN1Xu',
         false, true, true, 1,
-        (SELECT id FROM role WHERE name = 'GroupLeader')
+        (SELECT id FROM role WHERE name = 'ROLE_GROUPLEADER')
        );
 
 
@@ -71,28 +71,28 @@ INSERT INTO site (code, name) VALUES ('TYUT-YUCI', 'TYUT: Campus of Yuci');
 
 
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-COMPUTER', 'building of Computer Science', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-ART', 'building of Art and Culture', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-MATH', 'building of Mathematics', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-FGN-LANG', 'building of Foreign Language', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-COMPUTER', 'building of Computer Science', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-ECO', 'building of Economy', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-MATH', 'building of Mathematics', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
 
-INSERT INTO building (code, name, side_id)
+INSERT INTO building (code, name, site_id)
 VALUES ('BLD-SPORT', 'building of Sport', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
 
 
