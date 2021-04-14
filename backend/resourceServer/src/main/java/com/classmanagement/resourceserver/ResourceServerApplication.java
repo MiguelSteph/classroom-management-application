@@ -1,13 +1,13 @@
-package com.classmanagement.authorizationserver;
+package com.classmanagement.resourceserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AuthorizationserverApplication {
+public class ResourceServerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthorizationserverApplication.class, args);
+        SpringApplication.run(ResourceServerApplication.class, args);
     }
 
 }
