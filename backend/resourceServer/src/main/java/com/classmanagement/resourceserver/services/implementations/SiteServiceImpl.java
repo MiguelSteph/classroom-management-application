@@ -8,6 +8,7 @@ import com.classmanagement.resourceserver.entities.Classroom;
 import com.classmanagement.resourceserver.entities.Site;
 import com.classmanagement.resourceserver.repositories.SiteRepository;
 import com.classmanagement.resourceserver.services.SiteService;
+import com.classmanagement.resourceserver.util.mappers.DtoMapperUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,43 +27,7 @@ public class SiteServiceImpl implements SiteService {
         List<Site> siteList = siteRepository.findAll();
         if (siteList.isEmpty()) return Collections.emptyList();
         return siteList.stream()
-                .map(this::convertToSiteDto)
+                .map(DtoMapperUtil::convertToSiteDto)
                 .collect(Collectors.toList());
-    }
-
-    private SiteDto convertToSiteDto(Site site) {
-        SiteDto siteDto = new SiteDto();
-        siteDto.setId(site.getId());
-        siteDto.setCode(site.getCode());
-        siteDto.setName(site.getName());
-        siteDto.setBuildings(
-                site.getBuildings()
-                        .stream()
-                        .map(this::convertToBuildingDto)
-                        .collect(Collectors.toList())
-        );
-        return siteDto;
-    }
-
-    private BuildingDto convertToBuildingDto(Building building) {
-        BuildingDto buildingDto = new BuildingDto();
-        buildingDto.setId(building.getId());
-        buildingDto.setCode(building.getCode());
-        buildingDto.setName(building.getName());
-        buildingDto.setClassrooms(
-                building.getClassrooms()
-                        .stream()
-                        .map(this::convertToClassroomDto)
-                        .collect(Collectors.toList())
-        );
-        return buildingDto;
-    }
-
-    private ClassroomDto convertToClassroomDto(Classroom classroom) {
-        ClassroomDto classroomDto = new ClassroomDto();
-        classroomDto.setId(classroom.getId());
-        classroomDto.setName(classroom.getName());
-        classroomDto.setCode(classroom.getCode());
-        return classroomDto;
     }
 }
