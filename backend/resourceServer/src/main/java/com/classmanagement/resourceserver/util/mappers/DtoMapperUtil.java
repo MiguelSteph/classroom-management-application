@@ -1,17 +1,23 @@
 package com.classmanagement.resourceserver.util.mappers;
 
-import com.classmanagement.resourceserver.dtos.BuildingDto;
-import com.classmanagement.resourceserver.dtos.ClassroomDto;
-import com.classmanagement.resourceserver.dtos.SiteDto;
-import com.classmanagement.resourceserver.dtos.UserDto;
-import com.classmanagement.resourceserver.entities.Building;
-import com.classmanagement.resourceserver.entities.Classroom;
-import com.classmanagement.resourceserver.entities.Site;
-import com.classmanagement.resourceserver.entities.User;
+import com.classmanagement.resourceserver.dtos.*;
+import com.classmanagement.resourceserver.entities.*;
 
 import java.util.stream.Collectors;
 
 public class DtoMapperUtil {
+
+    public static TimeIntervalDto convertToTimeIntervalDto(AvailableTimeInterval interval) {
+        TimeIntervalDto timeIntervalDto = new TimeIntervalDto();
+        timeIntervalDto.setId(interval.getId());
+        timeIntervalDto.setFromDate(interval.getFromDate());
+        timeIntervalDto.setToDate(interval.getToDate());
+        timeIntervalDto.setFromTime(interval.getFromTime());
+        timeIntervalDto.setToTime(interval.getToTime());
+        timeIntervalDto.setWeekDay(interval.getWeekDay());
+        timeIntervalDto.setCreatedDate(interval.getCreatedDate());
+        return timeIntervalDto;
+    }
 
     public static UserDto convertToUserDto(User user) {
         UserDto userDto = new UserDto();

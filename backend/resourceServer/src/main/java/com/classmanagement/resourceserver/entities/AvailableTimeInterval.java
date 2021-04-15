@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TimeInterval {
+public class AvailableTimeInterval {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,6 +30,11 @@ public class TimeInterval {
 
     private LocalTime toTime;
 
+    private LocalDate createdDate;
+
     @ManyToOne
-    private Availability availability;
+    private Classroom classroom;
+
+    @ManyToOne
+    private User supervisor;
 }

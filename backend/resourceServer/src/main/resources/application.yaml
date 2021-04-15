@@ -17,3 +17,7 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:9092/.well-known/jwks.json
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE

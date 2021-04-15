@@ -97,41 +97,40 @@ VALUES ('BLD-SPORT', 'building of Sport', (SELECT id FROM site WHERE site.code='
 
 
 
-INSERT INTO availability (supervisor_id)
-VALUES ((SELECT id FROM user WHERE email='Skakanakou+oliveProjectSupervisor1@gmail.com'));
+INSERT INTO classroom (code, name, building_id)
+VALUES ('CLASS-101', 'classroom 101', 1);
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'MONDAY', '12:00:00', '15:00:00', 1);
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'MONDAY', '19:00:00', '22:00:00', 1);
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'TUESDAY', '12:00:00', '15:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'MONDAY', '12:00:00', '15:00:00', 1, 2, current_date());
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'TUESDAY', '19:00:00', '22:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'MONDAY', '19:00:00', '22:00:00', 1, 2, current_date());
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'WEDNESDAY', '12:00:00', '15:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'TUESDAY', '12:00:00', '15:00:00', 1, 2, current_date());
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'WEDNESDAY', '19:00:00', '22:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'TUESDAY', '19:00:00', '22:00:00', 1, 2, current_date());
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'FRIDAY', '12:00:00', '15:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'WEDNESDAY', '12:00:00', '15:00:00', 1, 2, current_date());
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'FRIDAY', '19:00:00', '22:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'WEDNESDAY', '19:00:00', '22:00:00', 1, 2, current_date());
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'SATURDAY', '8:00:00', '20:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'FRIDAY', '12:00:00', '15:00:00', 1, 2, current_date());
 
-INSERT INTO time_interval (from_date, to_date, week_day, from_time, to_time, availability_id)
-VALUES ('2021-04-1', '2021-06-30', 'SUNDAY', '8:00:00', '15:00:00', 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'FRIDAY', '19:00:00', '22:00:00', 1, 2, current_date());
 
-INSERT INTO classroom (code, name, building_id, availability_id)
-VALUES ('CLASS-101', 'classroom 101', 1, 1);
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'SATURDAY', '8:00:00', '20:00:00', 1, 2, current_date());
+
+INSERT INTO available_time_interval (from_date, to_date, week_day, from_time, to_time, classroom_id, supervisor_id, created_date)
+VALUES ('2021-04-1', '2021-06-30', 'SUNDAY', '8:00:00', '15:00:00', 1, 2, current_date());
 
 INSERT INTO classroom_supervisor (supervisor_id, classroom_id, assigned_date, is_valid, who_assigned_id)
 VALUES (2, 1, current_date(), true, 1);

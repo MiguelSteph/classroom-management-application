@@ -47,31 +47,25 @@ CREATE TABLE classroom (
     code varchar(20),
     name varchar(100),
     building_id int not null,
-    availability_id int,
     PRIMARY KEY (id),
     UNIQUE (building_id, code)
 );
 ALTER TABLE classroom ADD CONSTRAINT FK_classroom_site_id FOREIGN KEY (building_id) REFERENCES building(id);
 
-CREATE TABLE availability (
-    id int not null AUTO_INCREMENT,
-    supervisor_id bigint not null,
-    PRIMARY KEY (id)
-);
-ALTER TABLE availability ADD CONSTRAINT FK_availability_supervisor_id FOREIGN KEY (supervisor_id) REFERENCES user(id);
-ALTER TABLE classroom ADD CONSTRAINT FK_building_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id);
-
-CREATE TABLE time_interval (
+CREATE TABLE available_time_interval (
     id bigint not null AUTO_INCREMENT,
     from_date date,
     to_date date,
     week_day varchar(10),
     from_time time,
     to_time time,
-    availability_id int,
+    classroom_id int,
+    supervisor_id bigint,
+    created_date date,
     PRIMARY KEY (id)
 );
-ALTER TABLE time_interval ADD CONSTRAINT FK_Interval_availability_id FOREIGN KEY (availability_id) REFERENCES availability(id);
+ALTER TABLE available_time_interval ADD CONSTRAINT FK_Interval_classroom_id FOREIGN KEY (classroom_id) REFERENCES classroom(id);
+ALTER TABLE available_time_interval ADD CONSTRAINT FK_Interval_supervisor_id FOREIGN KEY (supervisor_id) REFERENCES user(id);
 
 CREATE TABLE booking_request (
     id bigint not null AUTO_INCREMENT,

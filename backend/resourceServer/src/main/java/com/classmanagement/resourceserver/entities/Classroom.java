@@ -22,11 +22,11 @@ public class Classroom {
 
     private String name;
 
-    @OneToOne
-    private Availability availability;
-
     @ManyToOne
     private Building building;
+
+    @OneToMany(mappedBy = "classroom", fetch = FetchType.LAZY)
+    private List<AvailableTimeInterval> availableTimeIntervals = new ArrayList<>();
 
     @OneToMany(mappedBy = "classroom", fetch = FetchType.LAZY)
     private List<ClassroomSupervisor> classroomSupervisors = new ArrayList<>();
