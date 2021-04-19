@@ -2,10 +2,14 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Observable, throwError} from 'rxjs';
-import { map, catchError, timeout } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {UnauthorizedError} from "../../shared/exceptions/unauthorized-error";
 import {AppError} from "../../shared/exceptions/app-error";
+
+export const ROLE_ADMIN = 'ROLE_ADMIN';
+export const ROLE_SUPERVISOR = 'ROLE_SUPERVISOR';
+export const ROLE_GROUPLEADER = 'ROLE_GROUPLEADER';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +63,19 @@ export class AuthService {
     return this.jwtHelper.decodeToken(token);
   }
 
-  static handleError(error: HttpResponse<any>) {
+  hasGroupLeaderRole() {
+    return this.currentUser['authorities'].some(item => item === ROLE_GROUPLEADER);
+  }
+
+  hasSupervisor() {
+    return this.currentUser['authorities'].some(item => item === ROLE_SUPERVISOR);
+  }
+
+  hasAdminRole() {
+    return this.currentUser['authorities'].some(item => item === ROLE_ADMIN);
+  }
+
+  public static handleError(error: HttpResponse<any>) {
     if (error.status === 401) {
       return throwError(new UnauthorizedError(error));
     } else {
@@ -67,7 +83,7 @@ export class AuthService {
     }
   }
 
-  private static getAccessToken() {
+  public static getAccessToken() {
     return localStorage.getItem('access_token');
   }
 

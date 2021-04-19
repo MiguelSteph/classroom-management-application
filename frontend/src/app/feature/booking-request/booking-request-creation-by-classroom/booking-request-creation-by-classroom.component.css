@@ -1,0 +1,11 @@
+.line {
+  height: 2px;
+  width: 100%;
+  background-color: #E0E0E0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#formContainer {
+  margin-bottom: 10px;
+}

@@ -6,7 +6,10 @@ export const environment = {
   production: false,
   clientId: "classmanagementapplication",
   clientPwd: "h22ouDKWuNZlhpQ2",
-  authServerEndPoint: "http://localhost:9092"
+  authServerEndPoint: "http://localhost:9092",
+  resourceServerEndPoint: "http://localhost:9090",
+  authServerDomain: "localhost:9092",
+  resourceServerDomain: "localhost:9090"
 };
 
 /*
