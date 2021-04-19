@@ -16,7 +16,7 @@ import java.time.LocalTime;
 public class AvailableTimeInterval {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDate fromDate;
