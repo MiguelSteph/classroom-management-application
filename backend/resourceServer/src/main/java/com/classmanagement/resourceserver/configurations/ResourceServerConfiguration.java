@@ -26,6 +26,8 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
                     .hasAnyRole(ADMIN_ROLE, SUPERVISOR_ROLE, GROUP_LEADER_ROLE)
                 .mvcMatchers(HttpMethod.POST, "/bookingRequests")
                     .hasAnyRole(ADMIN_ROLE, GROUP_LEADER_ROLE)
+                .mvcMatchers(HttpMethod.GET, "/bookingRequests/*")
+                .hasAnyRole(ADMIN_ROLE, SUPERVISOR_ROLE, GROUP_LEADER_ROLE)
                 .anyRequest().authenticated().and().oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
     }
 

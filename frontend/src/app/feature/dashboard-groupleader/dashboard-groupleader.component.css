@@ -37,3 +37,9 @@
 .text-gray-300 {
   color: #dddfeb !important;
 }
+div.card {
+  cursor: pointer;
+}
+.gray-background {
+  background: #E1E3E8FF !important;
+}

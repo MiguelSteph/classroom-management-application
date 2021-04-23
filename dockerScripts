@@ -7,7 +7,7 @@ docker container run --name mysql-server \
     -e MYSQL_PASSWORD=yx7oZA9QpomHBWnh \
     -p 3306:3306 -d mysql:latest
 
-docker exec -it classroommanagement-mysql-server bash
+docker exec -it mysql-server bash
 
 mysql -u olive -p
 
@@ -69,3 +69,25 @@ identity_policies    []
 policies             ["default" "policy-classmanagement-app"]
 
 */
+
+
+
+
+
+
+showSuccess() {
+    this.toastService.show('I am a success toast', {
+      classname: 'bg-success text-light',
+      delay: 2000 ,
+      autohide: true,
+      headertext: 'Toast Header'
+    });
+  }
+  showError() {
+    this.toastService.show('I am a success toast', {
+      classname: 'bg-danger text-light',
+      delay: 2000 ,
+      autohide: true,
+      headertext: 'Error!!!'
+    });
+  }

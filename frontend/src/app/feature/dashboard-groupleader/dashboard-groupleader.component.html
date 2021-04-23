@@ -18,7 +18,9 @@
     <div class="row">
       <!--  Pending Request card ==> Consider using a for loop here  -->
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card border-left-primary shadow h-100 py-2"
+             [class.gray-background]="isPending()"
+             (click)="pendingClick()">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
@@ -40,7 +42,9 @@
                 </div>
               </div>
               <div class="col-auto">
-                <fa-icon class="fas fa-calendar fa-2x text-gray-300" [icon]="pendingBookingRequestIcon"></fa-icon>
+                <fa-icon class="fas fa-calendar fa-2x"
+                         [class.text-gray-300]="!isPending()"
+                         [icon]="pendingBookingRequestIcon"></fa-icon>
               </div>
             </div>
           </div>
@@ -48,7 +52,9 @@
       </div>
 
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card border-left-danger shadow h-100 py-2"
+             [class.gray-background]="isRejected()"
+             (click)="rejectedClick()">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
@@ -70,7 +76,9 @@
                 </div>
               </div>
               <div class="col-auto">
-                <fa-icon class="fas fa-calendar fa-2x text-gray-300" [icon]="pendingBookingRequestIcon"></fa-icon>
+                <fa-icon class="fas fa-calendar fa-2x"
+                         [class.text-gray-300]="!isRejected()"
+                         [icon]="pendingBookingRequestIcon"></fa-icon>
               </div>
             </div>
           </div>
@@ -78,7 +86,9 @@
       </div>
 
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card border-left-warning shadow h-100 py-2"
+             [class.gray-background]="isCancelled()"
+             (click)="cancelledClick()">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
@@ -100,7 +110,9 @@
                 </div>
               </div>
               <div class="col-auto">
-                <fa-icon class="fas fa-calendar fa-2x text-gray-300" [icon]="pendingBookingRequestIcon"></fa-icon>
+                <fa-icon class="fas fa-calendar fa-2x"
+                         [class.text-gray-300]="!isCancelled()"
+                         [icon]="pendingBookingRequestIcon"></fa-icon>
               </div>
             </div>
           </div>
@@ -108,7 +120,9 @@
       </div>
 
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-success shadow h-100 py-2"
+             [class.gray-background]="isApproved()"
+             (click)="approvedClick()">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
@@ -130,46 +144,35 @@
                 </div>
               </div>
               <div class="col-auto">
-                <fa-icon class="fas fa-calendar fa-2x text-gray-300" [icon]="pendingBookingRequestIcon"></fa-icon>
+                <fa-icon class="fas fa-calendar fa-2x"
+                         [class.text-gray-300]="!isApproved()"
+                         [icon]="pendingBookingRequestIcon"></fa-icon>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-    </div>
-    <div>
-      <table class="table">
-        <thead class="thead-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td>@twitter</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <ng-container [ngSwitch]="currentTab">
+      <ng-container *ngSwitchCase="'approved'" [ngTemplateOutlet]="approvedTable"></ng-container>
+      <ng-container *ngSwitchCase="'cancelled'" [ngTemplateOutlet]="cancelledTable"></ng-container>
+      <ng-container *ngSwitchCase="'rejected'" [ngTemplateOutlet]="rejectedTable"></ng-container>
+      <ng-container *ngSwitchCase="'pending'" [ngTemplateOutlet]="pendingTable"></ng-container>
+    </ng-container>
+
+    <ng-template #approvedTable>
+      <approved-request-list></approved-request-list>
+    </ng-template>
+    <ng-template #cancelledTable>
+      <cancelled-request-list></cancelled-request-list>
+    </ng-template>
+    <ng-template #rejectedTable>
+      <rejected-request-list></rejected-request-list>
+    </ng-template>
+    <ng-template #pendingTable>
+      <pending-request-list></pending-request-list>
+    </ng-template>
   </ng-template>
 </div>
 

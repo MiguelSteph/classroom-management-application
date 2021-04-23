@@ -9,7 +9,9 @@ export const environment = {
   authServerEndPoint: "http://localhost:9092",
   resourceServerEndPoint: "http://localhost:9090",
   authServerDomain: "localhost:9092",
-  resourceServerDomain: "localhost:9090"
+  resourceServerDomain: "localhost:9090",
+
+  pageSize: 20
 };
 
 /*

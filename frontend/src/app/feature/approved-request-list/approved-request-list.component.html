@@ -1,0 +1,59 @@
+<div>
+  <div *ngIf="totalPages == 0" class="alert alert-warning" role="alert">
+    No Approved Booking requests.
+  </div>
+  <table *ngIf="totalPages > 0" class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Building</th>
+      <th scope="col">Classroom</th>
+      <th scope="col">Booking Date</th>
+      <th scope="col">Time Range</th>
+      <th scope="col">Purpose</th>
+      <th scope="col">Supervisor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of requestList;" >
+      <td>{{item['site']['code'] + '/' + item['building']['code']}}</td>
+      <td>{{item['classroom']['code']}}</td>
+      <td> <time>{{item['bookingDate']}}</time> </td>
+      <td> {{formatTime(item['fromTime'])}} to {{formatTime(item['toTime'])}} </td>
+      <td> <time>{{item['purpose']}}</time> </td>
+      <td> {{item['assignedTo']['firstName'] + ' ' + item['assignedTo']['lastName']}} </td>
+    </tr>
+    </tbody>
+  </table>
+  <footer *ngIf="totalPages > 1">
+    <nav aria-label="...">
+      <ul class="pagination justify-content-end">
+        <li class="page-item" [class.disabled]="!hasPreviousPage">
+          <a class="page-link" (click)="loadDataFromServer(pageId-1)" tabindex="-1">Previous</a>
+        </li>
+
+        <li class="page-item" *ngIf="pageId-2 > 0">
+          <a class="page-link" (click)="loadDataFromServer(pageId-2)" >{{pageId-2}}</a>
+        </li>
+        <li class="page-item" *ngIf="pageId-1 > 0">
+          <a class="page-link" (click)="loadDataFromServer(pageId-1)" >{{pageId-1}}</a>
+        </li>
+
+        <li class="page-item active">
+          <a class="page-link" >{{pageId}}</a>
+        </li>
+
+        <li class="page-item" *ngIf="pageId+1 <= totalPages">
+          <a class="page-link" (click)="loadDataFromServer(pageId+1)" >{{pageId+1}}</a>
+        </li>
+
+        <li class="page-item" *ngIf="pageId+2 <= totalPages">
+          <a class="page-link" (click)="loadDataFromServer(pageId+2)" >{{pageId+2}}</a>
+        </li>
+
+        <li class="page-item" [class.disabled]="!hasNextPage">
+          <a class="page-link" (click)="loadDataFromServer(pageId+1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </footer>
+</div>

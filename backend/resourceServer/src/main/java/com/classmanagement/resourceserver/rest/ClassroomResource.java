@@ -1,6 +1,7 @@
 package com.classmanagement.resourceserver.rest;
 
 import com.classmanagement.resourceserver.dtos.TimeIntervalDto;
+import com.classmanagement.resourceserver.dtos.TimeRangeDto;
 import com.classmanagement.resourceserver.dtos.UserDto;
 import com.classmanagement.resourceserver.services.ClassroomService;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class ClassroomResource {
     }
 
     @GetMapping("/classrooms/{id}/availableTimeRanges")
-    public List<TimeIntervalDto> getClassroomAvailabilities(
+    public List<TimeRangeDto> getClassroomAvailabilities(
             @PathVariable int id,
             @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) {

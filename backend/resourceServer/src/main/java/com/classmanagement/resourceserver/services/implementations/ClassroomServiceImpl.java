@@ -1,11 +1,10 @@
 package com.classmanagement.resourceserver.services.implementations;
 
-import com.classmanagement.resourceserver.dtos.TimeIntervalDto;
+import com.classmanagement.resourceserver.dtos.TimeRangeDto;
 import com.classmanagement.resourceserver.dtos.UserDto;
-import com.classmanagement.resourceserver.entities.AvailableTimeInterval;
-import com.classmanagement.resourceserver.entities.Classroom;
-import com.classmanagement.resourceserver.entities.ClassroomSupervisor;
+import com.classmanagement.resourceserver.entities.*;
 import com.classmanagement.resourceserver.repositories.AvailableTimeIntervalRepository;
+import com.classmanagement.resourceserver.repositories.BookingRequestRepository;
 import com.classmanagement.resourceserver.repositories.ClassroomRepository;
 import com.classmanagement.resourceserver.services.ClassroomService;
 import com.classmanagement.resourceserver.util.mappers.DtoMapperUtil;
@@ -13,9 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,16 +22,77 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     private final ClassroomRepository classroomRepository;
     private final AvailableTimeIntervalRepository availableTimeIntervalRepository;
+    private final BookingRequestRepository bookingRequestRepository;
 
     @Override
-    public List<TimeIntervalDto> getClassroomAvailability(int id, LocalDate date) {
+    public List<TimeRangeDto> getClassroomAvailability(int id, LocalDate date) {
         String weekDay = date.getDayOfWeek().toString();
         List<AvailableTimeInterval> availableTimeIntervals =
                 availableTimeIntervalRepository.getClassroomAvailabilityTimeInterval(id, date, weekDay);
 
-        return availableTimeIntervals.stream()
-                .map(DtoMapperUtil::convertToTimeIntervalDto)
+        List<TimeRangeDto> initialTimeRange = availableTimeIntervals.stream()
+                .map(DtoMapperUtil::convertToTimeRangeDto)
                 .collect(Collectors.toList());
+
+        List<BookingRequest> bookingRequestList = bookingRequestRepository.findByBookingDate(date);
+        bookingRequestList = bookingRequestList.stream()
+                .filter(r -> r.getStatus() != Status.Cancelled && r.getStatus() != Status.Rejected)
+                .collect(Collectors.toList());
+        List<TimeRangeDto> takenTimes = new ArrayList<>();
+        bookingRequestList.forEach(bookingRequest -> {
+            TimeRangeDto timeRangeDto = new TimeRangeDto();
+            timeRangeDto.setFromTime(bookingRequest.getFromTime());
+            timeRangeDto.setToTime(bookingRequest.getToTime());
+            takenTimes.add(timeRangeDto);
+        });
+
+        if (takenTimes.isEmpty()) {
+            return initialTimeRange;
+        }
+
+        TreeSet<TimeRangeDto> treeSet = new TreeSet<>(initialTimeRange);
+
+        for (TimeRangeDto takenTimeRange : takenTimes) {
+            List<TimeRangeDto> toDeleteList = new ArrayList<>();
+            List<TimeRangeDto> toAddList = new ArrayList<>();
+            for (TimeRangeDto timeRange : treeSet.tailSet(new TimeRangeDto(LocalTime.MIN, takenTimeRange.getFromTime()))) {
+                if (containTime(takenTimeRange, timeRange)) {
+                    toDeleteList.add(timeRange);
+                } else if (timeOverLap(takenTimeRange, timeRange)) {
+                    toDeleteList.add(timeRange);
+                    if (takenTimeRange.getFromTime().compareTo(timeRange.getFromTime()) > 0) {
+                        toAddList.add(new TimeRangeDto(timeRange.getFromTime(), takenTimeRange.getFromTime()));
+                    }
+                    if (takenTimeRange.getToTime().compareTo(timeRange.getToTime()) < 0) {
+                        toAddList.add(new TimeRangeDto(takenTimeRange.getToTime(), timeRange.getToTime()));
+                    }
+                } else {
+                    break;
+                }
+            }
+            toDeleteList.forEach(treeSet::remove);
+            treeSet.addAll(toAddList);
+        }
+
+        return new ArrayList<>(treeSet);
+    }
+
+    /*
+        Check if the time range is contains in the taken time
+     */
+    private boolean containTime(TimeRangeDto taken, TimeRangeDto timeRange) {
+        return timeRange.getFromTime().compareTo(taken.getFromTime()) >= 0
+                && timeRange.getToTime().compareTo(taken.getToTime()) <=0;
+    }
+
+    /*
+        Check if the taken time overlap with the actual time range
+     */
+    private boolean timeOverLap(TimeRangeDto taken, TimeRangeDto timeRange) {
+        return (taken.getFromTime().compareTo(timeRange.getFromTime()) >= 0
+                && taken.getFromTime().compareTo(timeRange.getToTime()) < 0) ||
+                (taken.getToTime().compareTo(timeRange.getFromTime()) > 0
+                        && taken.getToTime().compareTo(timeRange.getToTime()) <= 0);
     }
 
     @Override
