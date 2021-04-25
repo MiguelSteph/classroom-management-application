@@ -20,7 +20,7 @@
         <td> <time>{{item['bookingDate']}}</time> </td>
         <td> {{formatTime(item['fromTime'])}} to {{formatTime(item['toTime'])}} </td>
         <td> {{item['assignedTo']['firstName'] + ' ' + item['assignedTo']['lastName']}} </td>
-        <td><button type="button" class="btn btn-warning">Cancel</button></td>
+        <td><button type="button" class="btn btn-warning" (click)="showCancelBookingRequest(modalContent, item)">Cancel</button></td>
       </tr>
     </tbody>
   </table>
@@ -56,4 +56,42 @@
       </ul>
     </nav>
   </footer>
+
+  <ng-template #modalContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Cancel Booking Request</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="modalBodyContainer">
+        <article>
+          <h5>Building</h5>
+          <p>{{currentBookingRequest['site']['code'] + '/' + currentBookingRequest['building']['code']}}</p>
+        </article>
+        <article>
+          <h5>Classroom</h5>
+          <p>{{currentBookingRequest['classroom']['code']}}</p>
+        </article>
+        <article>
+          <h5>Booking Date</h5>
+          <p><time>{{currentBookingRequest['bookingDate']}}</time></p>
+        </article>
+        <article>
+          <h5>Time Range</h5>
+          <p>{{formatTime(currentBookingRequest['fromTime'])}} to {{formatTime(currentBookingRequest['toTime'])}}</p>
+        </article>
+        <article>
+          <h5>Supervisor</h5>
+          <p>{{currentBookingRequest['assignedTo']['firstName'] + ' ' + currentBookingRequest['assignedTo']['lastName']}}</p>
+        </article>
+      </div>
+      <div id="buttonsContainer">
+        <button id="confirmedBtn" class="btn btn-primary" (click)="modal.close('Click Confirm')">Confirm</button>
+        <button class="btn btn-secondary" (click)="modal.close('Click Close')">Close</button>
+      </div>
+    </div>
+  </ng-template>
+
 </div>

@@ -1,5 +1,6 @@
 package com.classmanagement.resourceserver.services.implementations;
 
+import com.classmanagement.resourceserver.dtos.BookingRequestSummaryDto;
 import com.classmanagement.resourceserver.dtos.BookingRequestsPageDto;
 import com.classmanagement.resourceserver.dtos.CreateBookingDto;
 import com.classmanagement.resourceserver.entities.BookingRequest;
@@ -31,6 +32,29 @@ public class BookingRequestServiceImpl implements BookingRequestService {
     private final ExecutorService executorService;
 
     @Override
+    public BookingRequest cancelBookingRequest(Long id) {
+        BookingRequest bookingRequest = bookingRequestRepository.getOne(id);
+        bookingRequest.setStatus(Status.Cancelled);
+        bookingRequest.setRejectionReason("Cancelled by Group Leader");
+        return this.updateBookingRequest(bookingRequest);
+    }
+
+    @Override
+    public BookingRequestSummaryDto getSummary() {
+        int pendingCount = bookingRequestRepository.countByStatus(Status.Pending);
+        int cancelledCount = bookingRequestRepository.countByStatus(Status.Cancelled);
+        int approvedCount = bookingRequestRepository.countByStatus(Status.Approved);
+        int rejectedCount = bookingRequestRepository.countByStatus(Status.Rejected);
+        BookingRequestSummaryDto bookingRequestSummaryDto = new BookingRequestSummaryDto();
+        bookingRequestSummaryDto.setPendingCount(pendingCount);
+        bookingRequestSummaryDto.setCancelledCount(cancelledCount);
+        bookingRequestSummaryDto.setApprovedCount(approvedCount);
+        bookingRequestSummaryDto.setRejectedCount(rejectedCount);
+        bookingRequestSummaryDto.setTotalCount(pendingCount + cancelledCount + approvedCount + rejectedCount);
+        return bookingRequestSummaryDto;
+    }
+
+    @Override
     public BookingRequest createBookingRequest(CreateBookingDto createBookingDto) {
         BookingRequest bookingRequest = new BookingRequest();
         bookingRequest.setStatus(Status.Pending);
@@ -49,8 +73,8 @@ public class BookingRequestServiceImpl implements BookingRequestService {
     }
 
     @Override
-    public void updateBookingRequest(BookingRequest bookingRequest) {
-        bookingRequestRepository.save(bookingRequest);
+    public BookingRequest updateBookingRequest(BookingRequest bookingRequest) {
+        return bookingRequestRepository.save(bookingRequest);
     }
 
     @Override

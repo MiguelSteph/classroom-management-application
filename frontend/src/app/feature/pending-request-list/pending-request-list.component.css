@@ -1,0 +1,30 @@
+#modalBodyContainer {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-flow: row wrap;
+}
+article {
+  flex: 0 0 50%;
+}
+
+article p {
+  padding-left: 15px;
+  color: #757575;
+}
+
+h5 {
+  color: #2C3E50;
+}
+
+#confirmedBtn {
+  margin-right: 10px;
+}
+
+#buttonsContainer {
+  display: flex;
+  width: 90%;
+  margin: auto;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}

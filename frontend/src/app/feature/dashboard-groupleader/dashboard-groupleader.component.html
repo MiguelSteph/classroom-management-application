@@ -12,7 +12,8 @@
   <div *ngIf="showCreateBookingRequestForm; then formSection else dashboardSection"></div>
   <ng-template #formSection>
     <booking-request-creation-by-classroom
-      (closeForm)="hideCreateRequestForm()"></booking-request-creation-by-classroom>
+      (closeForm)="hideCreateRequestForm()"
+      (bookingRequestCreated)="onBookingRequestCreated()"></booking-request-creation-by-classroom>
   </ng-template>
   <ng-template #dashboardSection>
     <div class="row">
@@ -25,16 +26,17 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                  Pending Requests (20)
+                  Pending Requests ({{pendingCount}})
                 </div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">15%</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getPendingPercentage()}}%</div>
                   </div>
                   <div class="col">
                     <div class="progress progress-sm mr-2">
                       <div class="progress-bar bg-info" role="progressbar"
-                           style="width: 15%" aria-valuenow="15" aria-valuemin="0"
+                           [ngStyle]="{'width': getPendingPercentage()+'%'}"
+                           [attr.aria-valuenow]=getPendingPercentage() aria-valuemin="0"
                            aria-valuemax="100">
                       </div>
                     </div>
@@ -59,16 +61,17 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                  Rejected Requests (20)
+                  Rejected Requests ({{rejectedCount}})
                 </div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">15%</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getRejectedPercentage()}}%</div>
                   </div>
                   <div class="col">
                     <div class="progress progress-sm mr-2">
                       <div class="progress-bar bg-info" role="progressbar"
-                           style="width: 15%" aria-valuenow="15" aria-valuemin="0"
+                           [ngStyle]="{'width': getRejectedPercentage()+'%'}"
+                           [attr.aria-valuenow]=getRejectedPercentage() aria-valuemin="0"
                            aria-valuemax="100">
                       </div>
                     </div>
@@ -93,16 +96,17 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                  Cancelled Requests (20)
+                  Cancelled Requests ({{cancelledCount}})
                 </div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">15%</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getCancelledPercentage()}}%</div>
                   </div>
                   <div class="col">
                     <div class="progress progress-sm mr-2">
                       <div class="progress-bar bg-info" role="progressbar"
-                           style="width: 15%" aria-valuenow="15" aria-valuemin="0"
+                           [ngStyle]="{'width': getCancelledPercentage()+'%'}"
+                           [attr.aria-valuenow]=getCancelledPercentage() aria-valuemin="0"
                            aria-valuemax="100">
                       </div>
                     </div>
@@ -127,16 +131,17 @@
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                  Approved Requests (20)
+                  Approved Requests ({{approvedCount}})
                 </div>
                 <div class="row no-gutters align-items-center">
                   <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">15%</div>
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getApprovedPercentage()}}%</div>
                   </div>
                   <div class="col">
                     <div class="progress progress-sm mr-2">
                       <div class="progress-bar bg-info" role="progressbar"
-                           style="width: 15%" aria-valuenow="15" aria-valuemin="0"
+                           [ngStyle]="{'width': getApprovedPercentage()+'%'}"
+                           [attr.aria-valuenow]=getApprovedPercentage() aria-valuemin="0"
                            aria-valuemax="100">
                       </div>
                     </div>
@@ -171,7 +176,7 @@
       <rejected-request-list></rejected-request-list>
     </ng-template>
     <ng-template #pendingTable>
-      <pending-request-list></pending-request-list>
+      <pending-request-list (requestCancelled)="onRequestCancelled()"></pending-request-list>
     </ng-template>
   </ng-template>
 </div>

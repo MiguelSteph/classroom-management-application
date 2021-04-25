@@ -16,6 +16,7 @@ import {ToastService} from "../../../core/services/toast.service";
 export class BookingRequestCreationByClassroomComponent implements OnInit {
 
   @Output() closeForm = new EventEmitter();
+  @Output() bookingRequestCreated = new EventEmitter();
 
   currentDate: Date = new Date();
   calendarAlt = faCalendarAlt;
@@ -78,6 +79,7 @@ export class BookingRequestCreationByClassroomComponent implements OnInit {
           autohide: true
         });
         this.closeForm.emit();
+        this.bookingRequestCreated.emit();
       });
   }
 

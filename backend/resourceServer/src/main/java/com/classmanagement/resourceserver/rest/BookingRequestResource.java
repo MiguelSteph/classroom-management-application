@@ -1,5 +1,7 @@
 package com.classmanagement.resourceserver.rest;
 
+import com.classmanagement.resourceserver.dtos.BookingRequestDto;
+import com.classmanagement.resourceserver.dtos.BookingRequestSummaryDto;
 import com.classmanagement.resourceserver.dtos.BookingRequestsPageDto;
 import com.classmanagement.resourceserver.dtos.CreateBookingDto;
 import com.classmanagement.resourceserver.entities.BookingRequest;
@@ -25,6 +27,20 @@ public class BookingRequestResource {
                                                     @RequestParam int page,
                                                     @RequestParam int size) {
         return bookingRequestService.getRequestByStatus(username, status, page, size);
+    }
+
+    @GetMapping("/bookingRequests/summary")
+    public BookingRequestSummaryDto getSummary() {
+        return bookingRequestService.getSummary();
+    }
+
+    @PutMapping("/bookingRequests/{id}")
+    public ResponseEntity<Object> cancelBookingRequest(@PathVariable long id, @RequestBody String username) {
+        /*
+        todo: Add extra security by making sure that the user has the right to cancel that booking request
+         */
+        bookingRequestService.cancelBookingRequest(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/bookingRequests")

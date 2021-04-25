@@ -16,6 +16,11 @@ export class BookingRequestService extends CrudService {
     super(httpClient, BOOKING_REQUEST_RESOURCE_LINK);
   }
 
+  getSummary() {
+    let customUrl = BOOKING_REQUEST_RESOURCE_LINK + '/summary';
+    return this.get(customUrl);
+  }
+
   getBookingRequestsPerStatus(pageId:number, status:string) {
     if (!pageId) {
       pageId = 1;
@@ -30,6 +35,11 @@ export class BookingRequestService extends CrudService {
     });
 
     return this.get(customUrl, params);
+  }
+
+  cancelBookingRequest(requestId) {
+    let customUrl = BOOKING_REQUEST_RESOURCE_LINK + '/' + requestId;
+    return this.put(this.authService.currentUser['user_name'], customUrl);
   }
 
 }

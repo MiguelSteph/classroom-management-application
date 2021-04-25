@@ -26,4 +26,12 @@ export class CrudService {
       );
   }
 
+  put(body, customUrl?: string) {
+    return this.http
+      .put(customUrl ? customUrl : this.resourceUrl, body)
+      .pipe(
+        catchError(AuthService.handleError)
+      );
+  }
+
 }
