@@ -20,6 +20,11 @@ export class ClassroomService extends CrudService {
     return this.get(customUrl);
   }
 
+  getClassroomAllCurrentAvailabilities(classroomId: string) {
+    const customUrl = CLASSROOMS_RESOURCE_LINK + '/' + classroomId + '/allCurrentAvailabilities';
+    return this.get(customUrl);
+  }
+
   getClassroomAvailabilities(classroomId: string, date: Date) {
     const customUrl = CLASSROOMS_RESOURCE_LINK + '/' + classroomId + '/availableTimeRanges';
     let requestParams = new HttpParams();

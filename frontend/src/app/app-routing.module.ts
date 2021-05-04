@@ -7,6 +7,7 @@ import {AuthGuard} from "./core/guards/auth.guard";
 import {GroupLeaderAuthGuard} from "./core/guards/group-leader-auth.guard";
 import {DashboardSupervisorComponent} from "./feature/dashboard-supervisor/dashboard-supervisor.component";
 import {SupervisorAuthGuard} from "./core/guards/supervisor-auth-guard.service";
+import {ClassroomAvailabilityComponent} from "./feature/classroom-availability/classroom-availability.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
   {
     path: 'supervisor/booking-requests',
     component: DashboardSupervisorComponent,
+    canActivate: [AuthGuard, SupervisorAuthGuard]
+  },
+  {
+    path: 'supervisor/classroom-availability',
+    component: ClassroomAvailabilityComponent,
     canActivate: [AuthGuard, SupervisorAuthGuard]
   }
 ];

@@ -1,0 +1,62 @@
+.headerContainer {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 70px;
+}
+
+.clearRowMargin {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.availabilitiesContainer {
+  overflow: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.availabilitiesContainer > table {
+  min-width: 40em;
+}
+
+ul {
+  margin: 0;
+}
+
+.headerContainer div {
+  flex: 0 0 100%;
+}
+
+.availTimeRangeContainer {
+  overflow: auto;
+  max-height: 10em;
+}
+
+.noAvailabilityFound {
+  width: 100%;
+}
+
+@media screen and (min-width: 800px) {
+
+  .headerContainer {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    padding-left: 1em;
+    padding-right: 1em;
+    justify-content: center;
+    align-items: center;
+    padding-top: 70px;
+  }
+
+  .headerContainer div {
+    flex: 0 0 30%;
+    padding-left: 1em;
+    padding-right: 1em;
+    max-width: 20em;
+  }
+}

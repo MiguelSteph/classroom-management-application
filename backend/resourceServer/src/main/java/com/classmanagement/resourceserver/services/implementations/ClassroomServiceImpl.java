@@ -1,5 +1,6 @@
 package com.classmanagement.resourceserver.services.implementations;
 
+import com.classmanagement.resourceserver.dtos.ClassroomAvailabilityDto;
 import com.classmanagement.resourceserver.dtos.TimeRangeDto;
 import com.classmanagement.resourceserver.dtos.UserDto;
 import com.classmanagement.resourceserver.entities.*;
@@ -23,6 +24,38 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final ClassroomRepository classroomRepository;
     private final AvailableTimeIntervalRepository availableTimeIntervalRepository;
     private final BookingRequestRepository bookingRequestRepository;
+
+    @Override
+    public List<ClassroomAvailabilityDto> getClassroomAllCurrentAvailability(int id) {
+        List<AvailableTimeInterval> currentAvailabilities = availableTimeIntervalRepository
+                .getClassroomAllCurrentAvailability(id, LocalDate.now());
+
+        Map<LocalDate, ClassroomAvailabilityDto> map = new HashMap<>();
+
+        for (AvailableTimeInterval interval : currentAvailabilities) {
+            TimeRangeDto timeRangeDto = new TimeRangeDto();
+            timeRangeDto.setFromTime(interval.getFromTime());
+            timeRangeDto.setToTime(interval.getToTime());
+
+            if (!map.containsKey(interval.getFromDate())) {
+                ClassroomAvailabilityDto classroomAvailabilityDto = new ClassroomAvailabilityDto();
+                classroomAvailabilityDto.setStartDate(interval.getFromDate());
+                classroomAvailabilityDto.setEndDate(interval.getToDate());
+                classroomAvailabilityDto.setTimeRangeByDayOfWeek(new HashMap<>());
+                map.put(interval.getFromDate(), classroomAvailabilityDto);
+            }
+
+            if (!map.get(interval.getFromDate()).getTimeRangeByDayOfWeek().containsKey(interval.getWeekDay())) {
+                map.get(interval.getFromDate()).getTimeRangeByDayOfWeek().put(interval.getWeekDay(), new ArrayList<>());
+            }
+            map.get(interval.getFromDate()).getTimeRangeByDayOfWeek().get(interval.getWeekDay()).add(timeRangeDto);
+        }
+
+        List<ClassroomAvailabilityDto> availabilityDtoList = new ArrayList<>(map.values());
+        availabilityDtoList.forEach(item -> item.getTimeRangeByDayOfWeek().forEach((key, value) -> Collections.sort(value)));
+
+        return availabilityDtoList;
+    }
 
     @Override
     public List<TimeRangeDto> getClassroomAvailability(int id, LocalDate date) {

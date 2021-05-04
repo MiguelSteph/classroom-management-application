@@ -1,6 +1,6 @@
 package com.classmanagement.resourceserver.rest;
 
-import com.classmanagement.resourceserver.dtos.TimeIntervalDto;
+import com.classmanagement.resourceserver.dtos.ClassroomAvailabilityDto;
 import com.classmanagement.resourceserver.dtos.TimeRangeDto;
 import com.classmanagement.resourceserver.dtos.UserDto;
 import com.classmanagement.resourceserver.services.ClassroomService;
@@ -23,6 +23,11 @@ public class ClassroomResource {
     @GetMapping("/classrooms/{id}/supervisors")
     public List<UserDto> getClassroomSupervisors(@PathVariable int id) {
         return classroomService.classroomSupervisors(id);
+    }
+
+    @GetMapping("/classrooms/{id}/allCurrentAvailabilities")
+    public List<ClassroomAvailabilityDto> getClassroomAllAvailabilities(@PathVariable int id) {
+        return classroomService.getClassroomAllCurrentAvailability(id);
     }
 
     @GetMapping("/classrooms/{id}/availableTimeRanges")

@@ -51,18 +51,6 @@ public class DtoMapperUtil {
         return timeRangeDto;
     }
 
-    public static TimeIntervalDto convertToTimeIntervalDto(AvailableTimeInterval interval) {
-        TimeIntervalDto timeIntervalDto = new TimeIntervalDto();
-        timeIntervalDto.setId(interval.getId());
-        timeIntervalDto.setFromDate(interval.getFromDate());
-        timeIntervalDto.setToDate(interval.getToDate());
-        timeIntervalDto.setFromTime(interval.getFromTime());
-        timeIntervalDto.setToTime(interval.getToTime());
-        timeIntervalDto.setWeekDay(interval.getWeekDay());
-        timeIntervalDto.setCreatedDate(interval.getCreatedDate());
-        return timeIntervalDto;
-    }
-
     public static UserDto convertToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());

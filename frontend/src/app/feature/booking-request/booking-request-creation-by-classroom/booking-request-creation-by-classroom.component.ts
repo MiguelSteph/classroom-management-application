@@ -87,7 +87,6 @@ export class BookingRequestCreationByClassroomComponent implements OnInit {
     if (this.site === undefined || this.site === "") {
       this.buildingList = [];
       this.classroomList = [];
-      this.classroomList = [];
     } else {
       this.buildingList = this.sitesInfo.filter(s => s['id'] == this.site)[0]['buildings'];
     }
