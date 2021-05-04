@@ -13,6 +13,8 @@ import java.util.List;
 
 public interface BookingRequestRepository extends JpaRepository<BookingRequest, Long> {
     Page<BookingRequest> findByStatusAndCreatedBy(Status status, User grpLeader, Pageable pageRequest);
+    Page<BookingRequest> findByStatusAndAssignedTo(Status status, User grpLeader, Pageable pageRequest);
     List<BookingRequest> findByBookingDate(LocalDate bookingDate);
-    int countByStatus(Status status);
+    int countByStatusAndCreatedBy(Status status, User user);
+    int countByStatusAndAssignedTo(Status status, User user);
 }

@@ -4,7 +4,9 @@ import com.classmanagement.resourceserver.dtos.BookingRequestSummaryDto;
 import com.classmanagement.resourceserver.dtos.BookingRequestsPageDto;
 import com.classmanagement.resourceserver.dtos.CreateBookingDto;
 import com.classmanagement.resourceserver.entities.BookingRequest;
+import com.classmanagement.resourceserver.entities.Role;
 import com.classmanagement.resourceserver.entities.Status;
+import com.classmanagement.resourceserver.entities.User;
 import com.classmanagement.resourceserver.repositories.BookingRequestRepository;
 import com.classmanagement.resourceserver.repositories.ClassroomRepository;
 import com.classmanagement.resourceserver.repositories.UserRepository;
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
@@ -36,22 +39,65 @@ public class BookingRequestServiceImpl implements BookingRequestService {
         BookingRequest bookingRequest = bookingRequestRepository.getOne(id);
         bookingRequest.setStatus(Status.Cancelled);
         bookingRequest.setRejectionReason("Cancelled by Group Leader");
+        bookingRequest.setLastUpdatedDate(LocalDate.now());
         return this.updateBookingRequest(bookingRequest);
     }
 
     @Override
-    public BookingRequestSummaryDto getSummary() {
-        int pendingCount = bookingRequestRepository.countByStatus(Status.Pending);
-        int cancelledCount = bookingRequestRepository.countByStatus(Status.Cancelled);
-        int approvedCount = bookingRequestRepository.countByStatus(Status.Approved);
-        int rejectedCount = bookingRequestRepository.countByStatus(Status.Rejected);
-        BookingRequestSummaryDto bookingRequestSummaryDto = new BookingRequestSummaryDto();
-        bookingRequestSummaryDto.setPendingCount(pendingCount);
-        bookingRequestSummaryDto.setCancelledCount(cancelledCount);
-        bookingRequestSummaryDto.setApprovedCount(approvedCount);
-        bookingRequestSummaryDto.setRejectedCount(rejectedCount);
-        bookingRequestSummaryDto.setTotalCount(pendingCount + cancelledCount + approvedCount + rejectedCount);
-        return bookingRequestSummaryDto;
+    public BookingRequest approveBookingRequest(Long id) {
+        BookingRequest bookingRequest = bookingRequestRepository.getOne(id);
+        bookingRequest.setStatus(Status.Approved);
+        bookingRequest.setLastUpdatedDate(LocalDate.now());
+        return this.updateBookingRequest(bookingRequest);
+    }
+
+    @Override
+    public BookingRequest rejectBookingRequest(Long id, String reason) {
+        BookingRequest bookingRequest = bookingRequestRepository.getOne(id);
+        bookingRequest.setStatus(Status.Rejected);
+        bookingRequest.setRejectionReason(reason);
+        bookingRequest.setLastUpdatedDate(LocalDate.now());
+        return this.updateBookingRequest(bookingRequest);
+    }
+
+    @Override
+    public BookingRequestSummaryDto getSummary(String username) {
+        User currentUser = userRepository.findByEmail(username);
+        String roleName = currentUser.getRole().getName();
+        if (roleName != null && roleName.contains(Role.GROUP_LEADER_ROLE)) {
+            return getGroupLeaderSummary(currentUser);
+        } else if (roleName != null && roleName.contains(Role.SUPERVISOR_ROLE)) {
+            return getSupervisorSummary(currentUser);
+        }
+        return null;
+    }
+
+    private BookingRequestSummaryDto getSupervisorSummary(User currentUser) {
+        int pendingCount = bookingRequestRepository.countByStatusAndAssignedTo(Status.Pending, currentUser);
+        int cancelledCount = bookingRequestRepository.countByStatusAndAssignedTo(Status.Cancelled, currentUser);
+        int approvedCount = bookingRequestRepository.countByStatusAndAssignedTo(Status.Approved, currentUser);
+        int rejectedCount = bookingRequestRepository.countByStatusAndAssignedTo(Status.Rejected, currentUser);
+
+        return BookingRequestSummaryDto.builder()
+                .approvedCount(approvedCount)
+                .cancelledCount(cancelledCount)
+                .pendingCount(pendingCount)
+                .rejectedCount(rejectedCount)
+                .totalCount(pendingCount + cancelledCount + approvedCount + rejectedCount).build();
+    }
+
+    private BookingRequestSummaryDto getGroupLeaderSummary(User currentUser) {
+        int pendingCount = bookingRequestRepository.countByStatusAndCreatedBy(Status.Pending, currentUser);
+        int cancelledCount = bookingRequestRepository.countByStatusAndCreatedBy(Status.Cancelled, currentUser);
+        int approvedCount = bookingRequestRepository.countByStatusAndCreatedBy(Status.Approved, currentUser);
+        int rejectedCount = bookingRequestRepository.countByStatusAndCreatedBy(Status.Rejected, currentUser);
+
+        return BookingRequestSummaryDto.builder()
+                .approvedCount(approvedCount)
+                .cancelledCount(cancelledCount)
+                .pendingCount(pendingCount)
+                .rejectedCount(rejectedCount)
+                .totalCount(pendingCount + cancelledCount + approvedCount + rejectedCount).build();
     }
 
     @Override
@@ -84,8 +130,16 @@ public class BookingRequestServiceImpl implements BookingRequestService {
 
     @Override
     public BookingRequestsPageDto getRequestByStatus(String username, Status status, int page, int pageSize) {
-        Page<BookingRequest> pageResult = bookingRequestRepository.findByStatusAndCreatedBy(status,
-                userRepository.findByEmail(username), PageRequest.of(page, pageSize));
+        User currentUser = userRepository.findByEmail(username);
+        Page<BookingRequest> pageResult;
+        String roleName = currentUser.getRole().getName();
+        if (roleName != null && roleName.contains(Role.GROUP_LEADER_ROLE)) {
+            pageResult = bookingRequestRepository.findByStatusAndCreatedBy(status,
+                    currentUser , PageRequest.of(page, pageSize));
+        } else {
+            pageResult = bookingRequestRepository.findByStatusAndAssignedTo(status,
+                    currentUser , PageRequest.of(page, pageSize));
+        }
 
         BookingRequestsPageDto bookingRequestsPageDto = new BookingRequestsPageDto();
         bookingRequestsPageDto.setCurrentPage(pageResult.getNumber());

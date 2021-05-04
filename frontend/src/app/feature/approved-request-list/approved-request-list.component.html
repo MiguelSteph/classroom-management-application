@@ -11,6 +11,7 @@
       <th scope="col">Time Range</th>
       <th scope="col">Purpose</th>
       <th scope="col">Supervisor</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +22,13 @@
       <td> {{formatTime(item['fromTime'])}} to {{formatTime(item['toTime'])}} </td>
       <td> <time>{{item['purpose']}}</time> </td>
       <td> {{item['assignedTo']['firstName'] + ' ' + item['assignedTo']['lastName']}} </td>
+      <td>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="showDetailsBookingRequest(detailsModalContent, item)" style="margin-right: 0.5em;">
+          Details
+        </button>
+      </td>
     </tr>
     </tbody>
   </table>
@@ -56,4 +64,8 @@
       </ul>
     </nav>
   </footer>
+  <ng-template #detailsModalContent let-modal>
+    <booking-request-detail [modalDialog]="modal"
+                            [currentBookingRequest]="currentBookingRequest"></booking-request-detail>
+  </ng-template>
 </div>

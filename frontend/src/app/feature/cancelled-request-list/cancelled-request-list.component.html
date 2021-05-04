@@ -10,7 +10,9 @@
       <th scope="col">Booking Date</th>
       <th scope="col">Time Range</th>
       <th scope="col">Reason</th>
-      <th scope="col">Supervisor</th>
+      <th scope="col" *ngIf="authService.hasGroupLeaderRole()">Supervisor</th>
+      <th scope="col" *ngIf="authService.hasSupervisorRole()">Group Leader</th>
+      <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -20,7 +22,19 @@
       <td> <time>{{item['bookingDate']}}</time> </td>
       <td> {{formatTime(item['fromTime'])}} to {{formatTime(item['toTime'])}} </td>
       <td> <time>{{item['rejectionReason']}}</time> </td>
-      <td> {{item['assignedTo']['firstName'] + ' ' + item['assignedTo']['lastName']}} </td>
+      <td *ngIf="authService.hasGroupLeaderRole()">
+        {{item['assignedTo']['firstName'] + ' ' + item['assignedTo']['lastName']}}
+      </td>
+      <td *ngIf="authService.hasSupervisorRole()">
+        {{item['createdBy']['firstName'] + ' ' + item['createdBy']['lastName']}}
+      </td>
+      <td>
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="showDetailsBookingRequest(detailsModalContent, item)" style="margin-right: 0.5em;">
+          Details
+        </button>
+      </td>
     </tr>
     </tbody>
   </table>
@@ -56,4 +70,9 @@
       </ul>
     </nav>
   </footer>
+
+  <ng-template #detailsModalContent let-modal>
+    <booking-request-detail [modalDialog]="modal"
+                            [currentBookingRequest]="currentBookingRequest"></booking-request-detail>
+  </ng-template>
 </div>

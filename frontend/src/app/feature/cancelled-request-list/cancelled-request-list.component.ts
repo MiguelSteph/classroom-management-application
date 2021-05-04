@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BookingRequestService} from "../../core/services/booking-request.service";
+import {AuthService} from "../../core/services/auth.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 export const CANCELLED_STATUS = 'cancelled';
 
@@ -15,8 +17,11 @@ export class CancelledRequestListComponent implements OnInit {
   hasNextPage: boolean;
   hasPreviousPage:boolean
   requestList: Array<any>;
+  currentBookingRequest: any;
 
-  constructor(private bookingRequestService: BookingRequestService) { }
+  constructor(private bookingRequestService: BookingRequestService,
+              public authService: AuthService,
+              private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.loadDataFromServer(this.pageId);
@@ -38,4 +43,8 @@ export class CancelledRequestListComponent implements OnInit {
     return timeStr.split(':')[0] + 'H';
   }
 
+  showDetailsBookingRequest(content, currentItem) {
+    this.currentBookingRequest = currentItem;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+  }
 }

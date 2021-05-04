@@ -14,11 +14,14 @@ import { PendingRequestListComponent } from './pending-request-list/pending-requ
 import { CancelledRequestListComponent } from './cancelled-request-list/cancelled-request-list.component';
 import { ApprovedRequestListComponent } from './approved-request-list/approved-request-list.component';
 import { RejectedRequestListComponent } from './rejected-request-list/rejected-request-list.component';
+import {RouterModule} from "@angular/router";
+import { DashboardSupervisorComponent } from './dashboard-supervisor/dashboard-supervisor.component';
+import { BookingRequestDetailComponent } from './booking-request-detail/booking-request-detail.component';
 
 
 
 @NgModule({
-    declarations: [LoginComponent, BookingRequestCreationByClassroomComponent, DashboardGroupleaderComponent, MenuComponent, HomeDashboardComponent, ToatsComponent, PendingRequestListComponent, CancelledRequestListComponent, ApprovedRequestListComponent, RejectedRequestListComponent],
+    declarations: [LoginComponent, BookingRequestCreationByClassroomComponent, DashboardGroupleaderComponent, MenuComponent, HomeDashboardComponent, ToatsComponent, PendingRequestListComponent, CancelledRequestListComponent, ApprovedRequestListComponent, RejectedRequestListComponent, DashboardSupervisorComponent, BookingRequestDetailComponent],
   exports: [
     LoginComponent,
     BookingRequestCreationByClassroomComponent,
@@ -30,7 +33,8 @@ import { RejectedRequestListComponent } from './rejected-request-list/rejected-r
         FormsModule,
         NgbDatepickerModule,
         FontAwesomeModule,
-        NgbToastModule
+        NgbToastModule,
+        RouterModule
     ]
 })
 export class FeatureModule { }

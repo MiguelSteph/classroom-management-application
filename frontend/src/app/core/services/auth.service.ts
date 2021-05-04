@@ -67,7 +67,7 @@ export class AuthService {
     return this.currentUser['authorities'].some(item => item === ROLE_GROUPLEADER);
   }
 
-  hasSupervisor() {
+  hasSupervisorRole() {
     return this.currentUser['authorities'].some(item => item === ROLE_SUPERVISOR);
   }
 

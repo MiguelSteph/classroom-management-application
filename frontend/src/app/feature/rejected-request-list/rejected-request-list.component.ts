@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BookingRequestService} from "../../core/services/booking-request.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 export const REJECTED_STATUS = 'rejected';
 
@@ -15,8 +16,10 @@ export class RejectedRequestListComponent implements OnInit {
   hasNextPage: boolean;
   hasPreviousPage:boolean
   requestList: Array<any>;
+  currentBookingRequest: any;
 
-  constructor(private bookingRequestService: BookingRequestService) { }
+  constructor(private bookingRequestService: BookingRequestService,
+              private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.loadDataFromServer(this.pageId);
@@ -36,5 +39,10 @@ export class RejectedRequestListComponent implements OnInit {
 
   formatTime(timeStr: string) {
     return timeStr.split(':')[0] + 'H';
+  }
+
+  showDetailsBookingRequest(content, currentItem) {
+    this.currentBookingRequest = currentItem;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
 }

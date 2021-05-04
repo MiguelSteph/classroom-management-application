@@ -7,7 +7,7 @@ docker container run --name mysql-server \
     -e MYSQL_PASSWORD=yx7oZA9QpomHBWnh \
     -p 3306:3306 -d mysql:latest
 
-docker exec -it mysql-server bash
+docker container exec -it mysql-server bash
 
 mysql -u olive -p
 
@@ -75,19 +75,4 @@ policies             ["default" "policy-classmanagement-app"]
 
 
 
-showSuccess() {
-    this.toastService.show('I am a success toast', {
-      classname: 'bg-success text-light',
-      delay: 2000 ,
-      autohide: true,
-      headertext: 'Toast Header'
-    });
-  }
-  showError() {
-    this.toastService.show('I am a success toast', {
-      classname: 'bg-danger text-light',
-      delay: 2000 ,
-      autohide: true,
-      headertext: 'Error!!!'
-    });
-  }
+open -n -a /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args --user-data-dir="/tmp/chrome_dev_test" --disable-web-security

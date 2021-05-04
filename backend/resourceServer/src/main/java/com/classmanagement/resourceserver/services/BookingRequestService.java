@@ -13,6 +13,8 @@ public interface BookingRequestService {
     BookingRequestsPageDto getRequestByStatus(String username, Status status, int page, int pageSize);
     BookingRequest updateBookingRequest(BookingRequest bookingRequest);
     void updateBookingRequest(List<BookingRequest> bookingRequest);
-    BookingRequestSummaryDto getSummary();
+    BookingRequestSummaryDto getSummary(String username);
     BookingRequest cancelBookingRequest(Long id);
+    BookingRequest approveBookingRequest(Long id);
+    BookingRequest rejectBookingRequest(Long id, String reason);
 }

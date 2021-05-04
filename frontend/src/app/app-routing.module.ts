@@ -5,6 +5,8 @@ import {HomeDashboardComponent} from "./feature/home-dashboard/home-dashboard.co
 import {DashboardGroupleaderComponent} from "./feature/dashboard-groupleader/dashboard-groupleader.component";
 import {AuthGuard} from "./core/guards/auth.guard";
 import {GroupLeaderAuthGuard} from "./core/guards/group-leader-auth.guard";
+import {DashboardSupervisorComponent} from "./feature/dashboard-supervisor/dashboard-supervisor.component";
+import {SupervisorAuthGuard} from "./core/guards/supervisor-auth-guard.service";
 
 const routes: Routes = [
   {
@@ -20,6 +22,11 @@ const routes: Routes = [
     path: 'groupleader',
     component: DashboardGroupleaderComponent,
     canActivate: [AuthGuard, GroupLeaderAuthGuard]
+  },
+  {
+    path: 'supervisor/booking-requests',
+    component: DashboardSupervisorComponent,
+    canActivate: [AuthGuard, SupervisorAuthGuard]
   }
 ];
 

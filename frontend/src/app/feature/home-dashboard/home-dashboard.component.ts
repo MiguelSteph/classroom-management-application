@@ -13,7 +13,9 @@ export class HomeDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.hasGroupLeaderRole()) {
-      this.router.navigate(['/groupleader'])
+      this.router.navigate(['/groupleader']);
+    } else if (this.authService.hasSupervisorRole()) {
+      this.router.navigate(['/supervisor/booking-requests']);
     }
   }
 

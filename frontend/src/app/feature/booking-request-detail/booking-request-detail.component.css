@@ -1,5 +1,5 @@
 #modalBodyContainer {
-  width: 90%;
+  width: 95%;
   margin: auto;
   display: flex;
   flex-flow: row wrap;
@@ -31,4 +31,8 @@ h5 {
   margin: 1em auto;
   flex-flow: row nowrap;
   justify-content: flex-end;
+}
+
+tbody tr:hover {
+  cursor: pointer;
 }

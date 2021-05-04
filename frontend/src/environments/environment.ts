@@ -11,7 +11,7 @@ export const environment = {
   authServerDomain: "localhost:9092",
   resourceServerDomain: "localhost:9090",
 
-  pageSize: 20
+  pageSize: 10
 };
 
 /*

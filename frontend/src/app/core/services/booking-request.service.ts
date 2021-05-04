@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {CrudService} from "./crud.service";
 import {environment} from "../../../environments/environment";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {CustomUrlEncoderService} from "./custom-url-encoder.service";
 
@@ -18,7 +18,9 @@ export class BookingRequestService extends CrudService {
 
   getSummary() {
     let customUrl = BOOKING_REQUEST_RESOURCE_LINK + '/summary';
-    return this.get(customUrl);
+    let params: HttpParams = new HttpParams({encoder: new CustomUrlEncoderService()});
+    params = params.append("username", this.authService.currentUser['user_name']);
+    return this.get(customUrl, params);
   }
 
   getBookingRequestsPerStatus(pageId:number, status:string) {
@@ -38,8 +40,22 @@ export class BookingRequestService extends CrudService {
   }
 
   cancelBookingRequest(requestId) {
-    let customUrl = BOOKING_REQUEST_RESOURCE_LINK + '/' + requestId;
+    let customUrl = BOOKING_REQUEST_RESOURCE_LINK + '/' + requestId + '/cancel';
     return this.put(this.authService.currentUser['user_name'], customUrl);
   }
 
+  approveBookingRequest(requestId) {
+    let customUrl = BOOKING_REQUEST_RESOURCE_LINK + '/' + requestId + '/approve';
+    return this.put(this.authService.currentUser['user_name'], customUrl);
+  }
+
+  rejectBookingRequest(requestId, rejectionReason) {
+    let customUrl = BOOKING_REQUEST_RESOURCE_LINK + '/' + requestId + '/reject';
+    let requestBody = {
+      username: this.authService.currentUser['user_name'],
+      reason: rejectionReason
+    };
+
+    return this.put(JSON.stringify(requestBody), customUrl, new HttpHeaders({'Content-Type': 'application/json'}));
+  }
 }
