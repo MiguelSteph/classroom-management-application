@@ -4,6 +4,9 @@ server:
 
 resource_id: classmanagementservice
 spring:
+  mvc:
+    format:
+      date: iso
   datasource:
     username: olive
     url: jdbc:mysql://localhost:3306/classmanagementDb

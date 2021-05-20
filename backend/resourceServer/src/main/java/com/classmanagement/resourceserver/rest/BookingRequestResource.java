@@ -1,6 +1,5 @@
 package com.classmanagement.resourceserver.rest;
 
-import com.classmanagement.resourceserver.dtos.BookingRequestDto;
 import com.classmanagement.resourceserver.dtos.BookingRequestSummaryDto;
 import com.classmanagement.resourceserver.dtos.BookingRequestsPageDto;
 import com.classmanagement.resourceserver.dtos.CreateBookingDto;

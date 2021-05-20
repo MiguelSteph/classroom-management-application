@@ -9,7 +9,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -34,5 +36,16 @@ public class ClassroomResource {
             @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
     ) {
         return classroomService.getClassroomAvailability(id, date);
+    }
+
+    @PutMapping("/classrooms/{id}/shrinkAvailability")
+    public void shrinkClassroomAvailability(@PathVariable(name = "id") int classroomId,
+             @RequestBody Map<String, Object> requestBodyMap) {
+        /*
+        todo: Add extra security layer to enforce the fact that only the allowed supervisor can shrink the availabilities
+         */
+        LocalDate fromDate = LocalDate.parse((String) requestBodyMap.get("fromDate"), DateTimeFormatter.ISO_DATE);
+        LocalDate toDate = LocalDate.parse((String) requestBodyMap.get("toDate"), DateTimeFormatter.ISO_DATE);
+        classroomService.shrinkClassroomAvailability(classroomId, fromDate, toDate);
     }
 }

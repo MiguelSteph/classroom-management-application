@@ -155,6 +155,12 @@
                   class="btn btn-danger">
             Remove
           </button>
+          <button type="button"
+                  class="btn btn-warning m-2"
+                  (click)="shrinkAvailabilities(classroom, item['startDate'], item['endDate'])"
+          >
+            Shrink
+          </button>
         </td>
       </tr>
     </tbody>

@@ -25,6 +25,8 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
                         , "/classrooms/{id}/supervisors"
                         , "/classrooms/{id}/availableTimeRanges")
                     .hasAnyRole(ADMIN_ROLE, SUPERVISOR_ROLE, GROUP_LEADER_ROLE)
+                .mvcMatchers(HttpMethod.PUT, "/classrooms/{id}/shrinkAvailability")
+                    .hasRole(SUPERVISOR_ROLE)
                 .mvcMatchers(HttpMethod.POST, "/bookingRequests")
                     .hasAnyRole(ADMIN_ROLE, GROUP_LEADER_ROLE)
                 .mvcMatchers(HttpMethod.GET, "/bookingRequests/*")

@@ -35,6 +35,11 @@ export class ClassroomAvailabilityComponent implements OnInit {
     );
   }
 
+  shrinkAvailabilities(currentClassroomId, fromDate, endDate) {
+    this.classroomService.shrinkClassroomAvailabilities(currentClassroomId, fromDate, endDate)
+      .subscribe(() => this.loadCurrentAvailabilities() );
+  }
+
   updateBuildings() {
     if (this.site === undefined || this.site === "") {
       this.buildingList = [];

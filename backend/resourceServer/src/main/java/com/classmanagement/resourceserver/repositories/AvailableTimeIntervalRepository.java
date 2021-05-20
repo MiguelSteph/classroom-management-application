@@ -24,4 +24,12 @@ public interface AvailableTimeIntervalRepository extends JpaRepository<Available
             "AND to_date >= ?2 ",
             nativeQuery = true)
     List<AvailableTimeInterval> getClassroomAllCurrentAvailability(int classroomId, LocalDate date);
+
+    @Query(value = "SELECT * " +
+            "FROM available_time_interval " +
+            "WHERE classroom_id=?1 " +
+            "AND from_date = ?2 " +
+            "AND to_date = ?3 ",
+            nativeQuery = true)
+    List<AvailableTimeInterval> getClassroomAvailabilities(int classroomId, LocalDate fromDate, LocalDate toDate);
 }

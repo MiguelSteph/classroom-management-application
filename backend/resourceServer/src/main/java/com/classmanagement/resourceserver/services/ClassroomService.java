@@ -15,4 +15,6 @@ public interface ClassroomService {
 
     List<ClassroomAvailabilityDto> getClassroomAllCurrentAvailability(int id);
 
+    void shrinkClassroomAvailability(int classroomId, LocalDate fromDate, LocalDate toDate);
+
 }

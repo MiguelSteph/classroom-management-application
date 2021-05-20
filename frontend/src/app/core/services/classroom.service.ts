@@ -3,6 +3,7 @@ import {CrudService} from "./crud.service";
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {formatDate} from "@angular/common";
+import {AuthService} from "./auth.service";
 
 const CLASSROOMS_RESOURCE_LINK = environment.resourceServerEndPoint + '/classrooms';
 
@@ -11,7 +12,8 @@ const CLASSROOMS_RESOURCE_LINK = environment.resourceServerEndPoint + '/classroo
 })
 export class ClassroomService extends CrudService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private authService: AuthService) {
     super(httpClient, CLASSROOMS_RESOURCE_LINK);
   }
 
@@ -30,6 +32,16 @@ export class ClassroomService extends CrudService {
     let requestParams = new HttpParams();
     requestParams = requestParams.append('date', formatDate(date, 'yyyy-MM-dd', 'en-US'));
     return this.get(customUrl, requestParams);
+  }
+
+  shrinkClassroomAvailabilities(classroomId: string, fromDate, toDate) {
+    const customUrl = CLASSROOMS_RESOURCE_LINK + '/' + classroomId + '/shrinkAvailability';
+    const requestBody = {
+      username: this.authService.currentUser['user_name'],
+      fromDate: fromDate,
+      toDate: toDate
+    }
+    return this.put(requestBody, customUrl);
   }
 
 }

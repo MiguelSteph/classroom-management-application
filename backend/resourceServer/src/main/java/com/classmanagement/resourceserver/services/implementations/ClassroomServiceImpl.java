@@ -26,6 +26,29 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final BookingRequestRepository bookingRequestRepository;
 
     @Override
+    public void shrinkClassroomAvailability(int classroomId, LocalDate fromDate, LocalDate toDate) {
+        List<AvailableTimeInterval> classroomAvailabilities = availableTimeIntervalRepository
+                .getClassroomAvailabilities(classroomId, fromDate, toDate);
+        List<BookingRequest> validBookingRequestList = bookingRequestRepository
+                .getClassroomBookingRequests(classroomId, fromDate, toDate);
+
+        if (validBookingRequestList == null || validBookingRequestList.isEmpty()) {
+            removeClassroomAvailabilities(classroomAvailabilities);
+        } else {
+            validBookingRequestList.sort(Comparator.comparing(BookingRequest::getBookingDate).reversed());
+            BookingRequest latestBookingRequest = validBookingRequestList.get(0);
+            if (!latestBookingRequest.getBookingDate().isEqual(toDate)) {
+                classroomAvailabilities.forEach(item -> item.setToDate(latestBookingRequest.getBookingDate()));
+                availableTimeIntervalRepository.saveAll(classroomAvailabilities);
+            }
+        }
+    }
+
+    private void removeClassroomAvailabilities(List<AvailableTimeInterval> availableTimeIntervalList) {
+        availableTimeIntervalRepository.deleteAll(availableTimeIntervalList);
+    }
+
+    @Override
     public List<ClassroomAvailabilityDto> getClassroomAllCurrentAvailability(int id) {
         List<AvailableTimeInterval> currentAvailabilities = availableTimeIntervalRepository
                 .getClassroomAllCurrentAvailability(id, LocalDate.now());
