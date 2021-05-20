@@ -19,8 +19,12 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.security.KeyPair;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Import(AuthorizationServerEndpointsConfiguration.class)
 @Configuration
@@ -55,6 +59,17 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
+        Map<String, CorsConfiguration> corsConfigMap = new HashMap<>();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOriginPatterns(Collections.singletonList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfigMap.put("/oauth/token", config);
+
+        endpoints.getFrameworkEndpointHandlerMapping()
+                .setCorsConfigurations(corsConfigMap);
         endpoints.tokenStore(jwtTokenStore())
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .authenticationManager(authenticationManager)
