@@ -1,6 +1,11 @@
 <div class="modal-header">
   <h4 class="modal-title" id="modal-basic-title">Booking Request Details</h4>
-  <button type="button" class="close" aria-label="Close" (click)="modalDialog.dismiss('Cross click')">
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="modalDialog.dismiss('Cross click')"
+  >
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -8,56 +13,90 @@
   <div id="modalBodyContainer">
     <article>
       <h5>Building</h5>
-      <p>{{currentBookingRequest['site']['code'] + '/' + currentBookingRequest['building']['code']}}</p>
+      <p>
+        {{
+          currentBookingRequest["site"]["code"] +
+            "/" +
+            currentBookingRequest["building"]["code"]
+        }}
+      </p>
     </article>
     <article>
       <h5>Classroom</h5>
-      <p>{{currentBookingRequest['classroom']['code']}}</p>
+      <p>{{ currentBookingRequest["classroom"]["code"] }}</p>
     </article>
     <article>
       <h5>Booking Date</h5>
-      <p><time>{{currentBookingRequest['bookingDate']}}</time></p>
+      <p>
+        <time>{{ currentBookingRequest["bookingDate"] }}</time>
+      </p>
     </article>
     <article>
       <h5>Time Range</h5>
-      <p>{{formatTime(currentBookingRequest['fromTime'])}} to {{formatTime(currentBookingRequest['toTime'])}}</p>
+      <p>
+        {{ formatTime(currentBookingRequest["fromTime"]) }} to
+        {{ formatTime(currentBookingRequest["toTime"]) }}
+      </p>
     </article>
     <article>
       <h5>Group Leader</h5>
-      <p>{{currentBookingRequest['createdBy']['firstName'] + ' ' + currentBookingRequest['createdBy']['lastName']}}</p>
+      <p>
+        {{
+          currentBookingRequest["createdBy"]["firstName"] +
+            " " +
+            currentBookingRequest["createdBy"]["lastName"]
+        }}
+      </p>
     </article>
     <article>
       <h5>Supervisor</h5>
-      <p>{{currentBookingRequest['assignedTo']['firstName'] + ' ' + currentBookingRequest['assignedTo']['lastName']}}</p>
+      <p>
+        {{
+          currentBookingRequest["assignedTo"]["firstName"] +
+            " " +
+            currentBookingRequest["assignedTo"]["lastName"]
+        }}
+      </p>
     </article>
     <article>
       <h5>Purpose</h5>
-      <p>{{currentBookingRequest['purpose']}}</p>
+      <p>{{ currentBookingRequest["purpose"] }}</p>
     </article>
     <article>
       <h5>Created Date</h5>
-      <p>{{currentBookingRequest['createdDate']}}</p>
+      <p>{{ currentBookingRequest["createdDate"] }}</p>
     </article>
     <article>
       <h5>Status</h5>
-      <p>{{currentBookingRequest['status']}}</p>
+      <p>{{ currentBookingRequest["status"] }}</p>
     </article>
-    <article *ngIf="currentBookingRequest['status'] === 'Rejected' ">
+    <article *ngIf="currentBookingRequest['status'] === 'Rejected'">
       <h5>Rejection Reason</h5>
-      <p>{{currentBookingRequest['rejectionReason']}}</p>
+      <p>{{ currentBookingRequest["rejectionReason"] }}</p>
     </article>
-    <article *ngIf="currentBookingRequest['status'] === 'Cancelled' ">
+    <article *ngIf="currentBookingRequest['status'] === 'Cancelled'">
       <h5>Cancelled Reason</h5>
-      <p>{{currentBookingRequest['rejectionReason']}}</p>
+      <p>{{ currentBookingRequest["rejectionReason"] }}</p>
     </article>
-    <article *ngIf="currentBookingRequest['status'] !== 'Pending' ">
-      <h5 *ngIf="currentBookingRequest['status'] === 'Cancelled' ">Cancelled Date</h5>
-      <h5 *ngIf="currentBookingRequest['status'] === 'Rejected' ">Rejection Date</h5>
-      <h5 *ngIf="currentBookingRequest['status'] === 'Approved' ">Approval Date</h5>
-      <p>{{currentBookingRequest['lastUpdatedDate']}}</p>
+    <article *ngIf="currentBookingRequest['status'] !== 'Pending'">
+      <h5 *ngIf="currentBookingRequest['status'] === 'Cancelled'">
+        Cancelled Date
+      </h5>
+      <h5 *ngIf="currentBookingRequest['status'] === 'Rejected'">
+        Rejection Date
+      </h5>
+      <h5 *ngIf="currentBookingRequest['status'] === 'Approved'">
+        Approval Date
+      </h5>
+      <p>{{ currentBookingRequest["lastUpdatedDate"] }}</p>
     </article>
   </div>
   <div id="buttonsContainer">
-    <button class="btn btn-secondary" (click)="modalDialog.close('Click Close')">Close</button>
+    <button
+      class="btn btn-secondary"
+      (click)="modalDialog.close('Click Close')"
+    >
+      Close
+    </button>
   </div>
 </div>

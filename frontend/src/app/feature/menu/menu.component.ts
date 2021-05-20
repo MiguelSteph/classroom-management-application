@@ -1,22 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import {faUser} from "@fortawesome/free-solid-svg-icons";
-import {AuthService} from "../../core/services/auth.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { AuthService } from "../../core/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'navbar-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  selector: "navbar-menu",
+  templateUrl: "./menu.component.html",
+  styleUrls: ["./menu.component.css"],
 })
 export class MenuComponent implements OnInit {
-
   userIcon = faUser;
 
-  constructor(public authService: AuthService,
-              private router: Router) { }
+  constructor(public authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   isLoggedIn() {
     return this.authService.isLoggedIn();
@@ -24,6 +21,6 @@ export class MenuComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 }

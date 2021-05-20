@@ -4,50 +4,72 @@
   </div>
   <table *ngIf="totalPages > 0" class="table">
     <thead class="thead-dark">
-    <tr>
-      <th scope="col">Building</th>
-      <th scope="col">Classroom</th>
-      <th scope="col">Booking Date</th>
-      <th scope="col">Time Range</th>
-      <th scope="col" *ngIf="authService.hasGroupLeaderRole()">Supervisor</th>
-      <th scope="col" *ngIf="authService.hasSupervisorRole()">Group Leader</th>
-      <th scope="col">Actions</th>
-    </tr>
+      <tr>
+        <th scope="col">Building</th>
+        <th scope="col">Classroom</th>
+        <th scope="col">Booking Date</th>
+        <th scope="col">Time Range</th>
+        <th scope="col" *ngIf="authService.hasGroupLeaderRole()">Supervisor</th>
+        <th scope="col" *ngIf="authService.hasSupervisorRole()">
+          Group Leader
+        </th>
+        <th scope="col">Actions</th>
+      </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of requestList;" >
-        <td>{{item['site']['code'] + '/' + item['building']['code']}}</td>
-        <td>{{item['classroom']['code']}}</td>
-        <td> <time>{{item['bookingDate']}}</time> </td>
-        <td> {{formatTime(item['fromTime'])}} to {{formatTime(item['toTime'])}} </td>
-        <td *ngIf="authService.hasGroupLeaderRole()">
-          {{item['assignedTo']['firstName'] + ' ' + item['assignedTo']['lastName']}}
-        </td>
-        <td *ngIf="authService.hasSupervisorRole()">
-          {{item['createdBy']['firstName'] + ' ' + item['createdBy']['lastName']}}
+      <tr *ngFor="let item of requestList">
+        <td>{{ item["site"]["code"] + "/" + item["building"]["code"] }}</td>
+        <td>{{ item["classroom"]["code"] }}</td>
+        <td>
+          <time>{{ item["bookingDate"] }}</time>
         </td>
         <td>
-          <button type="button"
-                  class="btn btn-secondary"
-                  (click)="showDetailsBookingRequest(detailsModalContent, item)" style="margin-right: 0.5em;">
+          {{ formatTime(item["fromTime"]) }} to {{ formatTime(item["toTime"]) }}
+        </td>
+        <td *ngIf="authService.hasGroupLeaderRole()">
+          {{
+            item["assignedTo"]["firstName"] +
+              " " +
+              item["assignedTo"]["lastName"]
+          }}
+        </td>
+        <td *ngIf="authService.hasSupervisorRole()">
+          {{
+            item["createdBy"]["firstName"] + " " + item["createdBy"]["lastName"]
+          }}
+        </td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="showDetailsBookingRequest(detailsModalContent, item)"
+            style="margin-right: 0.5em"
+          >
             Details
           </button>
-          <button type="button"
-                  class="btn btn-warning"
-                  *ngIf="authService.hasGroupLeaderRole()"
-                  (click)="showCancelBookingRequest(modalContent, item)">
+          <button
+            type="button"
+            class="btn btn-warning"
+            *ngIf="authService.hasGroupLeaderRole()"
+            (click)="showCancelBookingRequest(modalContent, item)"
+          >
             Cancel
           </button>
-          <button type="button"
-                  class="btn btn-success"
-                  *ngIf="authService.hasSupervisorRole()"
-                  (click)="showApproveBookingRequest(modalContent, item)" style="margin-right: 0.5em;">
+          <button
+            type="button"
+            class="btn btn-success"
+            *ngIf="authService.hasSupervisorRole()"
+            (click)="showApproveBookingRequest(modalContent, item)"
+            style="margin-right: 0.5em"
+          >
             Approve
           </button>
-          <button type="button"
-                  class="btn btn-danger"
-                  *ngIf="authService.hasSupervisorRole()"
-                  (click)="showRejectBookingRequest(modalContent, item)">
+          <button
+            type="button"
+            class="btn btn-danger"
+            *ngIf="authService.hasSupervisorRole()"
+            (click)="showRejectBookingRequest(modalContent, item)"
+          >
             Reject
           </button>
         </td>
@@ -58,90 +80,159 @@
     <nav aria-label="...">
       <ul class="pagination justify-content-end">
         <li class="page-item" [class.disabled]="!hasPreviousPage">
-          <a class="page-link" (click)="loadDataFromServer(pageId-1)" tabindex="-1">Previous</a>
+          <a
+            class="page-link"
+            (click)="loadDataFromServer(pageId - 1)"
+            tabindex="-1"
+            >Previous</a
+          >
         </li>
 
-        <li class="page-item" *ngIf="pageId-2 > 0">
-          <a class="page-link" (click)="loadDataFromServer(pageId-2)" >{{pageId-2}}</a>
+        <li class="page-item" *ngIf="pageId - 2 > 0">
+          <a class="page-link" (click)="loadDataFromServer(pageId - 2)">{{
+            pageId - 2
+          }}</a>
         </li>
-        <li class="page-item" *ngIf="pageId-1 > 0">
-          <a class="page-link" (click)="loadDataFromServer(pageId-1)" >{{pageId-1}}</a>
+        <li class="page-item" *ngIf="pageId - 1 > 0">
+          <a class="page-link" (click)="loadDataFromServer(pageId - 1)">{{
+            pageId - 1
+          }}</a>
         </li>
 
         <li class="page-item active">
-          <a class="page-link" >{{pageId}}</a>
+          <a class="page-link">{{ pageId }}</a>
         </li>
 
-        <li class="page-item" *ngIf="pageId+1 <= totalPages">
-          <a class="page-link" (click)="loadDataFromServer(pageId+1)" >{{pageId+1}}</a>
+        <li class="page-item" *ngIf="pageId + 1 <= totalPages">
+          <a class="page-link" (click)="loadDataFromServer(pageId + 1)">{{
+            pageId + 1
+          }}</a>
         </li>
 
-        <li class="page-item" *ngIf="pageId+2 <= totalPages">
-          <a class="page-link" (click)="loadDataFromServer(pageId+2)" >{{pageId+2}}</a>
+        <li class="page-item" *ngIf="pageId + 2 <= totalPages">
+          <a class="page-link" (click)="loadDataFromServer(pageId + 2)">{{
+            pageId + 2
+          }}</a>
         </li>
 
         <li class="page-item" [class.disabled]="!hasNextPage">
-          <a class="page-link" (click)="loadDataFromServer(pageId+1)">Next</a>
+          <a class="page-link" (click)="loadDataFromServer(pageId + 1)">Next</a>
         </li>
       </ul>
     </nav>
   </footer>
 
   <ng-template #detailsModalContent let-modal>
-    <booking-request-detail [modalDialog]="modal"
-                            [currentBookingRequest]="currentBookingRequest"></booking-request-detail>
+    <booking-request-detail
+      [modalDialog]="modal"
+      [currentBookingRequest]="currentBookingRequest"
+    ></booking-request-detail>
   </ng-template>
 
   <ng-template #modalContent let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <h4 class="modal-title" id="modal-basic-title">{{ modalTitle }}</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
       <form #f="ngForm">
-      <div id="modalBodyContainer">
-        <article>
-          <h5>Building</h5>
-          <p>{{currentBookingRequest['site']['code'] + '/' + currentBookingRequest['building']['code']}}</p>
-        </article>
-        <article>
-          <h5>Classroom</h5>
-          <p>{{currentBookingRequest['classroom']['code']}}</p>
-        </article>
-        <article>
-          <h5>Booking Date</h5>
-          <p><time>{{currentBookingRequest['bookingDate']}}</time></p>
-        </article>
-        <article>
-          <h5>Time Range</h5>
-          <p>{{formatTime(currentBookingRequest['fromTime'])}} to {{formatTime(currentBookingRequest['toTime'])}}</p>
-        </article>
-        <article>
-          <h5>Purpose</h5>
-          <p>{{currentBookingRequest['purpose']}}</p>
-        </article>
-        <article *ngIf="authService.hasSupervisorRole()">
-          <h5>Group Leader</h5>
-          <p>{{currentBookingRequest['createdBy']['firstName'] + ' ' + currentBookingRequest['createdBy']['lastName']}}</p>
-        </article>
-        <article *ngIf="authService.hasGroupLeaderRole()">
-          <h5>Supervisor</h5>
-          <p>{{currentBookingRequest['assignedTo']['firstName'] + ' ' + currentBookingRequest['assignedTo']['lastName']}}</p>
-        </article>
-        <div *ngIf="isRejection">
-          <h5>Rejection Reason</h5>
-          <textarea required autofocus rows="3" name="reason" id="reason" ngModel></textarea>
+        <div id="modalBodyContainer">
+          <article>
+            <h5>Building</h5>
+            <p>
+              {{
+                currentBookingRequest["site"]["code"] +
+                  "/" +
+                  currentBookingRequest["building"]["code"]
+              }}
+            </p>
+          </article>
+          <article>
+            <h5>Classroom</h5>
+            <p>{{ currentBookingRequest["classroom"]["code"] }}</p>
+          </article>
+          <article>
+            <h5>Booking Date</h5>
+            <p>
+              <time>{{ currentBookingRequest["bookingDate"] }}</time>
+            </p>
+          </article>
+          <article>
+            <h5>Time Range</h5>
+            <p>
+              {{ formatTime(currentBookingRequest["fromTime"]) }} to
+              {{ formatTime(currentBookingRequest["toTime"]) }}
+            </p>
+          </article>
+          <article>
+            <h5>Purpose</h5>
+            <p>{{ currentBookingRequest["purpose"] }}</p>
+          </article>
+          <article *ngIf="authService.hasSupervisorRole()">
+            <h5>Group Leader</h5>
+            <p>
+              {{
+                currentBookingRequest["createdBy"]["firstName"] +
+                  " " +
+                  currentBookingRequest["createdBy"]["lastName"]
+              }}
+            </p>
+          </article>
+          <article *ngIf="authService.hasGroupLeaderRole()">
+            <h5>Supervisor</h5>
+            <p>
+              {{
+                currentBookingRequest["assignedTo"]["firstName"] +
+                  " " +
+                  currentBookingRequest["assignedTo"]["lastName"]
+              }}
+            </p>
+          </article>
+          <div *ngIf="isRejection">
+            <h5>Rejection Reason</h5>
+            <textarea
+              required
+              autofocus
+              rows="3"
+              name="reason"
+              id="reason"
+              ngModel
+            ></textarea>
+          </div>
         </div>
-      </div>
-      <div id="buttonsContainer">
-        <button *ngIf="!isRejection" id="confirmedBtn" class="btn btn-primary" (click)="modal.close('Click Confirm')">Confirm</button>
-        <button *ngIf="isRejection" [disabled]="isRejection && !f.valid" id="rejectionBtn" class="btn btn-primary" (click)="modal.close(['Click Confirm', f.value])">Reject</button>
-        <button class="btn btn-secondary" (click)="modal.close('Click Close')">Close</button>
-      </div>
+        <div id="buttonsContainer">
+          <button
+            *ngIf="!isRejection"
+            id="confirmedBtn"
+            class="btn btn-primary"
+            (click)="modal.close('Click Confirm')"
+          >
+            Confirm
+          </button>
+          <button
+            *ngIf="isRejection"
+            [disabled]="isRejection && !f.valid"
+            id="rejectionBtn"
+            class="btn btn-primary"
+            (click)="modal.close(['Click Confirm', f.value])"
+          >
+            Reject
+          </button>
+          <button
+            class="btn btn-secondary"
+            (click)="modal.close('Click Close')"
+          >
+            Close
+          </button>
+        </div>
       </form>
     </div>
   </ng-template>
-
 </div>

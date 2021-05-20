@@ -49,8 +49,7 @@ ul {
     padding-left: 1em;
     padding-right: 1em;
     justify-content: center;
-    align-items: center;
-    padding-top: 70px;
+    align-items: flex-end;
   }
 
   .headerContainer div {

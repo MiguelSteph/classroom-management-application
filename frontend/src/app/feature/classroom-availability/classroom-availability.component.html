@@ -2,168 +2,268 @@
   <div class="headerContainer">
     <div class="form-group">
       <label for="site"><b>Campus</b></label>
-      <select required
-              [(ngModel)]="site"
-              (change)="updateBuildings()"
-              class="form-control"
-              id="site" name="site">
-        <option *ngFor="let siteItem of sitesInfo" value="{{siteItem.id}}">
-          {{siteItem.name}}
+      <select
+        required
+        [(ngModel)]="site"
+        (change)="updateBuildings()"
+        class="form-control"
+        id="site"
+        name="site"
+      >
+        <option *ngFor="let siteItem of sitesInfo" value="{{ siteItem.id }}">
+          {{ siteItem.name }}
         </option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="building"><b>Building</b></label>
-      <select required
-              [(ngModel)]="building"
-              (change)="updateClassrooms()"
-              class="form-control"
-              id="building" name="building">
-        <option *ngFor="let buildingItem of buildingList"
-                value="{{buildingItem.id}}" >
-          {{buildingItem.name}}
+      <select
+        required
+        [(ngModel)]="building"
+        (change)="updateClassrooms()"
+        class="form-control"
+        id="building"
+        name="building"
+      >
+        <option
+          *ngFor="let buildingItem of buildingList"
+          value="{{ buildingItem.id }}"
+        >
+          {{ buildingItem.name }}
         </option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="classroom"><b>Classroom</b></label>
-      <select required
-              [(ngModel)]="classroom"
-              (change)="loadCurrentAvailabilities()"
-              class="form-control"
-              id="classroom" name="classroom">
-        <option *ngFor="let classroomItem of classroomList"
-                value="{{classroomItem.id}}" >
-          {{classroomItem.name}}
+      <select
+        required
+        [(ngModel)]="classroom"
+        (change)="loadCurrentAvailabilities()"
+        class="form-control"
+        id="classroom"
+        name="classroom"
+      >
+        <option
+          *ngFor="let classroomItem of classroomList"
+          value="{{ classroomItem.id }}"
+        >
+          {{ classroomItem.name }}
         </option>
       </select>
     </div>
-
+    <div class="form-group">
+      <button [disabled]="!canLoadAvailabilities()" class="btn btn-primary">
+        Add New Availability
+      </button>
+    </div>
   </div>
 </div>
 
-<div class="row clearRowMargin availabilitiesContainer">
+<div
+  *ngIf="
+    showNewAvailabilityForm;
+    then newAvailabilityForm;
+    else classroomAvailabilities
+  "
+></div>
 
-  <div *ngIf="currentAvailabilities.length == 0" class="alert alert-warning noAvailabilityFound" role="alert">
-    No Availability found.
+<ng-template #newAvailabilityForm>
+  <new-classroom-availability></new-classroom-availability>
+</ng-template>
+
+<ng-template #classroomAvailabilities>
+  <div class="row clearRowMargin availabilitiesContainer">
+    <div
+      *ngIf="currentAvailabilities.length == 0"
+      class="alert alert-warning noAvailabilityFound"
+      role="alert"
+    >
+      No Availability found.
+    </div>
+
+    <table *ngIf="currentAvailabilities.length > 0" class="table">
+      <thead class="thead-dark">
+        <th>Period</th>
+        <th>Availability Time</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of currentAvailabilities">
+          <td>{{ item["startDate"] }} to {{ item["endDate"] }}</td>
+          <td>
+            <div class="availTimeRangeContainer">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <th>MONDAY</th>
+                    <td>
+                      <ul *ngIf="item['timeRangeByDayOfWeek']['MONDAY']">
+                        <li
+                          *ngFor="
+                            let timeRange of item['timeRangeByDayOfWeek'][
+                              'MONDAY'
+                            ]
+                          "
+                        >
+                          {{ formatTime(timeRange["fromTime"]) }} to
+                          {{ formatTime(timeRange["toTime"]) }}
+                        </li>
+                      </ul>
+                      <p *ngIf="!item['timeRangeByDayOfWeek']['MONDAY']">
+                        Not Available
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>TUESDAY</th>
+                    <td>
+                      <ul *ngIf="item['timeRangeByDayOfWeek']['TUESDAY']">
+                        <li
+                          *ngFor="
+                            let timeRange of item['timeRangeByDayOfWeek'][
+                              'TUESDAY'
+                            ]
+                          "
+                        >
+                          {{ formatTime(timeRange["fromTime"]) }} to
+                          {{ formatTime(timeRange["toTime"]) }}
+                        </li>
+                      </ul>
+                      <p *ngIf="!item['timeRangeByDayOfWeek']['TUESDAY']">
+                        Not Available
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>WEDNESDAY</th>
+                    <td>
+                      <ul *ngIf="item['timeRangeByDayOfWeek']['WEDNESDAY']">
+                        <li
+                          *ngFor="
+                            let timeRange of item['timeRangeByDayOfWeek'][
+                              'WEDNESDAY'
+                            ]
+                          "
+                        >
+                          {{ formatTime(timeRange["fromTime"]) }} to
+                          {{ formatTime(timeRange["toTime"]) }}
+                        </li>
+                      </ul>
+                      <p *ngIf="!item['timeRangeByDayOfWeek']['WEDNESDAY']">
+                        Not Available
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>THURSDAY</th>
+                    <td>
+                      <ul *ngIf="item['timeRangeByDayOfWeek']['THURSDAY']">
+                        <li
+                          *ngFor="
+                            let timeRange of item['timeRangeByDayOfWeek'][
+                              'THURSDAY'
+                            ]
+                          "
+                        >
+                          {{ formatTime(timeRange["fromTime"]) }} to
+                          {{ formatTime(timeRange["toTime"]) }}
+                        </li>
+                      </ul>
+                      <p *ngIf="!item['timeRangeByDayOfWeek']['THURSDAY']">
+                        Not Available
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>FRIDAY</th>
+                    <td>
+                      <ul *ngIf="item['timeRangeByDayOfWeek']['FRIDAY']">
+                        <li
+                          *ngFor="
+                            let timeRange of item['timeRangeByDayOfWeek'][
+                              'FRIDAY'
+                            ]
+                          "
+                        >
+                          {{ formatTime(timeRange["fromTime"]) }} to
+                          {{ formatTime(timeRange["toTime"]) }}
+                        </li>
+                      </ul>
+                      <p *ngIf="!item['timeRangeByDayOfWeek']['FRIDAY']">
+                        Not Available
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>SATURDAY</th>
+                    <td>
+                      <ul *ngIf="item['timeRangeByDayOfWeek']['SATURDAY']">
+                        <li
+                          *ngFor="
+                            let timeRange of item['timeRangeByDayOfWeek'][
+                              'SATURDAY'
+                            ]
+                          "
+                        >
+                          {{ formatTime(timeRange["fromTime"]) }} to
+                          {{ formatTime(timeRange["toTime"]) }}
+                        </li>
+                      </ul>
+                      <p *ngIf="!item['timeRangeByDayOfWeek']['SATURDAY']">
+                        Not Available
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>SUNDAY</th>
+                    <td>
+                      <ul *ngIf="item['timeRangeByDayOfWeek']['SUNDAY']">
+                        <li
+                          *ngFor="
+                            let timeRange of item['timeRangeByDayOfWeek'][
+                              'SUNDAY'
+                            ]
+                          "
+                        >
+                          {{ formatTime(timeRange["fromTime"]) }} to
+                          {{ formatTime(timeRange["toTime"]) }}
+                        </li>
+                      </ul>
+                      <p *ngIf="!item['timeRangeByDayOfWeek']['SUNDAY']">
+                        Not Available
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+          <td style="text-align: center">
+            <button type="button" class="btn btn-danger">Remove</button>
+            <button
+              type="button"
+              class="btn btn-warning m-2"
+              (click)="
+                shrinkAvailabilities(
+                  classroom,
+                  item['startDate'],
+                  item['endDate']
+                )
+              "
+            >
+              Shrink
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
-  <table *ngIf="currentAvailabilities.length > 0" class="table">
-    <thead class="thead-dark">
-      <th>Period</th>
-      <th>Availability Time</th>
-      <th>Actions</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of currentAvailabilities">
-        <td>{{item['startDate']}} to {{item['endDate']}}</td>
-        <td>
-          <div class="availTimeRangeContainer">
-          <table class="table">
-            <tbody>
-              <tr>
-                <th>MONDAY</th>
-                <td>
-                  <ul *ngIf="item['timeRangeByDayOfWeek']['MONDAY']">
-                    <li *ngFor="let timeRange of item['timeRangeByDayOfWeek']['MONDAY']">
-                      {{formatTime(timeRange['fromTime'])}} to {{formatTime(timeRange['toTime'])}}
-                    </li>
-                  </ul>
-                  <p *ngIf="!item['timeRangeByDayOfWeek']['MONDAY']">Not Available</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th>TUESDAY</th>
-                <td>
-                  <ul *ngIf="item['timeRangeByDayOfWeek']['TUESDAY']">
-                    <li *ngFor="let timeRange of item['timeRangeByDayOfWeek']['TUESDAY']">
-                      {{formatTime(timeRange['fromTime'])}} to {{formatTime(timeRange['toTime'])}}
-                    </li>
-                  </ul>
-                  <p *ngIf="!item['timeRangeByDayOfWeek']['TUESDAY']">Not Available</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th>WEDNESDAY</th>
-                <td>
-                  <ul *ngIf="item['timeRangeByDayOfWeek']['WEDNESDAY']">
-                    <li *ngFor="let timeRange of item['timeRangeByDayOfWeek']['WEDNESDAY']">
-                      {{formatTime(timeRange['fromTime'])}} to {{formatTime(timeRange['toTime'])}}
-                    </li>
-                  </ul>
-                  <p *ngIf="!item['timeRangeByDayOfWeek']['WEDNESDAY']">Not Available</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th>THURSDAY</th>
-                <td>
-                  <ul *ngIf="item['timeRangeByDayOfWeek']['THURSDAY']">
-                    <li *ngFor="let timeRange of item['timeRangeByDayOfWeek']['THURSDAY']">
-                      {{formatTime(timeRange['fromTime'])}} to {{formatTime(timeRange['toTime'])}}
-                    </li>
-                  </ul>
-                  <p *ngIf="!item['timeRangeByDayOfWeek']['THURSDAY']">Not Available</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th>FRIDAY</th>
-                <td>
-                  <ul *ngIf="item['timeRangeByDayOfWeek']['FRIDAY']">
-                    <li *ngFor="let timeRange of item['timeRangeByDayOfWeek']['FRIDAY']">
-                      {{formatTime(timeRange['fromTime'])}} to {{formatTime(timeRange['toTime'])}}
-                    </li>
-                  </ul>
-                  <p *ngIf="!item['timeRangeByDayOfWeek']['FRIDAY']">Not Available</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th>SATURDAY</th>
-                <td>
-                  <ul *ngIf="item['timeRangeByDayOfWeek']['SATURDAY']">
-                    <li *ngFor="let timeRange of item['timeRangeByDayOfWeek']['SATURDAY']">
-                      {{formatTime(timeRange['fromTime'])}} to {{formatTime(timeRange['toTime'])}}
-                    </li>
-                  </ul>
-                  <p *ngIf="!item['timeRangeByDayOfWeek']['SATURDAY']">Not Available</p>
-                </td>
-              </tr>
-
-              <tr>
-                <th>SUNDAY</th>
-                <td>
-                  <ul *ngIf="item['timeRangeByDayOfWeek']['SUNDAY']">
-                    <li *ngFor="let timeRange of item['timeRangeByDayOfWeek']['SUNDAY']">
-                      {{formatTime(timeRange['fromTime'])}} to {{formatTime(timeRange['toTime'])}}
-                    </li>
-                  </ul>
-                  <p *ngIf="!item['timeRangeByDayOfWeek']['SUNDAY']">Not Available</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          </div>
-        </td>
-        <td style="text-align: center">
-          <button type="button"
-                  class="btn btn-danger">
-            Remove
-          </button>
-          <button type="button"
-                  class="btn btn-warning m-2"
-                  (click)="shrinkAvailabilities(classroom, item['startDate'], item['endDate'])"
-          >
-            Shrink
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
+</ng-template>

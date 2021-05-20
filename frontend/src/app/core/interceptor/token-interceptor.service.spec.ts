@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { TokenInterceptorService } from './token-interceptor.service';
+import { TokenInterceptorService } from "./token-interceptor.service";
 
-describe('TokenInterceptorService', () => {
+describe("TokenInterceptorService", () => {
   let service: TokenInterceptorService;
 
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('TokenInterceptorService', () => {
     service = TestBed.inject(TokenInterceptorService);
   });
 
-  it('should be created', () => {
+  it("should be created", () => {
     expect(service).toBeTruthy();
   });
 });

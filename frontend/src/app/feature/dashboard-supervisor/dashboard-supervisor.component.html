@@ -1,34 +1,50 @@
 <div id="mainContainer">
   <div class="row">
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-primary shadow h-100 py-2"
-           [class.gray-background]="isPending()"
-           (click)="pendingClick()">
+      <div
+        class="card border-left-primary shadow h-100 py-2"
+        [class.gray-background]="isPending()"
+        (click)="pendingClick()"
+      >
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                Pending Requests ({{pendingCount}})
+              <div
+                class="
+                  text-xs
+                  font-weight-bold
+                  text-primary text-uppercase
+                  mb-1
+                "
+              >
+                Pending Requests ({{ pendingCount }})
               </div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getPendingPercentage()}}%</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                    {{ getPendingPercentage() }}%
+                  </div>
                 </div>
                 <div class="col">
                   <div class="progress progress-sm mr-2">
-                    <div class="progress-bar bg-info" role="progressbar"
-                         [ngStyle]="{'width': getPendingPercentage()+'%'}"
-                         [attr.aria-valuenow]=getPendingPercentage() aria-valuemin="0"
-                         aria-valuemax="100">
-                    </div>
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      [ngStyle]="{ width: getPendingPercentage() + '%' }"
+                      [attr.aria-valuenow]="getPendingPercentage()"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-auto">
-              <fa-icon class="fas fa-calendar fa-2x"
-                       [class.text-gray-300]="!isPending()"
-                       [icon]="pendingBookingRequestIcon"></fa-icon>
+              <fa-icon
+                class="fas fa-calendar fa-2x"
+                [class.text-gray-300]="!isPending()"
+                [icon]="pendingBookingRequestIcon"
+              ></fa-icon>
             </div>
           </div>
         </div>
@@ -36,34 +52,45 @@
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-danger shadow h-100 py-2"
-           [class.gray-background]="isRejected()"
-           (click)="rejectedClick()">
+      <div
+        class="card border-left-danger shadow h-100 py-2"
+        [class.gray-background]="isRejected()"
+        (click)="rejectedClick()"
+      >
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                Rejected Requests ({{rejectedCount}})
+              <div
+                class="text-xs font-weight-bold text-danger text-uppercase mb-1"
+              >
+                Rejected Requests ({{ rejectedCount }})
               </div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getRejectedPercentage()}}%</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                    {{ getRejectedPercentage() }}%
+                  </div>
                 </div>
                 <div class="col">
                   <div class="progress progress-sm mr-2">
-                    <div class="progress-bar bg-info" role="progressbar"
-                         [ngStyle]="{'width': getRejectedPercentage()+'%'}"
-                         [attr.aria-valuenow]=getRejectedPercentage() aria-valuemin="0"
-                         aria-valuemax="100">
-                    </div>
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      [ngStyle]="{ width: getRejectedPercentage() + '%' }"
+                      [attr.aria-valuenow]="getRejectedPercentage()"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-auto">
-              <fa-icon class="fas fa-calendar fa-2x"
-                       [class.text-gray-300]="!isRejected()"
-                       [icon]="pendingBookingRequestIcon"></fa-icon>
+              <fa-icon
+                class="fas fa-calendar fa-2x"
+                [class.text-gray-300]="!isRejected()"
+                [icon]="pendingBookingRequestIcon"
+              ></fa-icon>
             </div>
           </div>
         </div>
@@ -71,34 +98,50 @@
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-warning shadow h-100 py-2"
-           [class.gray-background]="isCancelled()"
-           (click)="cancelledClick()">
+      <div
+        class="card border-left-warning shadow h-100 py-2"
+        [class.gray-background]="isCancelled()"
+        (click)="cancelledClick()"
+      >
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                Cancelled Requests ({{cancelledCount}})
+              <div
+                class="
+                  text-xs
+                  font-weight-bold
+                  text-warning text-uppercase
+                  mb-1
+                "
+              >
+                Cancelled Requests ({{ cancelledCount }})
               </div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getCancelledPercentage()}}%</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                    {{ getCancelledPercentage() }}%
+                  </div>
                 </div>
                 <div class="col">
                   <div class="progress progress-sm mr-2">
-                    <div class="progress-bar bg-info" role="progressbar"
-                         [ngStyle]="{'width': getCancelledPercentage()+'%'}"
-                         [attr.aria-valuenow]=getCancelledPercentage() aria-valuemin="0"
-                         aria-valuemax="100">
-                    </div>
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      [ngStyle]="{ width: getCancelledPercentage() + '%' }"
+                      [attr.aria-valuenow]="getCancelledPercentage()"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-auto">
-              <fa-icon class="fas fa-calendar fa-2x"
-                       [class.text-gray-300]="!isCancelled()"
-                       [icon]="pendingBookingRequestIcon"></fa-icon>
+              <fa-icon
+                class="fas fa-calendar fa-2x"
+                [class.text-gray-300]="!isCancelled()"
+                [icon]="pendingBookingRequestIcon"
+              ></fa-icon>
             </div>
           </div>
         </div>
@@ -106,60 +149,89 @@
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-success shadow h-100 py-2"
-           [class.gray-background]="isApproved()"
-           (click)="approvedClick()">
+      <div
+        class="card border-left-success shadow h-100 py-2"
+        [class.gray-background]="isApproved()"
+        (click)="approvedClick()"
+      >
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                Approved Requests ({{approvedCount}})
+              <div
+                class="
+                  text-xs
+                  font-weight-bold
+                  text-success text-uppercase
+                  mb-1
+                "
+              >
+                Approved Requests ({{ approvedCount }})
               </div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{getApprovedPercentage()}}%</div>
+                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                    {{ getApprovedPercentage() }}%
+                  </div>
                 </div>
                 <div class="col">
                   <div class="progress progress-sm mr-2">
-                    <div class="progress-bar bg-info" role="progressbar"
-                         [ngStyle]="{'width': getApprovedPercentage()+'%'}"
-                         [attr.aria-valuenow]=getApprovedPercentage() aria-valuemin="0"
-                         aria-valuemax="100">
-                    </div>
+                    <div
+                      class="progress-bar bg-info"
+                      role="progressbar"
+                      [ngStyle]="{ width: getApprovedPercentage() + '%' }"
+                      [attr.aria-valuenow]="getApprovedPercentage()"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-auto">
-              <fa-icon class="fas fa-calendar fa-2x"
-                       [class.text-gray-300]="!isApproved()"
-                       [icon]="pendingBookingRequestIcon"></fa-icon>
+              <fa-icon
+                class="fas fa-calendar fa-2x"
+                [class.text-gray-300]="!isApproved()"
+                [icon]="pendingBookingRequestIcon"
+              ></fa-icon>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-    <ng-container [ngSwitch]="currentTab">
-      <ng-container *ngSwitchCase="'approved'" [ngTemplateOutlet]="approvedTable"></ng-container>
-      <ng-container *ngSwitchCase="'cancelled'" [ngTemplateOutlet]="cancelledTable"></ng-container>
-      <ng-container *ngSwitchCase="'rejected'" [ngTemplateOutlet]="rejectedTable"></ng-container>
-      <ng-container *ngSwitchCase="'pending'" [ngTemplateOutlet]="pendingTable"></ng-container>
-    </ng-container>
+  <ng-container [ngSwitch]="currentTab">
+    <ng-container
+      *ngSwitchCase="'approved'"
+      [ngTemplateOutlet]="approvedTable"
+    ></ng-container>
+    <ng-container
+      *ngSwitchCase="'cancelled'"
+      [ngTemplateOutlet]="cancelledTable"
+    ></ng-container>
+    <ng-container
+      *ngSwitchCase="'rejected'"
+      [ngTemplateOutlet]="rejectedTable"
+    ></ng-container>
+    <ng-container
+      *ngSwitchCase="'pending'"
+      [ngTemplateOutlet]="pendingTable"
+    ></ng-container>
+  </ng-container>
 
-    <ng-template #approvedTable>
-      <approved-request-list></approved-request-list>
-    </ng-template>
-    <ng-template #cancelledTable>
-      <cancelled-request-list></cancelled-request-list>
-    </ng-template>
-    <ng-template #rejectedTable>
-      <rejected-request-list></rejected-request-list>
-    </ng-template>
-    <ng-template #pendingTable>
-      <pending-request-list
-        (requestApproved)="onRequestApproved()"
-        (requestRejected)="onRequestRejected()">
-      </pending-request-list>
-    </ng-template>
+  <ng-template #approvedTable>
+    <approved-request-list></approved-request-list>
+  </ng-template>
+  <ng-template #cancelledTable>
+    <cancelled-request-list></cancelled-request-list>
+  </ng-template>
+  <ng-template #rejectedTable>
+    <rejected-request-list></rejected-request-list>
+  </ng-template>
+  <ng-template #pendingTable>
+    <pending-request-list
+      (requestApproved)="onRequestApproved()"
+      (requestRejected)="onRequestRejected()"
+    >
+    </pending-request-list>
+  </ng-template>
 </div>

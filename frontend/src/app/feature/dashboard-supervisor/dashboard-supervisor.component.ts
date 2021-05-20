@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import {BookingRequestService} from "../../core/services/booking-request.service";
-import {faFileAlt, faPlusSquare} from "@fortawesome/free-solid-svg-icons";
+import { Component, OnInit } from "@angular/core";
+import { BookingRequestService } from "../../core/services/booking-request.service";
+import { faFileAlt, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
-  selector: 'dashboard-supervisor',
-  templateUrl: './dashboard-supervisor.component.html',
-  styleUrls: ['./dashboard-supervisor.component.css']
+  selector: "dashboard-supervisor",
+  templateUrl: "./dashboard-supervisor.component.html",
+  styleUrls: ["./dashboard-supervisor.component.css"],
 })
 export class DashboardSupervisorComponent implements OnInit {
-
   pendingBookingRequestIcon = faFileAlt;
 
-  currentTab: string = 'pending';
+  currentTab: string = "pending";
 
   pendingCount: number;
   rejectedCount: number;
@@ -19,21 +18,20 @@ export class DashboardSupervisorComponent implements OnInit {
   approvedCount: number;
   totalCount: number;
 
-  constructor(private bookingRequestService: BookingRequestService) { }
+  constructor(private bookingRequestService: BookingRequestService) {}
 
   ngOnInit(): void {
     this.loadSummary();
   }
 
   loadSummary() {
-    this.bookingRequestService.getSummary()
-      .subscribe(summary => {
-        this.pendingCount = summary['pendingCount'];
-        this.rejectedCount = summary['rejectedCount'];
-        this.cancelledCount = summary['cancelledCount'];
-        this.approvedCount = summary['approvedCount'];
-        this.totalCount = summary['totalCount'];
-      })
+    this.bookingRequestService.getSummary().subscribe((summary) => {
+      this.pendingCount = summary["pendingCount"];
+      this.rejectedCount = summary["rejectedCount"];
+      this.cancelledCount = summary["cancelledCount"];
+      this.approvedCount = summary["approvedCount"];
+      this.totalCount = summary["totalCount"];
+    });
   }
 
   getApprovedPercentage() {
@@ -66,35 +64,35 @@ export class DashboardSupervisorComponent implements OnInit {
   }
 
   public isPending() {
-    return this.currentTab === 'pending';
+    return this.currentTab === "pending";
   }
 
   public pendingClick() {
-    this.currentTab = 'pending';
+    this.currentTab = "pending";
   }
 
   public rejectedClick() {
-    this.currentTab = 'rejected';
+    this.currentTab = "rejected";
   }
 
   public isRejected() {
-    return this.currentTab === 'rejected';
+    return this.currentTab === "rejected";
   }
 
   public cancelledClick() {
-    this.currentTab = 'cancelled';
+    this.currentTab = "cancelled";
   }
 
   public isCancelled() {
-    return this.currentTab === 'cancelled';
+    return this.currentTab === "cancelled";
   }
 
   public approvedClick() {
-    this.currentTab = 'approved';
+    this.currentTab = "approved";
   }
 
   public isApproved() {
-    return this.currentTab === 'approved';
+    return this.currentTab === "approved";
   }
 
   onRequestApproved() {

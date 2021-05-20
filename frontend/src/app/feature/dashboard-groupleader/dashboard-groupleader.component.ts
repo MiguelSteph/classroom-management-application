@@ -1,19 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import {faFileAlt, faPlusSquare} from "@fortawesome/free-solid-svg-icons";
-import {BookingRequestService} from "../../core/services/booking-request.service";
+import { Component, OnInit } from "@angular/core";
+import { faFileAlt, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { BookingRequestService } from "../../core/services/booking-request.service";
 
 @Component({
-  selector: 'dashboard-groupleader',
-  templateUrl: './dashboard-groupleader.component.html',
-  styleUrls: ['./dashboard-groupleader.component.css']
+  selector: "dashboard-groupleader",
+  templateUrl: "./dashboard-groupleader.component.html",
+  styleUrls: ["./dashboard-groupleader.component.css"],
 })
 export class DashboardGroupleaderComponent implements OnInit {
-
   showCreateBookingRequestForm = false;
   addBookingRequestIcon = faPlusSquare;
   pendingBookingRequestIcon = faFileAlt;
 
-  currentTab: string = 'pending';
+  currentTab: string = "pending";
 
   pendingCount: number;
   rejectedCount: number;
@@ -21,7 +20,7 @@ export class DashboardGroupleaderComponent implements OnInit {
   approvedCount: number;
   totalCount: number;
 
-  constructor(private bookingRequestService: BookingRequestService) { }
+  constructor(private bookingRequestService: BookingRequestService) {}
 
   ngOnInit(): void {
     this.showCreateBookingRequestForm = false;
@@ -29,14 +28,13 @@ export class DashboardGroupleaderComponent implements OnInit {
   }
 
   loadSummary() {
-    this.bookingRequestService.getSummary()
-      .subscribe(summary => {
-        this.pendingCount = summary['pendingCount'];
-        this.rejectedCount = summary['rejectedCount'];
-        this.cancelledCount = summary['cancelledCount'];
-        this.approvedCount = summary['approvedCount'];
-        this.totalCount = summary['totalCount'];
-      })
+    this.bookingRequestService.getSummary().subscribe((summary) => {
+      this.pendingCount = summary["pendingCount"];
+      this.rejectedCount = summary["rejectedCount"];
+      this.cancelledCount = summary["cancelledCount"];
+      this.approvedCount = summary["approvedCount"];
+      this.totalCount = summary["totalCount"];
+    });
   }
 
   onRequestCancelled() {
@@ -79,35 +77,35 @@ export class DashboardGroupleaderComponent implements OnInit {
   }
 
   public isPending() {
-    return this.currentTab === 'pending';
+    return this.currentTab === "pending";
   }
 
   public pendingClick() {
-    this.currentTab = 'pending';
+    this.currentTab = "pending";
   }
 
   public rejectedClick() {
-    this.currentTab = 'rejected';
+    this.currentTab = "rejected";
   }
 
   public isRejected() {
-    return this.currentTab === 'rejected';
+    return this.currentTab === "rejected";
   }
 
   public cancelledClick() {
-    this.currentTab = 'cancelled';
+    this.currentTab = "cancelled";
   }
 
   public isCancelled() {
-    return this.currentTab === 'cancelled';
+    return this.currentTab === "cancelled";
   }
 
   public approvedClick() {
-    this.currentTab = 'approved';
+    this.currentTab = "approved";
   }
 
   public isApproved() {
-    return this.currentTab === 'approved';
+    return this.currentTab === "approved";
   }
 
   public showCreateRequestForm() {
@@ -117,5 +115,4 @@ export class DashboardGroupleaderComponent implements OnInit {
   public hideCreateRequestForm() {
     this.showCreateBookingRequestForm = false;
   }
-
 }

@@ -1,5 +1,4 @@
 <div class="row" id="formContainer">
-
   <div class="px-1 col-sm">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">Create Booking Request</h1>
@@ -7,165 +6,243 @@
     <div class="card">
       <div class="card-body">
         <form #f="ngForm" (ngSubmit)="createBookingRequest(f.value)">
-        <div class="row">
+          <div class="row">
+            <div class="col form-group">
+              <label for="site"><b>Campus</b></label>
+              <select
+                required
+                [(ngModel)]="site"
+                (change)="updateBuildings()"
+                class="form-control"
+                id="site"
+                name="site"
+              >
+                <option
+                  *ngFor="let siteItem of sitesInfo"
+                  value="{{ siteItem.id }}"
+                >
+                  {{ siteItem.name }}
+                </option>
+              </select>
+            </div>
 
-          <div class="col form-group">
-            <label for="site"><b>Campus</b></label>
-            <select required
-                    [(ngModel)]="site"
-                    (change)="updateBuildings()"
-                    class="form-control"
-                    id="site" name="site">
-              <option *ngFor="let siteItem of sitesInfo" value="{{siteItem.id}}">
-                {{siteItem.name}}
-              </option>
-            </select>
+            <div class="col form-group">
+              <label for="building"><b>Building</b></label>
+              <select
+                required
+                [(ngModel)]="building"
+                (change)="updateClassrooms()"
+                class="form-control"
+                id="building"
+                name="building"
+              >
+                <option
+                  *ngFor="let buildingItem of buildingList"
+                  value="{{ buildingItem.id }}"
+                >
+                  {{ buildingItem.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col form-group">
+              <label for="classroom"><b>Classroom</b></label>
+              <select
+                required
+                [(ngModel)]="classroom"
+                (change)="loadAvailabilities()"
+                class="form-control"
+                id="classroom"
+                name="classroom"
+              >
+                <option
+                  *ngFor="let classroomItem of classroomList"
+                  value="{{ classroomItem.id }}"
+                >
+                  {{ classroomItem.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col form-group">
+              <label for="bookingDate"><b>Date</b></label>
+              <div class="input-group">
+                <input
+                  required
+                  [(ngModel)]="bookingDate"
+                  ngbDatepicker
+                  #d="ngbDatepicker"
+                  [markDisabled]="dateAvail"
+                  (dateSelect)="loadAvailabilities()"
+                  readonly
+                  class="form-control"
+                  id="bookingDate"
+                  name="bookingDate"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary calendar"
+                    (click)="d.toggle()"
+                    type="button"
+                  >
+                    <fa-icon [icon]="calendarAlt"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="line"></div>
           </div>
 
-          <div class="col form-group">
-            <label for="building"><b>Building</b></label>
-            <select required
-                    [(ngModel)]="building"
-                    (change)="updateClassrooms()"
-                    class="form-control"
-                    id="building" name="building">
-              <option *ngFor="let buildingItem of buildingList"
-                      value="{{buildingItem.id}}" >
-                {{buildingItem.name}}
-              </option>
-            </select>
+          <div class="row">
+            <div class="col-xl-8 px-5">
+              <div
+                *ngIf="!hasTimeAvailability() && !classroom"
+                class="alert alert-warning"
+                role="alert"
+              >
+                No classroom selected.
+              </div>
+              <div
+                *ngIf="!hasTimeAvailability() && classroom"
+                class="alert alert-danger"
+                role="alert"
+              >
+                Selected classroom is not available. Please change the date or
+                the classroom.
+              </div>
+              <ul
+                *ngIf="hasTimeAvailability()"
+                class="list-group list-group-flush"
+              >
+                <li
+                  class="
+                    list-group-item
+                    d-flex
+                    justify-content-between
+                    align-items-start
+                  "
+                >
+                  <h5 class="fw-bold">Classroom Availability</h5>
+                </li>
+                <li
+                  class="list-group-item px-5"
+                  *ngFor="let timeAvailable of timeAvailabilities"
+                >
+                  {{ displayHours(timeAvailable["fromTime"]) }} &nbsp; to &nbsp;
+                  {{ displayHours(timeAvailable["toTime"]) }}
+                </li>
+              </ul>
+            </div>
+            <div class="line"></div>
           </div>
 
-          <div class="col form-group">
-            <label for="classroom"><b>Classroom</b></label>
-            <select required
-                    [(ngModel)]="classroom"
-                    (change)="loadAvailabilities()"
-                    class="form-control"
-                    id="classroom" name="classroom">
-              <option *ngFor="let classroomItem of classroomList"
-                      value="{{classroomItem.id}}" >
-                {{classroomItem.name}}
-              </option>
-            </select>
-          </div>
-
-          <div class="col form-group">
-            <label for="bookingDate"><b>Date</b></label>
-            <div class="input-group">
-              <input required
-                     [(ngModel)]="bookingDate"
-                     ngbDatepicker  #d="ngbDatepicker"
-                     [markDisabled]="dateAvail"
-                     (dateSelect)="loadAvailabilities()"
-                     readonly
-                     class="form-control"
-                     id="bookingDate" name="bookingDate" />
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon [icon]="calendarAlt"></fa-icon></button>
+          <div *ngIf="showInvalidTimeRangeError" class="row">
+            <div class="col-xl-8 px-5">
+              <div class="alert alert-warning" role="alert">
+                Invalid Time Range.
               </div>
             </div>
           </div>
-          <div class="line"></div>
-        </div>
 
-        <div class="row">
-          <div class="col-xl-8 px-5">
-            <div *ngIf="!hasTimeAvailability() && !classroom" class="alert alert-warning" role="alert">
-              No classroom selected.
-            </div>
-            <div *ngIf="!hasTimeAvailability() && classroom" class="alert alert-danger" role="alert">
-              Selected classroom is not available. Please change the date or the classroom.
-            </div>
-            <ul *ngIf="hasTimeAvailability()" class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-between align-items-start">
-                <h5 class="fw-bold">Classroom Availability</h5>
-              </li>
-              <li class="list-group-item px-5"
-                  *ngFor="let timeAvailable of timeAvailabilities">
-                {{displayHours(timeAvailable['fromTime'])}} &nbsp; to &nbsp; {{displayHours(timeAvailable['toTime'])}}
-              </li>
-            </ul>
-          </div>
-          <div class="line"></div>
-        </div>
-
-        <div *ngIf="showInvalidTimeRangeError" class="row">
-          <div class="col-xl-8 px-5">
-            <div class=" alert alert-warning" role="alert">
-              Invalid Time Range.
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="hasTimeAvailability() && classroom"
-             class="row">
-          <div class="col form-group">
-            <label for="startHour"><b>Start Hour</b></label>
-            <select required
-                    [(ngModel)]="startHour"
-                    (change)="isTimeRangeValid()"
-                    class="form-control"
-                    id="startHour" name="startHour">
-              <option *ngFor="let timeItem of startOrEndTimes"
-                      value="{{timeItem}}">
-                {{timeItem}}H
-              </option>
-            </select>
-          </div>
-
-          <div class="col form-group">
-            <label for="endHour"><b>End Hour</b></label>
-            <select required
-                    [(ngModel)]="endHour"
-                    (change)="isTimeRangeValid()"
-                    class="form-control"
-                    id="endHour" name="endHour">
-              <option *ngFor="let timeItem of startOrEndTimes"
-                      value="{{timeItem}}">
-                {{timeItem}}H
-            </select>
-          </div>
-
-          <div class="col form-group">
-            <label for="supervisor"><b>Supervisor</b></label>
-            <select required
-                    [(ngModel)]="supervisor"
-                    class="form-control"
-                    id="supervisor" name="supervisor">
-              <option *ngFor="let supItem of supervisorsList"
-                      value="{{supItem['id']}}">
-                {{supItem['firstName']}} {{supItem['lastName']}}
-              </option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xl-8">
-            <div class="form-group">
-              <label for="bookingPurpose"><b>Booking Purpose</b></label>
-              <textarea
+          <div *ngIf="hasTimeAvailability() && classroom" class="row">
+            <div class="col form-group">
+              <label for="startHour"><b>Start Hour</b></label>
+              <select
                 required
-                ngModel
+                [(ngModel)]="startHour"
+                (change)="isTimeRangeValid()"
                 class="form-control"
-                id="bookingPurpose" name="bookingPurpose"
-                rows="3" maxlength="200"></textarea>
+                id="startHour"
+                name="startHour"
+              >
+                <option
+                  *ngFor="let timeItem of startOrEndTimes"
+                  value="{{ timeItem }}"
+                >
+                  {{ timeItem }}H
+                </option>
+              </select>
+            </div>
+
+            <div class="col form-group">
+              <label for="endHour"><b>End Hour</b></label>
+              <select
+                required
+                [(ngModel)]="endHour"
+                (change)="isTimeRangeValid()"
+                class="form-control"
+                id="endHour"
+                name="endHour"
+              >
+                <option
+                  *ngFor="let timeItem of startOrEndTimes"
+                  value="{{ timeItem }}"
+                >
+                  {{ timeItem }}H
+                </option>
+              </select>
+            </div>
+
+            <div class="col form-group">
+              <label for="supervisor"><b>Supervisor</b></label>
+              <select
+                required
+                [(ngModel)]="supervisor"
+                class="form-control"
+                id="supervisor"
+                name="supervisor"
+              >
+                <option
+                  *ngFor="let supItem of supervisorsList"
+                  value="{{ supItem['id'] }}"
+                >
+                  {{ supItem["firstName"] }} {{ supItem["lastName"] }}
+                </option>
+              </select>
             </div>
           </div>
-        </div>
 
-        <div class="row-cols-1 float-right"><br/>
-          <button type="reset" class="btn btn-secondary mb-2"
-                  (click)="closeCreateRequestForm()">Cancel</button> &nbsp;&nbsp;
-          <button [disabled]="!f.valid || showInvalidTimeRangeError || (!hasTimeAvailability() && classroom)"
-                  type="submit" class="btn btn-primary mb-2">Submit</button>
-        </div>
+          <div class="row">
+            <div class="col-xl-8">
+              <div class="form-group">
+                <label for="bookingPurpose"><b>Booking Purpose</b></label>
+                <textarea
+                  required
+                  ngModel
+                  class="form-control"
+                  id="bookingPurpose"
+                  name="bookingPurpose"
+                  rows="3"
+                  maxlength="200"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row-cols-1 float-right">
+            <br />
+            <button
+              type="reset"
+              class="btn btn-secondary mb-2"
+              (click)="closeCreateRequestForm()"
+            >
+              Cancel
+            </button>
+            &nbsp;&nbsp;
+            <button
+              [disabled]="
+                !f.valid ||
+                showInvalidTimeRangeError ||
+                (!hasTimeAvailability() && classroom)
+              "
+              type="submit"
+              class="btn btn-primary mb-2"
+            >
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>
   </div>
-
 </div>
-
-

@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ToastService {
-
   toasts: any[] = [];
 
-  constructor() { }
+  constructor() {}
 
   // Push new Toasts to array with content and options
   show(text: string, options: any = {}) {
@@ -16,6 +15,6 @@ export class ToastService {
 
   // Callback method to remove Toast DOM element from view
   remove(toast) {
-    this.toasts = this.toasts.filter(t => t !== toast);
+    this.toasts = this.toasts.filter((t) => t !== toast);
   }
 }

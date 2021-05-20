@@ -18,11 +18,12 @@ import {RouterModule} from "@angular/router";
 import { DashboardSupervisorComponent } from './dashboard-supervisor/dashboard-supervisor.component';
 import { BookingRequestDetailComponent } from './booking-request-detail/booking-request-detail.component';
 import { ClassroomAvailabilityComponent } from './classroom-availability/classroom-availability.component';
+import { NewClassroomAvailabilityComponent } from './new-classroom-availability/new-classroom-availability.component';
 
 
 
 @NgModule({
-    declarations: [LoginComponent, BookingRequestCreationByClassroomComponent, DashboardGroupleaderComponent, MenuComponent, HomeDashboardComponent, ToatsComponent, PendingRequestListComponent, CancelledRequestListComponent, ApprovedRequestListComponent, RejectedRequestListComponent, DashboardSupervisorComponent, BookingRequestDetailComponent, ClassroomAvailabilityComponent],
+    declarations: [LoginComponent, BookingRequestCreationByClassroomComponent, DashboardGroupleaderComponent, MenuComponent, HomeDashboardComponent, ToatsComponent, PendingRequestListComponent, CancelledRequestListComponent, ApprovedRequestListComponent, RejectedRequestListComponent, DashboardSupervisorComponent, BookingRequestDetailComponent, ClassroomAvailabilityComponent, NewClassroomAvailabilityComponent],
   exports: [
     LoginComponent,
     BookingRequestCreationByClassroomComponent,
