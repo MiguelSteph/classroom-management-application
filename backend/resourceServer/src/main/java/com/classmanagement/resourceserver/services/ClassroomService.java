@@ -1,6 +1,7 @@
 package com.classmanagement.resourceserver.services;
 
 import com.classmanagement.resourceserver.dtos.ClassroomAvailabilityDto;
+import com.classmanagement.resourceserver.dtos.NewClassroomAvailabilityDto;
 import com.classmanagement.resourceserver.dtos.TimeRangeDto;
 import com.classmanagement.resourceserver.dtos.UserDto;
 
@@ -17,4 +18,7 @@ public interface ClassroomService {
 
     void shrinkClassroomAvailability(int classroomId, LocalDate fromDate, LocalDate toDate);
 
+    boolean isDateRangeValid(int classroomId, LocalDate fromDate, LocalDate toDate);
+
+    void createClassroomAvailabilities(NewClassroomAvailabilityDto newClassroomAvailabilityDto);
 }

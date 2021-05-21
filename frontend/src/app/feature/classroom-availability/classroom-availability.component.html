@@ -6,6 +6,7 @@
         required
         [(ngModel)]="site"
         (change)="updateBuildings()"
+        [disabled]="showNewAvailabilityForm"
         class="form-control"
         id="site"
         name="site"
@@ -22,6 +23,7 @@
         required
         [(ngModel)]="building"
         (change)="updateClassrooms()"
+        [disabled]="showNewAvailabilityForm"
         class="form-control"
         id="building"
         name="building"
@@ -41,6 +43,7 @@
         required
         [(ngModel)]="classroom"
         (change)="loadCurrentAvailabilities()"
+        [disabled]="showNewAvailabilityForm"
         class="form-control"
         id="classroom"
         name="classroom"
@@ -54,8 +57,20 @@
       </select>
     </div>
     <div class="form-group">
-      <button [disabled]="!canLoadAvailabilities()" class="btn btn-primary">
-        Add New Availability
+      <button
+        [disabled]="!canLoadAvailabilities()"
+        (click)="showAddNewAvailabilityForm()"
+        class="btn"
+        [ngClass]="{
+          'btn-primary': !showNewAvailabilityForm,
+          'btn-warning': showNewAvailabilityForm
+        }"
+      >
+        {{
+          showNewAvailabilityForm
+            ? "Close Availability Form"
+            : "Add New Availability"
+        }}
       </button>
     </div>
   </div>
@@ -70,7 +85,10 @@
 ></div>
 
 <ng-template #newAvailabilityForm>
-  <new-classroom-availability></new-classroom-availability>
+  <new-classroom-availability
+    [classroomId]="classroom"
+    (closeFormEvent)="handleFormClosed()"
+  ></new-classroom-availability>
 </ng-template>
 
 <ng-template #classroomAvailabilities>
@@ -247,7 +265,7 @@
             </div>
           </td>
           <td style="text-align: center">
-            <button type="button" class="btn btn-danger">Remove</button>
+            <!--            <button type="button" class="btn btn-danger">Remove</button>-->
             <button
               type="button"
               class="btn btn-warning m-2"

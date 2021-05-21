@@ -1,17 +1,17 @@
 package com.classmanagement.resourceserver.services.implementations;
 
-import com.classmanagement.resourceserver.dtos.ClassroomAvailabilityDto;
-import com.classmanagement.resourceserver.dtos.TimeRangeDto;
-import com.classmanagement.resourceserver.dtos.UserDto;
+import com.classmanagement.resourceserver.dtos.*;
 import com.classmanagement.resourceserver.entities.*;
 import com.classmanagement.resourceserver.repositories.AvailableTimeIntervalRepository;
 import com.classmanagement.resourceserver.repositories.BookingRequestRepository;
 import com.classmanagement.resourceserver.repositories.ClassroomRepository;
+import com.classmanagement.resourceserver.repositories.UserRepository;
 import com.classmanagement.resourceserver.services.ClassroomService;
 import com.classmanagement.resourceserver.util.mappers.DtoMapperUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -24,6 +24,58 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final ClassroomRepository classroomRepository;
     private final AvailableTimeIntervalRepository availableTimeIntervalRepository;
     private final BookingRequestRepository bookingRequestRepository;
+    private final UserRepository userRepository;
+
+    @Override
+    public void createClassroomAvailabilities(NewClassroomAvailabilityDto availabilityDto) {
+        if (this.isDateRangeValid(availabilityDto.getClassroomId(),
+                availabilityDto.getFromDate(), availabilityDto.getToDate())) {
+            List<AvailableTimeInterval> availableTimeIntervalList = new ArrayList<>();
+            Classroom classroom = classroomRepository.getOne(availabilityDto.getClassroomId());
+            User supervisor = userRepository.findByEmail(availabilityDto.getSupervisorUsername());
+            for (Map.Entry<String, List<RangeDto>> timeRangesEntry : availabilityDto.getTimeRanges().entrySet()) {
+                for (RangeDto rangeDto : timeRangesEntry.getValue()) {
+                    AvailableTimeInterval availableTimeInterval = new AvailableTimeInterval();
+                    availableTimeInterval.setClassroom(classroom);
+                    availableTimeInterval.setSupervisor(supervisor);
+                    availableTimeInterval.setCreatedDate(LocalDate.now());
+                    availableTimeInterval.setFromDate(availabilityDto.getFromDate());
+                    availableTimeInterval.setToDate(availabilityDto.getToDate());
+                    availableTimeInterval.setFromTime(LocalTime.of(rangeDto.getStart(), 0));
+                    availableTimeInterval.setToTime(LocalTime.of(rangeDto.getEnd(), 0));
+                    availableTimeInterval.setWeekDay(DayOfWeek.valueOf(timeRangesEntry.getKey().toUpperCase()));
+                    availableTimeIntervalList.add(availableTimeInterval);
+                }
+            }
+            availableTimeIntervalRepository.saveAll(availableTimeIntervalList);
+        } else {
+            throw new RuntimeException("Invalid Date Range");
+        }
+    }
+
+    @Override
+    public boolean isDateRangeValid(int classroomId, LocalDate fromDate, LocalDate toDate) {
+        List<AvailableTimeInterval> availableTimeIntervals = availableTimeIntervalRepository
+                .getClassroomAllCurrentAvailability(classroomId, LocalDate.now());
+
+        for (AvailableTimeInterval item : availableTimeIntervals) {
+            if (isOverlapInterval(item, fromDate, toDate)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isOverlapInterval(AvailableTimeInterval interval, LocalDate fromDate, LocalDate toDate) {
+        final boolean fromDateIsInInterval = interval.getFromDate().compareTo(fromDate) <= 0
+                && interval.getToDate().compareTo(fromDate) >= 0;
+        final boolean toDateIsInInterval = interval.getFromDate().compareTo(toDate) <= 0
+                && interval.getToDate().compareTo(toDate) >= 0;
+        final boolean intervalIsIn = interval.getFromDate().compareTo(fromDate) >=0
+                && interval.getToDate().compareTo(toDate) <= 0;
+        return fromDateIsInInterval || toDateIsInInterval || intervalIsIn;
+    }
 
     @Override
     public void shrinkClassroomAvailability(int classroomId, LocalDate fromDate, LocalDate toDate) {
@@ -75,7 +127,8 @@ public class ClassroomServiceImpl implements ClassroomService {
         }
 
         List<ClassroomAvailabilityDto> availabilityDtoList = new ArrayList<>(map.values());
-        availabilityDtoList.forEach(item -> item.getTimeRangeByDayOfWeek().forEach((key, value) -> Collections.sort(value)));
+        availabilityDtoList.forEach(item ->
+                item.getTimeRangeByDayOfWeek().forEach((key, value) -> Collections.sort(value)));
 
         return availabilityDtoList;
     }

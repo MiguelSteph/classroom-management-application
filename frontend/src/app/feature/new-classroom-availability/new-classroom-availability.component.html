@@ -1,1 +1,195 @@
-<p>new-classroom-availability works!</p>
+<form #f="ngForm">
+  <div class="line"></div>
+  <div class="row clearRowMargin headerContainer">
+    <div class="col form-group">
+      <label for="availFromDate"><b>Start</b></label>
+      <div class="input-group date-group-input">
+        <input
+          required
+          [(ngModel)]="availFromDate"
+          (ngModelChange)="globalReset()"
+          ngbDatepicker
+          #d="ngbDatepicker"
+          [markDisabled]="dateAvail"
+          readonly
+          class="form-control"
+          id="availFromDate"
+          name="availFromDate"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary calendar"
+            (click)="d.toggle()"
+            type="button"
+          >
+            <fa-icon [icon]="calendarAlt"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col form-group">
+      <label for="availToDate"><b>End</b></label>
+      <div class="input-group date-group-input">
+        <input
+          required
+          [(ngModel)]="availToDate"
+          (ngModelChange)="globalReset()"
+          ngbDatepicker
+          #dd="ngbDatepicker"
+          [markDisabled]="dateAvail"
+          readonly
+          class="form-control"
+          id="availToDate"
+          name="availToDate"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary calendar"
+            (click)="dd.toggle()"
+            type="button"
+          >
+            <fa-icon [icon]="calendarAlt"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <button
+      [disabled]="!checkValidDateRange()"
+      class="btn btn-info set-time-range-btn"
+      (click)="checkAvailableDays()"
+    >
+      Set Time Range
+    </button>
+  </div>
+  <div class="row clearRowMargin">
+    <div
+      class="alert alert-danger error-div"
+      role="alert"
+      *ngIf="!checkValidDateRange()"
+    >
+      Invalid Date Range. Start Date should be smaller or equal to the End Date.
+    </div>
+    <div
+      class="alert alert-danger error-div"
+      role="alert"
+      *ngIf="invalidDateRange"
+    >
+      Invalid Date Range. Current Date range overlap with an existing one.
+    </div>
+  </div>
+
+  <div *ngFor="let day of WEEK_DAYS">
+    <div class="card border-secondary" *ngIf="has[day]">
+      <div class="card-header bg-secondary text-white">
+        <b>{{ getDayName(day) }} Time Ranges</b>
+      </div>
+      <div class="card-body">
+        <div class="row clearRowMargin">
+          <div
+            class="alert alert-danger error-div"
+            role="alert"
+            *ngIf="timeRangeOverlap[day]"
+          >
+            Invalid Time Range or Current time overlap with an already defined
+            time range.
+          </div>
+
+          <div
+            class="alert alert-danger error-div"
+            role="alert"
+            *ngIf="disableAll[day]"
+          >
+            No time range available.
+          </div>
+        </div>
+        <div class="row time-range-form">
+          <div class="col form-group">
+            <label><b>Start Time</b></label>
+            <select
+              required
+              [(ngModel)]="fromTime[day]"
+              (change)="canAddTimeRange(day)"
+              [disabled]="disableAll[day]"
+              class="form-control"
+              id="{{ getDayName(day) + 'fromTime' }}"
+              name="{{ getDayName(day) + 'fromTime' }}"
+            >
+              <option *ngFor="let item of times" value="{{ item }}">
+                {{ item + ":00" }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col form-group">
+            <label><b>To Time</b></label>
+            <select
+              required
+              [(ngModel)]="toTime[day]"
+              (change)="canAddTimeRange(day)"
+              [disabled]="disableAll[day]"
+              class="form-control"
+              id="{{ getDayName(day) + 'toTime' }}"
+              name="{{ getDayName(day) + 'toTime' }}"
+            >
+              <option *ngFor="let item of times" value="{{ item }}">
+                {{ item + ":00" }}
+              </option>
+            </select>
+          </div>
+
+          <button
+            [disabled]="timeRangeOverlap[day] || disableAll[day]"
+            class="btn btn-outline-primary add-time-range-btn"
+            (click)="addTimeRange(day)"
+          >
+            Add
+          </button>
+        </div>
+
+        <table class="table" *ngIf="timeRanges[day].length > 0">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Start Time</th>
+              <th scope="col">End Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let timeRange of timeRanges[day]; index as i">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ timeRange[0] + ":00" }}</td>
+              <td>{{ timeRange[1] + ":00" }}</td>
+              <td>
+                <button
+                  class="btn btn-danger"
+                  (click)="removeFromTimeRanges(day, timeRange)"
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row clearRowMargin btn-container">
+    <button
+      type="submit"
+      class="btn btn-primary m-2"
+      (click)="createClassroomAvailability(f.value)"
+      [disabled]="!canSubmit()"
+    >
+      Submit
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-danger m-2"
+      (click)="closeForm()"
+    >
+      Close
+    </button>
+  </div>
+</form>

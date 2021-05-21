@@ -1,6 +1,7 @@
 package com.classmanagement.resourceserver.rest;
 
 import com.classmanagement.resourceserver.dtos.ClassroomAvailabilityDto;
+import com.classmanagement.resourceserver.dtos.NewClassroomAvailabilityDto;
 import com.classmanagement.resourceserver.dtos.TimeRangeDto;
 import com.classmanagement.resourceserver.dtos.UserDto;
 import com.classmanagement.resourceserver.services.ClassroomService;
@@ -20,17 +21,29 @@ public class ClassroomResource {
 
     private final ClassroomService classroomService;
 
+    @PostMapping("/classrooms/{id}/availabilities")
+    public void createClassroomAvailability(@RequestBody NewClassroomAvailabilityDto newClassroomAvailabilityDto) {
+        classroomService.createClassroomAvailabilities(newClassroomAvailabilityDto);
+    }
+
+    @GetMapping("/classrooms/{id}/availabilities/isDateRangeValid")
+    public boolean isDateRangeValid(@PathVariable(name = "id") int classroomId,
+            @RequestParam(name = "fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(name = "toDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        return classroomService.isDateRangeValid(classroomId, fromDate, toDate);
+    }
+
     @GetMapping("/classrooms/{id}/supervisors")
     public List<UserDto> getClassroomSupervisors(@PathVariable int id) {
         return classroomService.classroomSupervisors(id);
     }
 
-    @GetMapping("/classrooms/{id}/allCurrentAvailabilities")
+    @GetMapping("/classrooms/{id}/availabilities")
     public List<ClassroomAvailabilityDto> getClassroomAllAvailabilities(@PathVariable int id) {
         return classroomService.getClassroomAllCurrentAvailability(id);
     }
 
-    @GetMapping("/classrooms/{id}/availableTimeRanges")
+    @GetMapping("/classrooms/{id}/availabilities/timeRanges")
     public List<TimeRangeDto> getClassroomAvailabilities(
             @PathVariable int id,
             @RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
@@ -38,7 +51,7 @@ public class ClassroomResource {
         return classroomService.getClassroomAvailability(id, date);
     }
 
-    @PutMapping("/classrooms/{id}/shrinkAvailability")
+    @PutMapping("/classrooms/{id}/availabilities/shrink")
     public void shrinkClassroomAvailability(@PathVariable(name = "id") int classroomId,
              @RequestBody Map<String, Object> requestBodyMap) {
         /*

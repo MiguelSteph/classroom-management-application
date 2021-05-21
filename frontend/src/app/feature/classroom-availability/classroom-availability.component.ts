@@ -37,6 +37,15 @@ export class ClassroomAvailabilityComponent implements OnInit {
     });
   }
 
+  handleFormClosed() {
+    this.showAddNewAvailabilityForm();
+    this.loadCurrentAvailabilities();
+  }
+
+  showAddNewAvailabilityForm() {
+    this.showNewAvailabilityForm = !this.showNewAvailabilityForm;
+  }
+
   shrinkAvailabilities(currentClassroomId, fromDate, endDate) {
     this.classroomService
       .shrinkClassroomAvailabilities(currentClassroomId, fromDate, endDate)

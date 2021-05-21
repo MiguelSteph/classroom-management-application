@@ -16,9 +16,9 @@ export class CrudService {
       .pipe(catchError(AuthService.handleError));
   }
 
-  post(body) {
+  post(body, customUrl?: string) {
     return this.http
-      .post(this.resourceUrl, body)
+      .post(customUrl ? customUrl : this.resourceUrl, body)
       .pipe(catchError(AuthService.handleError));
   }
 

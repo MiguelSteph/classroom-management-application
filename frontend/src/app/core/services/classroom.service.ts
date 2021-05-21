@@ -19,6 +19,24 @@ export class ClassroomService extends CrudService {
     super(httpClient, CLASSROOMS_RESOURCE_LINK);
   }
 
+  checkIfDateRangeIsValid(classroomId: string, fromDate: Date, toDate: Date) {
+    const customUrl =
+      CLASSROOMS_RESOURCE_LINK +
+      "/" +
+      classroomId +
+      "/availabilities/isDateRangeValid";
+    let requestParams = new HttpParams();
+    requestParams = requestParams.append(
+      "fromDate",
+      formatDate(fromDate, "yyyy-MM-dd", "en-US")
+    );
+    requestParams = requestParams.append(
+      "toDate",
+      formatDate(toDate, "yyyy-MM-dd", "en-US")
+    );
+    return this.get(customUrl, requestParams);
+  }
+
   getClassroomSupervisors(classroomId: string) {
     const customUrl =
       CLASSROOMS_RESOURCE_LINK + "/" + classroomId + "/supervisors";
@@ -27,16 +45,16 @@ export class ClassroomService extends CrudService {
 
   getClassroomAllCurrentAvailabilities(classroomId: string) {
     const customUrl =
-      CLASSROOMS_RESOURCE_LINK +
-      "/" +
-      classroomId +
-      "/allCurrentAvailabilities";
+      CLASSROOMS_RESOURCE_LINK + "/" + classroomId + "/availabilities";
     return this.get(customUrl);
   }
 
   getClassroomAvailabilities(classroomId: string, date: Date) {
     const customUrl =
-      CLASSROOMS_RESOURCE_LINK + "/" + classroomId + "/availableTimeRanges";
+      CLASSROOMS_RESOURCE_LINK +
+      "/" +
+      classroomId +
+      "/availabilities/timeRanges";
     let requestParams = new HttpParams();
     requestParams = requestParams.append(
       "date",
@@ -47,12 +65,18 @@ export class ClassroomService extends CrudService {
 
   shrinkClassroomAvailabilities(classroomId: string, fromDate, toDate) {
     const customUrl =
-      CLASSROOMS_RESOURCE_LINK + "/" + classroomId + "/shrinkAvailability";
+      CLASSROOMS_RESOURCE_LINK + "/" + classroomId + "/availabilities/shrink";
     const requestBody = {
       username: this.authService.currentUser["user_name"],
       fromDate: fromDate,
       toDate: toDate,
     };
     return this.put(requestBody, customUrl);
+  }
+
+  createClassroomAvailability(classroomId, requestBody) {
+    const customUrl =
+      CLASSROOMS_RESOURCE_LINK + "/" + classroomId + "/availabilities";
+    return this.post(requestBody, customUrl);
   }
 }

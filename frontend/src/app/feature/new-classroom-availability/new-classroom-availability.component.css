@@ -1,0 +1,106 @@
+.line {
+  height: 2px;
+  width: 100%;
+  background-color: #E0E0E0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.headerContainer {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1em;
+}
+
+.time-range-form {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.clearRowMargin {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.headerContainer > div {
+  flex: 0 0 100%;
+}
+
+.date-group-input > input:read-only {
+  background-color: white;
+}
+
+.set-time-range-btn {
+  margin-bottom: 1rem;
+}
+
+.add-time-range-btn {
+  margin-bottom: 1rem;
+}
+
+.error-div {
+  width: fit-content;
+  margin: auto;
+}
+
+.btn-container {
+  margin-top: 1em;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+@media screen and (min-width: 800px) {
+
+  .time-range-form {
+    display: flex;
+    flex-flow: row wrap;
+    width: 90%;
+    margin: auto;
+    padding-left: 1em;
+    padding-right: 1em;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .headerContainer {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    padding-left: 1em;
+    padding-right: 1em;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .headerContainer > div {
+    flex: 0 0 30%;
+    padding-right: 1em;
+    max-width: 30em;
+  }
+
+  div.card {
+    margin-top: 1em;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .btn-container {
+    margin-top: 1em;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
