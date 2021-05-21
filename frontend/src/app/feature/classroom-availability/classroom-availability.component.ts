@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ClassroomService } from "../../core/services/classroom.service";
 import { SiteService } from "../../core/services/site.service";
+import { ToastService } from "../../core/services/toast.service";
 
 @Component({
   selector: "classroom-availability",
@@ -21,7 +22,8 @@ export class ClassroomAvailabilityComponent implements OnInit {
 
   constructor(
     private classroomService: ClassroomService,
-    private siteService: SiteService
+    private siteService: SiteService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +51,14 @@ export class ClassroomAvailabilityComponent implements OnInit {
   shrinkAvailabilities(currentClassroomId, fromDate, endDate) {
     this.classroomService
       .shrinkClassroomAvailabilities(currentClassroomId, fromDate, endDate)
-      .subscribe(() => this.loadCurrentAvailabilities());
+      .subscribe(() => {
+        this.toastService.show("Classroom Availability successfully shrunk.", {
+          classname: "bg-success text-light",
+          delay: 3000,
+          autohide: true,
+        });
+        this.loadCurrentAvailabilities();
+      });
   }
 
   updateBuildings() {
