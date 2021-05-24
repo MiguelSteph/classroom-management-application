@@ -1,0 +1,35 @@
+<div class="headerContainer row-template">
+  <button class="btn btn-primary add-new-btn">Add New Site</button>
+</div>
+
+<div class="row row-template">
+  <input
+    [(ngModel)]="searchInput"
+    (change)="filterSites()"
+    class="form-control"
+    type="text"
+    placeholder="Filter by code and/or name"
+  />
+</div>
+
+<div class="row row-template sites-container clearfix">
+  <table class="table">
+    <thead class="thead-dark">
+      <th>#</th>
+      <th>CODE</th>
+      <th>NAME</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let site of filterSites(); index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ site.code }}</td>
+        <td>{{ site.name }}</td>
+        <td>
+          <button class="btn btn-outline-info m-2">Update</button>
+          <button class="btn btn-outline-danger m-2">Disable</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
