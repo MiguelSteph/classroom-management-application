@@ -15,6 +15,8 @@ export class HomeDashboardComponent implements OnInit {
       this.router.navigate(["/groupleader"]);
     } else if (this.authService.hasSupervisorRole()) {
       this.router.navigate(["/supervisor/booking-requests"]);
+    } else if (this.authService.hasAdminRole()) {
+      this.router.navigate(["/admin/sites"]);
     }
   }
 }
