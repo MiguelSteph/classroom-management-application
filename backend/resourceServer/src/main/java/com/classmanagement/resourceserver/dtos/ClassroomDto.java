@@ -7,4 +7,5 @@ public class ClassroomDto {
     private Integer id;
     private String code;
     private String name;
+    private boolean isEnabled;
 }

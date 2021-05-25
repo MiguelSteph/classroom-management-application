@@ -22,6 +22,8 @@ public class Classroom {
 
     private String name;
 
+    private boolean isEnabled;
+
     @ManyToOne
     private Building building;
 

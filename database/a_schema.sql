@@ -28,6 +28,7 @@ CREATE TABLE site (
     id int not null AUTO_INCREMENT,
     code varchar(20),
     name varchar(100),
+    is_enabled boolean,
     PRIMARY KEY (id),
     UNIQUE (code)
 );
@@ -37,6 +38,7 @@ CREATE TABLE building (
     code varchar(20),
     name varchar(100),
     site_id int not null,
+    is_enabled boolean,
     PRIMARY KEY (id),
     UNIQUE (site_id, code)
 );
@@ -47,6 +49,7 @@ CREATE TABLE classroom (
     code varchar(20),
     name varchar(100),
     building_id int not null,
+    is_enabled boolean,
     PRIMARY KEY (id),
     UNIQUE (building_id, code)
 );

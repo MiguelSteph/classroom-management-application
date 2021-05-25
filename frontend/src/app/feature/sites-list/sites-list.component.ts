@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { SiteService } from "../../core/services/site.service";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-sites-list",
@@ -10,7 +11,10 @@ export class SitesListComponent implements OnInit {
   sites: Array<any> = [];
   searchInput: string = "";
 
-  constructor(private siteService: SiteService) {}
+  constructor(
+    private siteService: SiteService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.loadSites();
@@ -33,4 +37,14 @@ export class SitesListComponent implements OnInit {
       );
     });
   };
+
+  showAddOrUpdateSiteModal(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: "modal-basic-title" })
+      .result.then((result) => {
+        if (result === "SiteAdded" || result === "SiteUpdated") {
+          this.loadSites();
+        }
+      });
+  }
 }

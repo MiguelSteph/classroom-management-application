@@ -66,39 +66,39 @@ VALUES ('Miguel', 'Stephane', 'Skakanakou+oliveProjectGroupLeader3@gmail.com',
 
 
 
-INSERT INTO site (code, name) VALUES ('TYUT-TAIYUAN', 'TYUT: Campus of Taiyuan');
-INSERT INTO site (code, name) VALUES ('TYUT-YUCI', 'TYUT: Campus of Yuci');
+INSERT INTO site (code, name, is_enabled) VALUES ('TYUT-TAIYUAN', 'TYUT: Campus of Taiyuan', true);
+INSERT INTO site (code, name, is_enabled) VALUES ('TYUT-YUCI', 'TYUT: Campus of Yuci', false);
 
 
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-COMPUTER', 'building of Computer Science', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-COMPUTER', 'building of Computer Science', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'), true);
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-ART', 'building of Art and Culture', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-ART', 'building of Art and Culture', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'), true);
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-MATH', 'building of Mathematics', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-MATH', 'building of Mathematics', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'), true);
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-FGN-LANG', 'building of Foreign Language', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-FGN-LANG', 'building of Foreign Language', (SELECT id FROM site WHERE site.code='TYUT-TAIYUAN'), true);
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-COMPUTER', 'building of Computer Science', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-COMPUTER', 'building of Computer Science', (SELECT id FROM site WHERE site.code='TYUT-YUCI'), true);
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-ECO', 'building of Economy', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-ECO', 'building of Economy', (SELECT id FROM site WHERE site.code='TYUT-YUCI'), true);
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-MATH', 'building of Mathematics', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-MATH', 'building of Mathematics', (SELECT id FROM site WHERE site.code='TYUT-YUCI'), true);
 
-INSERT INTO building (code, name, site_id)
-VALUES ('BLD-SPORT', 'building of Sport', (SELECT id FROM site WHERE site.code='TYUT-YUCI'));
+INSERT INTO building (code, name, site_id, is_enabled)
+VALUES ('BLD-SPORT', 'building of Sport', (SELECT id FROM site WHERE site.code='TYUT-YUCI'), true);
 
 
 
-INSERT INTO classroom (code, name, building_id)
-VALUES ('CLASS-101', 'classroom 101', 1);
+INSERT INTO classroom (code, name, building_id, is_enabled)
+VALUES ('CLASS-101', 'classroom 101', 1, true);
 
 
 

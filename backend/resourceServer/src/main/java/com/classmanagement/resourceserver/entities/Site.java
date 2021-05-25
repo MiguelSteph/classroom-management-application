@@ -27,6 +27,8 @@ public class Site {
 
     private String name;
 
+    private boolean isEnabled;
+
     @OneToMany(mappedBy = "site", fetch = FetchType.EAGER)
     private List<Building> buildings = new ArrayList<>();
 }

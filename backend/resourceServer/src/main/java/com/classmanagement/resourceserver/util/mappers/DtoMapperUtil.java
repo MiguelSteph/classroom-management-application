@@ -28,11 +28,13 @@ public class DtoMapperUtil {
         buildingDto.setId(building.getId());
         buildingDto.setCode(building.getCode());
         buildingDto.setName(building.getName());
+        buildingDto.setEnabled(building.isEnabled());
 
         SiteDto siteDto = new SiteDto();
         siteDto.setId(site.getId());
         siteDto.setCode(site.getCode());
         siteDto.setName(site.getName());
+        siteDto.setEnabled(site.isEnabled());
 
         ClassroomDto classroom = convertToClassroomDto(bookingRequest.getClassroom());
 
@@ -66,6 +68,7 @@ public class DtoMapperUtil {
         siteDto.setId(site.getId());
         siteDto.setCode(site.getCode());
         siteDto.setName(site.getName());
+        siteDto.setEnabled(site.isEnabled());
         siteDto.setBuildings(
                 site.getBuildings()
                         .stream()
@@ -80,6 +83,7 @@ public class DtoMapperUtil {
         buildingDto.setId(building.getId());
         buildingDto.setCode(building.getCode());
         buildingDto.setName(building.getName());
+        buildingDto.setEnabled(building.isEnabled());
         buildingDto.setClassrooms(
                 building.getClassrooms()
                         .stream()
@@ -94,6 +98,7 @@ public class DtoMapperUtil {
         classroomDto.setId(classroom.getId());
         classroomDto.setName(classroom.getName());
         classroomDto.setCode(classroom.getCode());
+        classroomDto.setEnabled(classroom.isEnabled());
         return classroomDto;
     }
 }

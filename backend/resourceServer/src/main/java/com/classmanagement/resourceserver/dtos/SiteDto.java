@@ -10,5 +10,6 @@ public class SiteDto {
     private Integer id;
     private String code;
     private String name;
+    private boolean isEnabled;
     private List<BuildingDto> buildings = new ArrayList<>();
 }

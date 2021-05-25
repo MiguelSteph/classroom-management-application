@@ -22,6 +22,8 @@ public class Building {
 
     private String name;
 
+    private boolean isEnabled;
+
     @ManyToOne
     private Site site;
 

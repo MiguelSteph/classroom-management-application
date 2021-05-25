@@ -1,0 +1,102 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">{{ getDialogTitle() }}</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="closeModalDialog('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form #f="ngForm" autocomplete="off">
+    <small *ngIf="getGlobalError()" class="form-text text-danger">{{
+      getGlobalError()
+    }}</small>
+    <div class="form-group">
+      <label for="code">Code</label>
+      <input
+        [(ngModel)]="code"
+        #codeModel="ngModel"
+        (ngModelChange)="dismissGlobalError()"
+        [disabled]="isEnableOrDisable()"
+        required
+        type="text"
+        class="form-control"
+        id="code"
+        name="code"
+        placeholder="Enter code"
+      />
+      <small
+        *ngIf="codeModel.touched && getCodeError()"
+        class="form-text text-danger"
+      >
+        {{ getCodeError() }}
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input
+        [(ngModel)]="name"
+        #nameModel="ngModel"
+        (ngModelChange)="dismissGlobalError()"
+        [disabled]="isEnableOrDisable()"
+        required
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter name"
+      />
+      <small
+        *ngIf="nameModel.touched && getNameError()"
+        class="form-text text-danger"
+        >{{ getNameError() }}</small
+      >
+    </div>
+    <div id="buttonsContainer">
+      <button
+        id="addBtn"
+        class="btn btn-primary m-2"
+        type="submit"
+        *ngIf="isAdd()"
+        [disabled]="!f.valid"
+        (click)="addNewSite(f.value)"
+      >
+        Add
+      </button>
+      <button
+        *ngIf="isUpdate()"
+        [disabled]="!f.valid"
+        id="updateBtn"
+        type="submit"
+        class="btn btn-primary m-2"
+        (click)="updateSite(f.value)"
+      >
+        Update
+      </button>
+
+      <button
+        *ngIf="isEnableOrDisable()"
+        id="rejectionBtn"
+        type="submit"
+        class="btn m-2"
+        [ngClass]="{
+          'btn-outline-success': !currentSite['enabled'],
+          'btn-outline-danger': currentSite['enabled']
+        }"
+        (click)="updateSite(f.value)"
+      >
+        {{ enableOrDisableBtn }}
+      </button>
+
+      <button
+        class="btn btn-secondary m-2"
+        (click)="closeModalDialog('Click Close')"
+      >
+        Close
+      </button>
+    </div>
+  </form>
+</div>
