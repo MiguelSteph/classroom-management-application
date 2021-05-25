@@ -101,6 +101,16 @@ public class SiteServiceImpl implements SiteService {
     }
 
     @Override
+    public List<SiteDto> getEnabledSites() {
+        List<Site> siteList = siteRepository.findAllByIsEnabled(true);
+        if (siteList.isEmpty()) return Collections.emptyList();
+        return siteList.stream()
+                .map(site -> DtoMapperUtil.convertToSiteDto(site, true))
+                .sorted(Comparator.comparing(SiteDto::getName))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<SiteDto> getAll() {
         List<Site> siteList = siteRepository.findAll();
         if (siteList.isEmpty()) return Collections.emptyList();

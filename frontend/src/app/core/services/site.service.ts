@@ -12,4 +12,9 @@ export class SiteService extends CrudService {
   constructor(private httpClient: HttpClient) {
     super(httpClient, SITE_RESOURCE_LINK);
   }
+
+  getEnabledSites() {
+    const customUrl = SITE_RESOURCE_LINK + "/enabled";
+    return this.get(customUrl);
+  }
 }

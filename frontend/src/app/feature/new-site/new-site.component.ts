@@ -24,9 +24,6 @@ export class NewSiteComponent implements OnInit {
 
   ngOnInit(): void {
     this.prefillFormData();
-    this.enableOrDisableBtn = this.currentSite["enabled"]
-      ? "Disable"
-      : "Enable";
   }
 
   updateSite = (values) => {
@@ -102,6 +99,11 @@ export class NewSiteComponent implements OnInit {
     if (this.currentSite) {
       this.code = this.currentSite["code"];
       this.name = this.currentSite["name"];
+      if (this.operationType === "ENABLE_DISABLE") {
+        this.enableOrDisableBtn = this.currentSite["enabled"]
+          ? "Disable"
+          : "Enable";
+      }
     }
   };
 

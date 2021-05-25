@@ -38,4 +38,9 @@ public class SiteResource {
     public List<SiteDto> getSites() {
         return siteService.getAll();
     }
+
+    @GetMapping("/sites/enabled")
+    public List<SiteDto> getEnabledSites() {
+        return siteService.getEnabledSites();
+    }
 }

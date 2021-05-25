@@ -64,6 +64,10 @@ public class DtoMapperUtil {
     }
 
     public static SiteDto convertToSiteDto(Site site) {
+        return convertToSiteDto(site, false);
+    }
+
+    public static SiteDto convertToSiteDto(Site site, boolean filterByEnabled) {
         SiteDto siteDto = new SiteDto();
         siteDto.setId(site.getId());
         siteDto.setCode(site.getCode());
@@ -72,13 +76,14 @@ public class DtoMapperUtil {
         siteDto.setBuildings(
                 site.getBuildings()
                         .stream()
-                        .map(DtoMapperUtil::convertToBuildingDto)
+                        .map(building -> convertToBuildingDto(building, filterByEnabled))
+                        .filter(buildingDto -> !filterByEnabled || buildingDto.isEnabled())
                         .collect(Collectors.toList())
         );
         return siteDto;
     }
 
-    public static BuildingDto convertToBuildingDto(Building building) {
+    public static BuildingDto convertToBuildingDto(Building building, boolean filterByEnabled) {
         BuildingDto buildingDto = new BuildingDto();
         buildingDto.setId(building.getId());
         buildingDto.setCode(building.getCode());
@@ -88,6 +93,7 @@ public class DtoMapperUtil {
                 building.getClassrooms()
                         .stream()
                         .map(DtoMapperUtil::convertToClassroomDto)
+                        .filter(classroomDto -> !filterByEnabled || classroomDto.isEnabled())
                         .collect(Collectors.toList())
         );
         return buildingDto;

@@ -50,7 +50,7 @@ export class BookingRequestCreationByClassroomComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.siteService.get().subscribe((data) => {
+    this.siteService.getEnabledSites().subscribe((data) => {
       this.sitesInfo = data as Object[];
       if (this.sitesInfo) {
         this.site = this.sitesInfo[0]["id"];
