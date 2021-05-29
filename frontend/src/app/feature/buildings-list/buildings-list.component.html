@@ -1,0 +1,116 @@
+<div class="headerContainer row-template new-building-wrapper">
+  <button
+    class="btn btn-primary add-new-btn"
+    (click)="showAddOrUpdateBuildingModal(addBuildingModal)"
+  >
+    Add New Building
+  </button>
+</div>
+
+<div class="row-template selection-field-wrapper">
+  <label for="site"><b>Site: </b></label>
+  <div class="col form-group site-field">
+    <select
+      required
+      [(ngModel)]="site"
+      (ngModelChange)="loadBuildingsInCurrentSite()"
+      class="form-control"
+      id="site"
+      name="site"
+    >
+      <option *ngFor="let siteItem of sites" value="{{ siteItem.id }}">
+        {{ siteItem.name }}
+      </option>
+    </select>
+  </div>
+</div>
+
+<div class="row row-template">
+  <input
+    [(ngModel)]="searchInput"
+    (change)="filterBuildings()"
+    class="form-control"
+    type="text"
+    placeholder="Filter by code and/or name"
+  />
+</div>
+
+<div class="row row-template clearfix">
+  <div
+    class="alert alert-warning no-building-found"
+    role="alert"
+    *ngIf="filterBuildings().length === 0"
+  >
+    No buildings found.
+  </div>
+
+  <table class="table" *ngIf="filterBuildings().length > 0">
+    <thead class="thead-dark">
+      <th>#</th>
+      <th>CODE</th>
+      <th>NAME</th>
+      <th>STATUS</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let building of filterBuildings(); index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ building.code }}</td>
+        <td>{{ building.name }}</td>
+        <td>
+          <span *ngIf="building.enabled" class="badge badge-pill badge-success"
+            >Enabled</span
+          >
+          <span *ngIf="!building.enabled" class="badge badge-pill badge-light"
+            >Disabled</span
+          >
+        </td>
+        <td>
+          <ng-template #updateBuilding let-modal>
+            <new-building
+              [modalDialog]="modal"
+              [operationType]="'UPDATE'"
+              [currentBuilding]="enhancedBuilding(building, site)"
+              [sites]="sites"
+            ></new-building>
+          </ng-template>
+          <ng-template #enableOrDisableBuilding let-modal>
+            <new-building
+              [modalDialog]="modal"
+              [operationType]="'ENABLE_DISABLE'"
+              [currentBuilding]="enhancedBuilding(building, site)"
+              [sites]="sites"
+            ></new-building>
+          </ng-template>
+          <button
+            class="btn btn-outline-info m-2"
+            (click)="showAddOrUpdateBuildingModal(updateBuilding)"
+          >
+            Update
+          </button>
+          <button
+            *ngIf="!building.enabled"
+            (click)="showAddOrUpdateBuildingModal(enableOrDisableBuilding)"
+            class="btn btn-outline-success m-2"
+          >
+            Enable
+          </button>
+          <button
+            *ngIf="building.enabled"
+            (click)="showAddOrUpdateBuildingModal(enableOrDisableBuilding)"
+            class="btn btn-light m-2"
+          >
+            Disable
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #addBuildingModal let-modal>
+    <new-building
+      [modalDialog]="modal"
+      [sites]="sites"
+      [operationType]="'ADD'"
+    ></new-building>
+  </ng-template>
+</div>

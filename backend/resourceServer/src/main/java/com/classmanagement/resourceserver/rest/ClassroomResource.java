@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @AllArgsConstructor
 public class ClassroomResource {

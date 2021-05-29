@@ -14,7 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Map;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @AllArgsConstructor
 public class BookingRequestResource {

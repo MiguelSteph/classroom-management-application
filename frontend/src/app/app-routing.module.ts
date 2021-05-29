@@ -10,6 +10,7 @@ import { SupervisorAuthGuard } from "./core/guards/supervisor-auth-guard.service
 import { ClassroomAvailabilityComponent } from "./feature/classroom-availability/classroom-availability.component";
 import { SitesListComponent } from "./feature/sites-list/sites-list.component";
 import { AdminAuthGuard } from "./core/guards/admin-auth-guard";
+import { BuildingsListComponent } from "./feature/buildings-list/buildings-list.component";
 
 const routes: Routes = [
   {
@@ -39,6 +40,11 @@ const routes: Routes = [
   {
     path: "admin/sites",
     component: SitesListComponent,
+    canActivate: [AuthGuard, AdminAuthGuard],
+  },
+  {
+    path: "admin/buildings",
+    component: BuildingsListComponent,
     canActivate: [AuthGuard, AdminAuthGuard],
   },
 ];

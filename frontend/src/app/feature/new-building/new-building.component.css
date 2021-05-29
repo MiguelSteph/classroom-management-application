@@ -1,0 +1,7 @@
+#buttonsContainer {
+  display: flex;
+  width: 90%;
+  margin: 1em auto;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}

@@ -21,6 +21,8 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.cors().and().authorizeRequests()
+                .mvcMatchers(HttpMethod.GET, "/buildings/*")
+                .hasAnyRole(ADMIN_ROLE, SUPERVISOR_ROLE, GROUP_LEADER_ROLE)
                 .mvcMatchers(HttpMethod.GET, "/sites"
                         , "/classrooms/{id}/supervisors"
                         , "/classrooms/{id}/availableTimeRanges")

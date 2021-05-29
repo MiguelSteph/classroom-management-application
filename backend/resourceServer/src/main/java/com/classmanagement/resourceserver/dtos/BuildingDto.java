@@ -10,6 +10,7 @@ public class BuildingDto {
     private Integer id;
     private String code;
     private String name;
+    private Integer siteId;
     private boolean isEnabled;
     private List<ClassroomDto> classrooms = new ArrayList<>();
 }

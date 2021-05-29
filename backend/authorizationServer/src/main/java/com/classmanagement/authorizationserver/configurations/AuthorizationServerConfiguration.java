@@ -59,7 +59,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-
         Map<String, CorsConfiguration> corsConfigMap = new HashMap<>();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);

@@ -83,6 +83,10 @@ public class DtoMapperUtil {
         return siteDto;
     }
 
+    public static BuildingDto convertToBuildingDto(Building building) {
+        return convertToBuildingDto(building, false);
+    }
+
     public static BuildingDto convertToBuildingDto(Building building, boolean filterByEnabled) {
         BuildingDto buildingDto = new BuildingDto();
         buildingDto.setId(building.getId());
