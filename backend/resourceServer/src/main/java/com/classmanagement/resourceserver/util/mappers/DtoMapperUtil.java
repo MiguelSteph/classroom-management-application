@@ -93,6 +93,7 @@ public class DtoMapperUtil {
         buildingDto.setCode(building.getCode());
         buildingDto.setName(building.getName());
         buildingDto.setEnabled(building.isEnabled());
+        buildingDto.setSiteId(building.getSite().getId());
         buildingDto.setClassrooms(
                 building.getClassrooms()
                         .stream()
@@ -109,6 +110,7 @@ public class DtoMapperUtil {
         classroomDto.setName(classroom.getName());
         classroomDto.setCode(classroom.getCode());
         classroomDto.setEnabled(classroom.isEnabled());
+        classroomDto.setBuildingId(classroom.getBuilding().getId());
         return classroomDto;
     }
 }

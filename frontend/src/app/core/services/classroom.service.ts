@@ -19,6 +19,11 @@ export class ClassroomService extends CrudService {
     super(httpClient, CLASSROOMS_RESOURCE_LINK);
   }
 
+  getClassroomsInBuilding(buildingId: string) {
+    const customUrl = CLASSROOMS_RESOURCE_LINK + "/building/" + buildingId;
+    return this.get(customUrl);
+  }
+
   checkIfDateRangeIsValid(classroomId: string, fromDate: Date, toDate: Date) {
     const customUrl =
       CLASSROOMS_RESOURCE_LINK +

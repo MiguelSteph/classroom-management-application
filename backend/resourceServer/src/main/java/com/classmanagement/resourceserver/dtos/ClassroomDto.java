@@ -8,4 +8,5 @@ public class ClassroomDto {
     private String code;
     private String name;
     private boolean isEnabled;
+    private Integer buildingId;
 }

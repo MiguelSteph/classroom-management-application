@@ -2,10 +2,8 @@ package com.classmanagement.resourceserver.services.implementations;
 
 import com.classmanagement.resourceserver.dtos.*;
 import com.classmanagement.resourceserver.entities.*;
-import com.classmanagement.resourceserver.repositories.AvailableTimeIntervalRepository;
-import com.classmanagement.resourceserver.repositories.BookingRequestRepository;
-import com.classmanagement.resourceserver.repositories.ClassroomRepository;
-import com.classmanagement.resourceserver.repositories.UserRepository;
+import com.classmanagement.resourceserver.exceptions.UserCausedBackendException;
+import com.classmanagement.resourceserver.repositories.*;
 import com.classmanagement.resourceserver.services.ClassroomService;
 import com.classmanagement.resourceserver.util.mappers.DtoMapperUtil;
 import lombok.AllArgsConstructor;
@@ -21,10 +19,110 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ClassroomServiceImpl implements ClassroomService {
 
+    private final static int CLASSROOM_CODE_LIMIT = 20;
+
     private final ClassroomRepository classroomRepository;
     private final AvailableTimeIntervalRepository availableTimeIntervalRepository;
     private final BookingRequestRepository bookingRequestRepository;
     private final UserRepository userRepository;
+    private final BuildingRepository buildingRepository;
+
+    @Override
+    public List<ClassroomDto> getClassroomsInBuilding(int buildingId) {
+        List<Classroom> classroomList = buildingRepository.getOne(buildingId).getClassrooms();
+        return classroomList.stream()
+                .map(DtoMapperUtil::convertToClassroomDto)
+                .collect(Collectors.toList());
+    }
+
+    private Building getClassroomBuilding(ClassroomDto classroomDto) {
+        if (classroomDto.getBuildingId() == null) {
+            throw new UserCausedBackendException("Unexpected error. Please try again.");
+        }
+        return buildingRepository.getOne(classroomDto.getBuildingId());
+    }
+
+    @Override
+    public Classroom addNewClassroom(ClassroomDto classroomDto) {
+        Building building = getClassroomBuilding(classroomDto);
+        checkForAddNewClassroom(classroomDto, building);
+
+        Classroom classroom = new Classroom();
+        classroom.setCode(classroomDto.getCode());
+        classroom.setName(classroomDto.getName());
+        classroom.setBuilding(building);
+        classroom.setEnabled(true);
+
+        return classroomRepository.save(classroom);
+    }
+
+    private void checkForAddNewClassroom(ClassroomDto classroomDto, Building building) {
+        if (classroomDto.getCode() == null || classroomDto.getCode().isEmpty()) {
+            throw new UserCausedBackendException("Classroom Code is not provided");
+        }
+
+        if (classroomDto.getCode().length() > CLASSROOM_CODE_LIMIT) {
+            throw new UserCausedBackendException("Classroom Code is too long. Classroom Code should not be more than 20 characters.");
+        }
+
+        if (classroomDto.getName() == null || classroomDto.getName().isEmpty()) {
+            throw new UserCausedBackendException("Classroom Name is not provided");
+        }
+
+        Classroom classroomByName = classroomRepository.findByNameAndBuilding(classroomDto.getName(), building);
+        Classroom classroomByCode = classroomRepository.findByCodeAndBuilding(classroomDto.getCode(), building);
+
+        if (classroomByName != null) {
+            throw new UserCausedBackendException("Classroom Name already exists.");
+        }
+
+        if (classroomByCode != null) {
+            throw new UserCausedBackendException("Classroom Code already exists.");
+        }
+    }
+
+    @Override
+    public Classroom updateClassroom(ClassroomDto classroomDto) {
+        Building building = getClassroomBuilding(classroomDto);
+        checkForUpdateClassroom(classroomDto, building);
+
+        Classroom classroom = classroomRepository.getOne(classroomDto.getId());
+        classroom.setCode(classroomDto.getCode());
+        classroom.setName(classroomDto.getName());
+        classroom.setBuilding(building);
+        classroom.setEnabled(classroomDto.isEnabled());
+
+        return classroomRepository.save(classroom);
+    }
+
+    private void checkForUpdateClassroom(ClassroomDto classroomDto, Building building) {
+        if (classroomDto.getId() == null) {
+            throw new UserCausedBackendException("Unexpected error. Please try again.");
+        }
+
+        if (classroomDto.getCode() == null || classroomDto.getCode().isEmpty()) {
+            throw new UserCausedBackendException("Classroom Code is not provided");
+        }
+
+        if (classroomDto.getCode().length() > CLASSROOM_CODE_LIMIT) {
+            throw new UserCausedBackendException("Classroom Code is too long. Classroom Code should not be more than 20 characters.");
+        }
+
+        if (classroomDto.getName() == null || classroomDto.getName().isEmpty()) {
+            throw new UserCausedBackendException("Classroom Name is not provided");
+        }
+
+        Classroom classroomByName = classroomRepository.findByNameAndBuilding(classroomDto.getName(), building);
+        Classroom classroomByCode = classroomRepository.findByCodeAndBuilding(classroomDto.getCode(), building);
+
+        if (classroomByName != null && !classroomByName.getId().equals(classroomDto.getId())) {
+            throw new UserCausedBackendException("Classroom Name already exists.");
+        }
+
+        if (classroomByCode != null && !classroomByCode.getId().equals(classroomDto.getId())) {
+            throw new UserCausedBackendException("Classroom Code already exists.");
+        }
+    }
 
     @Override
     public void createClassroomAvailabilities(NewClassroomAvailabilityDto availabilityDto) {

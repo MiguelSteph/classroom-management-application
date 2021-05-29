@@ -64,9 +64,4 @@ export class BuildingsListComponent implements OnInit {
         }
       });
   }
-
-  enhancedBuilding(currBuilding, site) {
-    currBuilding["siteId"] = site;
-    return currBuilding;
-  }
 }

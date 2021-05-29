@@ -11,6 +11,7 @@ import { ClassroomAvailabilityComponent } from "./feature/classroom-availability
 import { SitesListComponent } from "./feature/sites-list/sites-list.component";
 import { AdminAuthGuard } from "./core/guards/admin-auth-guard";
 import { BuildingsListComponent } from "./feature/buildings-list/buildings-list.component";
+import { ClassroomsListComponent } from "./feature/classrooms-list/classrooms-list.component";
 
 const routes: Routes = [
   {
@@ -45,6 +46,11 @@ const routes: Routes = [
   {
     path: "admin/buildings",
     component: BuildingsListComponent,
+    canActivate: [AuthGuard, AdminAuthGuard],
+  },
+  {
+    path: "admin/classrooms",
+    component: ClassroomsListComponent,
     canActivate: [AuthGuard, AdminAuthGuard],
   },
 ];

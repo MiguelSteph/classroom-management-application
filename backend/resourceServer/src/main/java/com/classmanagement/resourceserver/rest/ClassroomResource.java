@@ -1,14 +1,15 @@
 package com.classmanagement.resourceserver.rest;
 
-import com.classmanagement.resourceserver.dtos.ClassroomAvailabilityDto;
-import com.classmanagement.resourceserver.dtos.NewClassroomAvailabilityDto;
-import com.classmanagement.resourceserver.dtos.TimeRangeDto;
-import com.classmanagement.resourceserver.dtos.UserDto;
+import com.classmanagement.resourceserver.dtos.*;
+import com.classmanagement.resourceserver.entities.Classroom;
 import com.classmanagement.resourceserver.services.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,6 +21,27 @@ import java.util.Map;
 public class ClassroomResource {
 
     private final ClassroomService classroomService;
+
+    @PostMapping("/classrooms")
+    public ResponseEntity<Object> addClassroom(@RequestBody ClassroomDto classroomDto) {
+        Classroom newClassroom = classroomService.addNewClassroom(classroomDto);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(newClassroom.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping("/classrooms")
+    public void updateClassroom(@RequestBody ClassroomDto classroomDto) {
+        classroomService.updateClassroom(classroomDto);
+    }
+
+    @GetMapping("/classrooms/building/{id}")
+    public List<ClassroomDto> getClassroomsByBuilding(@PathVariable int id) {
+        return classroomService.getClassroomsInBuilding(id);
+    }
 
     @PostMapping("/classrooms/{id}/availabilities")
     public void createClassroomAvailability(@RequestBody NewClassroomAvailabilityDto newClassroomAvailabilityDto) {

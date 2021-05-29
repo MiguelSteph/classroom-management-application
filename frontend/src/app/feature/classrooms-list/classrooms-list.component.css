@@ -17,6 +17,27 @@ td {
   vertical-align: middle;
 }
 
+.new-classroom-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}
+
+.selection-field-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.site-field {
+  max-width: 500px;
+}
+
+.no-building-found {
+  width: 100% !important;
+}
+
 @media screen and (min-width: 800px) {
 
   .row-template {

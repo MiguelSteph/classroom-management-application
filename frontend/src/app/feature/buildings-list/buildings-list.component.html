@@ -70,7 +70,7 @@
             <new-building
               [modalDialog]="modal"
               [operationType]="'UPDATE'"
-              [currentBuilding]="enhancedBuilding(building, site)"
+              [currentBuilding]="building"
               [sites]="sites"
             ></new-building>
           </ng-template>
@@ -78,7 +78,7 @@
             <new-building
               [modalDialog]="modal"
               [operationType]="'ENABLE_DISABLE'"
-              [currentBuilding]="enhancedBuilding(building, site)"
+              [currentBuilding]="building"
               [sites]="sites"
             ></new-building>
           </ng-template>
