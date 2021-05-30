@@ -1,0 +1,121 @@
+<div class="headerContainer row-template new-building-wrapper">
+  <button
+    class="btn btn-primary add-new-btn"
+    (click)="showAddOrUpdateUserModal(addUserModal)"
+  >
+    Add New User
+  </button>
+</div>
+
+<div class="row-template selection-field-wrapper">
+  <label for="site"><b>Role: </b></label>
+  <div class="col form-group site-field">
+    <select
+      required
+      [(ngModel)]="role"
+      (ngModelChange)="loadUsersPerRoles()"
+      class="form-control"
+      id="site"
+      name="site"
+    >
+      <option *ngFor="let roleItem of roles" value="{{ roleItem.role }}">
+        {{ roleItem.name }}
+      </option>
+    </select>
+  </div>
+</div>
+
+<div class="row row-template">
+  <input
+    [(ngModel)]="searchInput"
+    (change)="filterUsers()"
+    class="form-control"
+    type="text"
+    placeholder="Filter by code and/or name"
+  />
+</div>
+
+<div class="row row-template clearfix">
+  <div
+    class="alert alert-warning no-building-found"
+    role="alert"
+    *ngIf="filterUsers().length === 0"
+  >
+    No buildings found.
+  </div>
+
+  <table class="table" *ngIf="filterUsers().length > 0">
+    <thead class="thead-dark">
+      <th>#</th>
+      <th>FULLNAME</th>
+      <th>EMAIL</th>
+      <th>STATUS</th>
+      <th>PWD CHANGED</th>
+      <th>EMAIL VERIFIED</th>
+      <th>Actions</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of filterUsers(); index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ user["firstName"] + " " + user["lastName"] }}</td>
+        <td>{{ user["email"] }}</td>
+        <td>
+          <span *ngIf="user.enabled" class="badge badge-pill badge-success"
+            >Enabled</span
+          >
+          <span *ngIf="!user.enabled" class="badge badge-pill badge-light"
+            >Disabled</span
+          >
+        </td>
+        <td class="center-td-text">
+          <fa-icon
+            *ngIf="user['isDefaultPwd']"
+            [icon]="faCheckSquareIcon"
+          ></fa-icon>
+          <fa-icon *ngIf="!user['isDefaultPwd']" [icon]="faTimesIcon"></fa-icon>
+        </td>
+        <td class="center-td-text">
+          <fa-icon
+            *ngIf="user['isEmailVerified']"
+            [icon]="faCheckSquareIcon"
+          ></fa-icon>
+          <fa-icon
+            *ngIf="!user['isEmailVerified']"
+            [icon]="faTimesIcon"
+          ></fa-icon>
+        </td>
+        <td>
+          <ng-template #enableOrDisableUser let-modal>
+            <new-user
+              [modalDialog]="modal"
+              [operationType]="'ENABLE_DISABLE'"
+              [currentUser]="user"
+              [roles]="roles"
+            ></new-user>
+          </ng-template>
+          <button
+            *ngIf="!user.enabled"
+            (click)="showAddOrUpdateUserModal(enableOrDisableUser)"
+            class="btn btn-outline-success m-2"
+          >
+            Enable
+          </button>
+          <button
+            *ngIf="user.enabled"
+            (click)="showAddOrUpdateUserModal(enableOrDisableUser)"
+            class="btn btn-light m-2"
+          >
+            Disable
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <ng-template #addUserModal let-modal>
+    <new-user
+      [modalDialog]="modal"
+      [roles]="roles"
+      [operationType]="'ADD'"
+    ></new-user>
+  </ng-template>
+</div>

@@ -25,11 +25,13 @@ import { BuildingsListComponent } from './buildings-list/buildings-list.componen
 import { NewBuildingComponent } from './new-building/new-building.component';
 import { ClassroomsListComponent } from './classrooms-list/classrooms-list.component';
 import { NewClassroomComponent } from './new-classroom/new-classroom.component';
+import { UsersListComponent } from './users-list/users-list.component';
+import { NewUserComponent } from './new-user/new-user.component';
 
 
 
 @NgModule({
-    declarations: [LoginComponent, BookingRequestCreationByClassroomComponent, DashboardGroupleaderComponent, MenuComponent, HomeDashboardComponent, ToatsComponent, PendingRequestListComponent, CancelledRequestListComponent, ApprovedRequestListComponent, RejectedRequestListComponent, DashboardSupervisorComponent, BookingRequestDetailComponent, ClassroomAvailabilityComponent, NewClassroomAvailabilityComponent, SitesListComponent, NewSiteComponent, BuildingsListComponent, NewBuildingComponent, ClassroomsListComponent, NewClassroomComponent],
+    declarations: [LoginComponent, BookingRequestCreationByClassroomComponent, DashboardGroupleaderComponent, MenuComponent, HomeDashboardComponent, ToatsComponent, PendingRequestListComponent, CancelledRequestListComponent, ApprovedRequestListComponent, RejectedRequestListComponent, DashboardSupervisorComponent, BookingRequestDetailComponent, ClassroomAvailabilityComponent, NewClassroomAvailabilityComponent, SitesListComponent, NewSiteComponent, BuildingsListComponent, NewBuildingComponent, ClassroomsListComponent, NewClassroomComponent, UsersListComponent, NewUserComponent],
   exports: [
     LoginComponent,
     BookingRequestCreationByClassroomComponent,

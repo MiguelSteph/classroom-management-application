@@ -1,0 +1,56 @@
+.headerContainer {
+  padding-top: 3.375rem;
+  padding-bottom: 2rem;
+}
+
+.row-template {
+  clear: both;
+  width: 95%;
+  margin: 1rem auto 1rem auto;
+}
+
+.add-new-btn {
+  float: right;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.center-td-text {
+  text-align: center;
+}
+
+.new-building-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+}
+
+.selection-field-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.site-field {
+  max-width: 500px;
+}
+
+.no-building-found {
+  width: 100% !important;
+}
+
+@media screen and (min-width: 800px) {
+
+  .row-template {
+    width: 80%;
+  }
+
+  .search-container {
+    width: 50%;
+    margin-left: 0;
+    margin-right: auto;
+  }
+}

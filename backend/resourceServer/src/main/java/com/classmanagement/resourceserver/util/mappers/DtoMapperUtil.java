@@ -60,6 +60,9 @@ public class DtoMapperUtil {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setRole(user.getRole().getName());
+        userDto.setEnabled(user.isEnabled());
+        userDto.setEmailVerified(user.isEmailVerified());
+        userDto.setDefaultPwd(user.isDefaultPwd());
         return userDto;
     }
 

@@ -9,4 +9,9 @@ public class UserDto {
     private String lastName;
     private String email;
     private String role;
+    private String createdBy;
+    private String password;
+    private boolean isEnabled;
+    private boolean isEmailVerified;
+    private boolean isDefaultPwd;
 }
