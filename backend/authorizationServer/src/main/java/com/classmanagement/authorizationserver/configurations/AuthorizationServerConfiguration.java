@@ -1,5 +1,6 @@
 package com.classmanagement.authorizationserver.configurations;
 
+import com.classmanagement.authorizationserver.configurations.authDto.AuthUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,12 +10,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerEndpointsConfiguration;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -22,6 +25,7 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.security.KeyPair;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,10 +71,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         config.setAllowedHeaders(Collections.singletonList("*"));
         corsConfigMap.put("/oauth/token", config);
 
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), jwtAccessTokenConverter()));
+
         endpoints.getFrameworkEndpointHandlerMapping()
                 .setCorsConfigurations(corsConfigMap);
         endpoints.tokenStore(jwtTokenStore())
-                .accessTokenConverter(jwtAccessTokenConverter())
+                .tokenEnhancer(tokenEnhancerChain)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
     }
@@ -111,5 +118,17 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setKeyPair(keyPair());
         return jwtAccessTokenConverter;
+    }
+
+    private TokenEnhancer tokenEnhancer() {
+        return (accessToken, authentication) -> {
+            if (authentication != null && authentication.getPrincipal() instanceof AuthUser) {
+                AuthUser authUser = (AuthUser) authentication.getPrincipal();
+                Map<String, Object> additionalInfo = new HashMap<>();
+                additionalInfo.put("is-default-pwd", authUser.isDefaultPwd());
+                ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+            }
+            return accessToken;
+        };
     }
 }
