@@ -84,6 +84,18 @@ export class AuthService {
     return this.currentUser["authorities"].some((item) => item === ROLE_ADMIN);
   }
 
+  isDefaultPwd(): boolean {
+    return this.currentUser["is_default_pwd"];
+  }
+
+  getCurrentUserFullName() {
+    return this.currentUser["full_name"];
+  }
+
+  getCurrentUsername() {
+    return this.currentUser["user_name"];
+  }
+
   public static handleError(error: HttpResponse<any>) {
     if (error.status === 401) {
       return throwError(new UnauthorizedError(error));

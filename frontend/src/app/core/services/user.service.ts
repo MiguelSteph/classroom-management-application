@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { CrudService } from "./crud.service";
 import { HttpClient } from "@angular/common/http";
+import { AuthService } from "./auth.service";
 
 const USER_RESOURCE_LINK = environment.resourceServerEndPoint + "/users";
 
@@ -9,7 +10,10 @@ const USER_RESOURCE_LINK = environment.resourceServerEndPoint + "/users";
   providedIn: "root",
 })
 export class UserService extends CrudService {
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {
     super(httpClient, USER_RESOURCE_LINK);
   }
 
@@ -18,10 +22,10 @@ export class UserService extends CrudService {
     return this.get(customUrl);
   }
 
-  updatePwd(userId: string, oldPwd: string, newPwd: string) {
-    const customUrl = USER_RESOURCE_LINK + "/enable";
+  updatePwd(oldPwd: string, newPwd: string) {
+    const customUrl = USER_RESOURCE_LINK + "/pwd";
     const requestBody = {
-      userId: userId,
+      username: this.authService.currentUser["user_name"],
       oldPwd: oldPwd,
       newPwd: newPwd,
     };

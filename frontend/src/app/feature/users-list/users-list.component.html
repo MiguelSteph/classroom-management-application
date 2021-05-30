@@ -69,18 +69,18 @@
         </td>
         <td class="center-td-text">
           <fa-icon
-            *ngIf="user['isDefaultPwd']"
+            *ngIf="!user['defaultPwd']"
             [icon]="faCheckSquareIcon"
           ></fa-icon>
-          <fa-icon *ngIf="!user['isDefaultPwd']" [icon]="faTimesIcon"></fa-icon>
+          <fa-icon *ngIf="user['defaultPwd']" [icon]="faTimesIcon"></fa-icon>
         </td>
         <td class="center-td-text">
           <fa-icon
-            *ngIf="user['isEmailVerified']"
+            *ngIf="user['emailVerified']"
             [icon]="faCheckSquareIcon"
           ></fa-icon>
           <fa-icon
-            *ngIf="!user['isEmailVerified']"
+            *ngIf="!user['emailVerified']"
             [icon]="faTimesIcon"
           ></fa-icon>
         </td>

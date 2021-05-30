@@ -125,7 +125,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
             if (authentication != null && authentication.getPrincipal() instanceof AuthUser) {
                 AuthUser authUser = (AuthUser) authentication.getPrincipal();
                 Map<String, Object> additionalInfo = new HashMap<>();
-                additionalInfo.put("is-default-pwd", authUser.isDefaultPwd());
+                additionalInfo.put("is_default_pwd", authUser.isDefaultPwd());
+                additionalInfo.put("full_name", authUser.getFullname());
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             }
             return accessToken;

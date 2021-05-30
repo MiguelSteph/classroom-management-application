@@ -28,9 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.isEnabled(),
                 true,
                 true,
-                !user.isDefaultPwd() && user.isEmailVerified(),
+                true,
                 Collections.singleton(user.getRole()),
-                user.isDefaultPwd()
+                user.isDefaultPwd(),
+                user.getFirstName() + " " + user.getLastName()
         );
     }
 }

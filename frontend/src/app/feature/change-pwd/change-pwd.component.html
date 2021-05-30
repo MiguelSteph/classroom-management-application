@@ -1,0 +1,103 @@
+<div class="headerContainer row-template">
+  <h2>Update Password</h2>
+</div>
+<div class="row-template">
+  <form #f="ngForm" autocomplete="off">
+    <div class="form-group">
+      <div class="alert alert-info" role="alert" *ngIf="defaultPwdIssue">
+        As a new user, please update your password before you can start using
+        the application.
+      </div>
+      <div class="alert alert-danger" role="alert" *ngIf="getGlobalError()">
+        {{ getGlobalError() }}
+      </div>
+      <label for="oldPassword"><b>Current Password</b></label>
+      <input
+        [(ngModel)]="oldPassword"
+        #oldPasswordModel="ngModel"
+        (ngModelChange)="dismissGlobalError()"
+        required
+        type="password"
+        class="form-control"
+        id="oldPassword"
+        name="oldPassword"
+        placeholder="Enter your current password"
+      />
+      <small
+        *ngIf="oldPasswordModel.touched && !oldPasswordModel.valid"
+        class="form-text text-danger"
+        >This field is mandatory. Please enter your current password</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="newPassword"><b>New Password</b></label>
+      <input
+        [(ngModel)]="newPassword"
+        #newPasswordModel="ngModel"
+        (ngModelChange)="dismissGlobalError()"
+        required
+        type="password"
+        class="form-control"
+        id="newPassword"
+        name="newPassword"
+        placeholder="Enter your new password"
+      />
+      <small
+        *ngIf="newPasswordModel.touched && !newPasswordModel.valid"
+        class="form-text text-danger"
+        >Please enter the new password</small
+      >
+      <small class="form-text text-secondary"
+        >* Password should contain at least one upper case english letter</small
+      >
+      <small class="form-text text-secondary"
+        >* Password should contain at least one lower case english letter</small
+      >
+      <small class="form-text text-secondary"
+        >* Password should contain at least one digit</small
+      >
+      <small class="form-text text-secondary"
+        >* Password should contain at least one special character (!, $, #, &,
+        _, +)</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="newPassword"><b>Verify New Password</b></label>
+      <input
+        [(ngModel)]="verifyPassword"
+        #verifyPasswordModel="ngModel"
+        (ngModelChange)="dismissGlobalError()"
+        required
+        type="password"
+        class="form-control"
+        id="verifyPassword"
+        name="verifyPassword"
+        placeholder="Enter again your new password"
+      />
+      <small
+        *ngIf="
+          verifyPasswordModel.touched &&
+          (!verifyPasswordModel.valid || newPassword != verifyPassword)
+        "
+        class="form-text text-danger"
+        >This field is mandatory. Please enter again the new password.</small
+      >
+    </div>
+
+    <div id="buttonsContainer">
+      <button
+        id="updateBtn"
+        class="btn btn-primary m-2"
+        type="submit"
+        [disabled]="!f.valid || newPassword != verifyPassword"
+        (click)="updatePassword(f.value)"
+      >
+        Update
+      </button>
+
+      <button class="btn btn-secondary m-2" type="reset">Close</button>
+    </div>
+  </form>
+</div>

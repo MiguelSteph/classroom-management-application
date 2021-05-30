@@ -15,6 +15,6 @@ public interface UserService {
 
     User disableUser(long userId, String currentUsername);
 
-    User updatePwd(long userId, String oldPwd, String newPwd, String currentUsername);
+    User updatePwd(String username, String oldPwd, String newPwd, String currentUsername);
 
 }

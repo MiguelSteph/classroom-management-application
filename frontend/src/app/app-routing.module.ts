@@ -13,12 +13,14 @@ import { AdminAuthGuard } from "./core/guards/admin-auth-guard";
 import { BuildingsListComponent } from "./feature/buildings-list/buildings-list.component";
 import { ClassroomsListComponent } from "./feature/classrooms-list/classrooms-list.component";
 import { UsersListComponent } from "./feature/users-list/users-list.component";
+import { DefaultPwdGuard } from "./core/guards/default-pwd-guard";
+import { ChangePwdComponent } from "./feature/change-pwd/change-pwd.component";
 
 const routes: Routes = [
   {
     path: "",
     component: HomeDashboardComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, DefaultPwdGuard],
   },
   {
     path: "login",
@@ -27,37 +29,42 @@ const routes: Routes = [
   {
     path: "groupleader",
     component: DashboardGroupleaderComponent,
-    canActivate: [AuthGuard, GroupLeaderAuthGuard],
+    canActivate: [AuthGuard, GroupLeaderAuthGuard, DefaultPwdGuard],
   },
   {
     path: "supervisor/booking-requests",
     component: DashboardSupervisorComponent,
-    canActivate: [AuthGuard, SupervisorAuthGuard],
+    canActivate: [AuthGuard, SupervisorAuthGuard, DefaultPwdGuard],
   },
   {
     path: "supervisor/classroom-availability",
     component: ClassroomAvailabilityComponent,
-    canActivate: [AuthGuard, SupervisorAuthGuard],
+    canActivate: [AuthGuard, SupervisorAuthGuard, DefaultPwdGuard],
   },
   {
     path: "admin/sites",
     component: SitesListComponent,
-    canActivate: [AuthGuard, AdminAuthGuard],
+    canActivate: [AuthGuard, AdminAuthGuard, DefaultPwdGuard],
   },
   {
     path: "admin/buildings",
     component: BuildingsListComponent,
-    canActivate: [AuthGuard, AdminAuthGuard],
+    canActivate: [AuthGuard, AdminAuthGuard, DefaultPwdGuard],
   },
   {
     path: "admin/classrooms",
     component: ClassroomsListComponent,
-    canActivate: [AuthGuard, AdminAuthGuard],
+    canActivate: [AuthGuard, AdminAuthGuard, DefaultPwdGuard],
   },
   {
     path: "admin/users",
     component: UsersListComponent,
-    canActivate: [AuthGuard, AdminAuthGuard],
+    canActivate: [AuthGuard, AdminAuthGuard, DefaultPwdGuard],
+  },
+  {
+    path: "change-password",
+    component: ChangePwdComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

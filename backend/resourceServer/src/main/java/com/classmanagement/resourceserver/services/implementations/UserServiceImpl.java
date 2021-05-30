@@ -37,14 +37,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updatePwd(long userId, String oldPwd, String newPwd, String currentUsername) {
+    public User updatePwd(String username, String oldPwd, String newPwd, String currentUsername) {
         User currentLoggedUser = userRepository.findByEmail(currentUsername);
-        User user = userRepository.getOne(userId);
+        User user = userRepository.findByEmail(username);
         if (!currentLoggedUser.getId().equals(user.getId())) {
             throw new UserCausedBackendException("Unexpected exception happens. Please try again");
         }
+
+        if (!passwordEncoder.matches(oldPwd, user.getPassword())) {
+            throw new UserCausedBackendException("Provided password is incorrect");
+        }
         checkPasswordPolicy(newPwd);
         user.setPassword(passwordEncoder.encode(newPwd));
+        user.setDefaultPwd(false);
         return userRepository.save(user);
     }
 

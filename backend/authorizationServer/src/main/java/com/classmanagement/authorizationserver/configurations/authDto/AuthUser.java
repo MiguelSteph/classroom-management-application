@@ -11,14 +11,16 @@ import java.util.Collection;
 @EqualsAndHashCode(callSuper = false)
 public class AuthUser extends User {
 
+    private String fullname;
     private boolean isDefaultPwd;
 
     public AuthUser(String username, String password, boolean enabled,
                     boolean accountNonExpired, boolean credentialsNonExpired,
                     boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities,
-                    boolean isDefaultPwd) {
+                    boolean isDefaultPwd, String fullname) {
         super(username, password, enabled, accountNonExpired,
                 credentialsNonExpired, accountNonLocked, authorities);
         this.isDefaultPwd = isDefaultPwd;
+        this.fullname = fullname;
     }
 }

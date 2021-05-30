@@ -49,11 +49,11 @@ public class UserResource {
         userService.disableUser(userId, getCurrentUserName((JwtAuthenticationToken)principal));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR', 'GROUPLEADER')")
     @PutMapping("/users/pwd")
     public void updatePwd(Principal principal,
                             @RequestBody Map<String, Object> map) {
-        userService.updatePwd(Long.getLong(String.valueOf(map.get("userId"))),
+        userService.updatePwd(String.valueOf(map.get("username")),
                 String.valueOf(map.get("oldPwd")), String.valueOf(map.get("newPwd")),
                 getCurrentUserName((JwtAuthenticationToken)principal));
     }
