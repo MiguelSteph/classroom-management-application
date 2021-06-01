@@ -26,6 +26,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final BookingRequestRepository bookingRequestRepository;
     private final UserRepository userRepository;
     private final BuildingRepository buildingRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public List<ClassroomDto> getClassroomsInBuilding(int buildingId) {
@@ -304,13 +305,26 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public List<UserDto> classroomSupervisors(int id) {
-        Optional<Classroom> classroomOptional = classroomRepository.findById(id);
-        if (classroomOptional.isEmpty()) return Collections.emptyList();
-        Classroom classroom = classroomOptional.get();
-        return classroom.getClassroomSupervisors()
+        /*
+        Todo: Should be reimplemented after the supervisor get assigned some set of classes
+         */
+        Role supervisorRole = roleRepository.findByName("ROLE_" + Role.SUPERVISOR_ROLE);
+        return supervisorRole.getUsers()
                 .stream()
-                .map(ClassroomSupervisor::getSupervisor)
+                .filter(User::isEnabled)
                 .map(DtoMapperUtil::convertToUserDto)
                 .collect(Collectors.toList());
     }
+
+//    @Override
+//    public List<UserDto> classroomSupervisors(int id) {
+//        Optional<Classroom> classroomOptional = classroomRepository.findById(id);
+//        if (classroomOptional.isEmpty()) return Collections.emptyList();
+//        Classroom classroom = classroomOptional.get();
+//        return classroom.getClassroomSupervisors()
+//                .stream()
+//                .map(ClassroomSupervisor::getSupervisor)
+//                .map(DtoMapperUtil::convertToUserDto)
+//                .collect(Collectors.toList());
+//    }
 }
