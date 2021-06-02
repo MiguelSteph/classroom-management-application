@@ -13,7 +13,7 @@ server:
 spring:
   datasource:
     username: olive
-    url: jdbc:mysql://localhost:3306/classmanagementDb
+    url: jdbc:mysql://mysql-server:3306/classmanagementDb
     password: yx7oZA9QpomHBWnh
 #    password: ${secret_mysql_server_pwd}
     driver-class-name: com.mysql.cj.jdbc.Driver

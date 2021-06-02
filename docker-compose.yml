@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  mysql-server:
+    image: mysql:latest
+    volumes:
+    - ./database:/docker-entrypoint-initdb.d
+    ports:
+    - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=TXE9iXyw6aulVbgK
+      - MYSQL_DATABASE=classmanagementDb
+      - MYSQL_USER=olive
+      - MYSQL_PASSWORD=yx7oZA9QpomHBWnh
+
+  authorization-server:
+    build: ./backend/authorizationServer
+    ports:
+    - 9092:9092
+    depends_on:
+      - mysql-server
+
+  resource-server:
+    build: ./backend/resourceServer
+    ports:
+    - 9090:9090
+    depends_on:
+      - mysql-server
+      - authorization-server
+
+  classmanagement:
+    build: ./frontend
+    ports:
+    - 80:80
+    depends_on:
+      - resource-server
+      - authorization-server
+
+
+

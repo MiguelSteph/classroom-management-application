@@ -9,7 +9,7 @@ spring:
       date: iso
   datasource:
     username: olive
-    url: jdbc:mysql://localhost:3306/classmanagementDb
+    url: jdbc:mysql://mysql-server:3306/classmanagementDb
     password: yx7oZA9QpomHBWnh
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
@@ -19,7 +19,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9092/.well-known/jwks.json
+          jwk-set-uri: http://authorization-server:9092/.well-known/jwks.json
 logging:
   level:
     org.hibernate.SQL: DEBUG
